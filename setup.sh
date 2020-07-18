@@ -18,3 +18,5 @@ fi
 EOF
 
 chmod +x .git/hooks/pre-push  
+
+npm install
