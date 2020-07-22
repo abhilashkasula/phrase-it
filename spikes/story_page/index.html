@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Story</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+    <script src="story_data.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="story-container">
+      <div id="story">
+        <h1 id="story-title"></h1>
+        <div class="story-details">
+          <div class="story-author-container">
+            <div id="story-author-avathar"></div>
+            <div class="story-author">
+              <div id="story-author-name"></div>
+              <div id="story-time"></div>
+            </div>
+            <button id="follow">Follow</button>
+          </div>
+          <div>
+            <input type="text" id="url" />
+            <button id="story-url">Copy link</button>
+          </div>
+        </div>
+        <div id="content"></div>
+        <div class="story-reactions">
+          <img src="clap.png" alt="" id="story-clap" />
+          <div id="story-clap-count">3K claps</div>
+          <img src="response.png" alt="" id="story-response" />
+          <div id="story-response-count">7 Responses</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
