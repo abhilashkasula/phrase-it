@@ -17,6 +17,9 @@ if [ \$? != 0 ]; then
 fi
 EOF
 
-chmod +x .git/hooks/pre-push  
+chmod +x .git/hooks/pre-push
+chmod +x bin/resetresetProductionDB.sh
+chmod +x bin/resetTestDB.sh
+chmod +x bin/populateTestDB.sh
 
 npm install
