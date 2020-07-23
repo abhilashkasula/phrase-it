@@ -19,7 +19,7 @@ describe('createStory', () => {
       .expect('Content-Type', /json/)
       .expect({id: 5}, done);
   });
-  
+
   it('should create a story with incremented id', (done) => {
     request(app)
       .get('/createStory')
@@ -29,8 +29,8 @@ describe('createStory', () => {
   });
 });
 
-describe('saveStory', () => {
-  it('should save a story title, content for given story id', (done) => {
+describe('updateStory', () => {
+  it('should update a story title, content for given story id', (done) => {
     const block = {
       type: 'paragraph',
       data: {
@@ -39,10 +39,19 @@ describe('saveStory', () => {
     };
     const data = {id: 1, title: 'A new app', blocks: [block]};
     request(app)
-      .post('/saveStory')
+      .post('/updateStory')
       .send(data)
       .expect(200)
       .expect('Content-Type', /json/)
-      .expect({status: 'saved'}, done);
+      .expect({status: 'updated'}, done);
+  });
+
+  it('should give error for updating story with unknown id', (done) => {
+    request(app)
+      .post('/updateStory')
+      .send({id: 100})
+      .expect(404)
+      .expect('Content-Type', /json/)
+      .expect({error: 'unknown id'}, done);
   });
 });

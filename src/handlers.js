@@ -63,15 +63,18 @@ const createStory = (req, res) => {
   req.app.locals.db.createStory('john').then((id) => res.json({id}));
 };
 
-const saveNewStory = (req, res) => {
+const updateStory = (req, res) => {
   const {title, id, blocks} = req.body;
   req.app.locals.db
-    .saveNewStory(id, title, 'john', JSON.stringify(blocks))
-    .then((result) => res.json(result));
+    .updateStory(id, title, 'john', JSON.stringify(blocks))
+    .then((result) => {
+      const code = result.error ? statusCodes.NOT_FOUND : statusCodes.OK;
+      res.status(code).json(result);
+    });
 };
 
 const showDrafts = (req, res) => {
   req.app.locals.db.getDrafts().then((drafts) => res.json(drafts));
 };
 
-module.exports = {saveNewStory, showDrafts, createStory, getUserToken};
+module.exports = {updateStory, showDrafts, createStory, getUserToken};

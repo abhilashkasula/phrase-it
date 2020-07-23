@@ -41,14 +41,14 @@ class Database {
     });
   }
 
-  async saveNewStory(id, title, author, content) {
+  async updateStory(id, title, author, content) {
     const query = queries.saveStory(id, title, content);
     const row = await this.get(`select * from stories where id = ${id}`);
     if (!row) {
       return {error: 'unknown id'};
     }
     await this.exec(query);
-    return {status: 'saved'};
+    return {status: 'updated'};
   }
 
   getDrafts() {

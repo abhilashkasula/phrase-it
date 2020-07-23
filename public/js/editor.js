@@ -10,7 +10,7 @@ const save = (editor, id) => {
         'Content-Type': 'application/json',
       },
     };
-    fetch('saveStory', options);
+    fetch('updateStory', options);
   });
 };
 
