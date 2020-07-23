@@ -23,7 +23,7 @@ app.get('/user', getUserToken.bind({CLIENT_SECRET, CLIENT_ID}));
 
 app.get('/newStory', (req, res) => res.render('editor'));
 app.get('/createStory', handlers.createStory);
-app.post('/saveNewStory', handlers.saveNewStory);
+app.post('/saveStory', handlers.saveNewStory);
 app.get('/showDrafts', handlers.showDrafts);
 
 module.exports = {app};

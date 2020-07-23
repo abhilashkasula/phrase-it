@@ -10,12 +10,12 @@ const save = (editor, id) => {
         'Content-Type': 'application/json',
       },
     };
-    fetch('save-new-story', options);
+    fetch('saveStory', options);
   });
 };
 
 const main = async() => {
-  const res = await fetch('/create-story');
+  const res = await fetch('/createStory');
   const {id} = await res.json();
 
   const editor = new EditorJS({
