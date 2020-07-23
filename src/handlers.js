@@ -5,7 +5,7 @@ const request = (options) => {
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       let json = '';
-      res.on('data', function (chunk) {
+      res.on('data', function(chunk) {
         json += chunk;
       });
       res.on('end', () => {
@@ -42,29 +42,30 @@ const getDetailsOptions = (token) => ({
 const requestUserDetails = (req, res, token) => {
   const detailsOptions = getDetailsOptions(token);
   request(detailsOptions)
-    .then((data) => {
-      res.json(data);
+    .then(({ id, login }) => {
+      req.session.id = id;
+      res.render('home', { isUserAuth: true, username: login });
     })
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
-const getUserToken = function (req, res) {
-  const {code} = req.query;
-  const clientId = `client_id=${this.CLIENT_ID}`;
-  const clientSecret = `client_secret=${this.CLIENT_SECRET}`;
+const getUserToken = function(req, res) {
+  const { code } = req.query;
+  const clientId = `client_id=${req.app.locals.CLIENT_ID}`;
+  const clientSecret = `client_secret=${req.app.locals.CLIENT_SECRET}`;
   const query = `${clientId}&${clientSecret}&code=${code}`;
   const tokenOptions = getTokenOptions(query);
   request(tokenOptions)
-    .then(({access_token}) => requestUserDetails(req, res, access_token))
+    .then(({ access_token }) => requestUserDetails(req, res, access_token))
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
 const createStory = (req, res) => {
-  req.app.locals.db.createStory('john').then((id) => res.json({id}));
+  req.app.locals.db.createStory('john').then((id) => res.json({ id }));
 };
 
 const updateStory = (req, res) => {
-  const {title, id, blocks} = req.body;
+  const { title, id, blocks } = req.body;
   req.app.locals.db
     .updateStory(id, title, 'john', JSON.stringify(blocks))
     .then((result) => {
@@ -77,4 +78,4 @@ const getDrafts = (req, res) => {
   req.app.locals.db.getDrafts().then((drafts) => res.json(drafts));
 };
 
-module.exports = {updateStory, getDrafts, createStory, getUserToken};
+module.exports = { updateStory, getDrafts, createStory, getUserToken };

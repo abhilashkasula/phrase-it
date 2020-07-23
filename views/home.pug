@@ -1,7 +1,11 @@
 html
   head 
     title Phrase-it
+    style
+      include ../public/css/navbar.css  
 
   body
-    h1=Welcome `${userName}`
+    include navbar.pug
+
+    h1=`Welcome ${username}`
 
