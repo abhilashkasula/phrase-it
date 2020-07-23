@@ -3,3 +3,5 @@ node_js:
   - 12.16.1
 notifications:
   slack: we-blog:IEystz8So6pSl2PPZ9a5BFl9
+script:
+  - npm run allTests
