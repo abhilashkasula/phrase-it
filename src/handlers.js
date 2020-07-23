@@ -1,33 +1,5 @@
-const https = require('https');
+const {request} = require('./request');
 const statusCodes = require('./statusCodes');
-
-const request = (options) => {
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      let json = '';
-      res.on('data', function (chunk) {
-        json += chunk;
-      });
-      res.on('end', () => {
-        const data = JSON.parse(json);
-        if (data.error) {
-          return reject(data.error);
-        }
-        resolve(data);
-      });
-    });
-    req.end();
-  });
-};
-
-const getTokenOptions = (query) => ({
-  host: 'github.com',
-  path: `/login/oauth/access_token?${query}`,
-  method: 'POST',
-  headers: {
-    Accept: 'application/json',
-  },
-});
 
 const getDetailsOptions = (token) => ({
   host: 'api.github.com',
@@ -48,6 +20,15 @@ const requestUserDetails = (req, res, token) => {
     })
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
+
+const getTokenOptions = (query) => ({
+  host: 'github.com',
+  path: `/login/oauth/access_token?${query}`,
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+  },
+});
 
 const getUserDetails = function (req, res) {
   const {code} = req.query;
