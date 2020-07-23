@@ -54,4 +54,21 @@ const getUserToken = function (req, res) {
     .catch(() => res.status(404).send('Err'));
 };
 
-module.exports = {getUserToken};
+const createStory = (req, res) => {
+  req.app.locals.db
+    .createStory('john')
+    .then((id) => res.json({id}));
+};
+
+const saveNewStory = (req, res) => {
+  const {title, id, blocks} = req.body;
+  req.app.locals.db
+    .saveNewStory(id, title, 'john', JSON.stringify(blocks))
+    .then((result) => res.json(result));
+};
+
+const showDrafts = (req, res) => {
+  req.app.locals.db.getDrafts().then((drafts) => res.json(drafts));
+};
+
+module.exports = {saveNewStory, showDrafts, createStory, getUserToken};

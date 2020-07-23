@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+#new-blog {
+  width: calc(80% - 33%);
+  padding: 3%;
+  background: white;
+  border: 1px solid rgb(208, 207, 207);
+  border-radius: 3px;
+}
+
+#title {
+  padding: 2%;
+  width: calc(100% - 5%);
+  font-weight: 600;
+  font-size: large;
+  border: 1px solid rgb(208, 207, 207);
+  border-radius: 3px;
+}
+
+#title:focus {
+  outline: 1px solid rgb(110, 213, 254);
+  border: 1px solid rgb(107, 210, 250);
+}
+
+#new-blog > * {
+  margin-bottom: 6%;
+}
+
+body {
+  padding-top: 3%;
+  background-color: whitesmoke;
+  font-family: 'Sora', sans-serif;
+}
+
+#editor {
+  padding: 0 5% 0 5%;
+  border: 1px solid rgb(208, 207, 207);
+  border-radius: 3px;
+}
+
+#editor:focus {
+  outline: 1px solid rgb(110, 213, 254);
+  border: 1px solid rgb(107, 210, 250);
+}
