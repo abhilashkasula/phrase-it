@@ -87,7 +87,7 @@
       }
     },
     {
-      "files": ["public/js/*.js", "private/js/*.js"],
+      "files": ["public/js/*.js"],
       "rules": {
         "no-unused-vars": "off",
         "no-undef": "off"
