@@ -17,7 +17,15 @@ describe('createStory', () => {
       .get('/createStory')
       .expect(200)
       .expect('Content-Type', /json/)
-      .expect(/id/, done);
+      .expect({id: 5}, done);
+  });
+  
+  it('should create a story with incremented id', (done) => {
+    request(app)
+      .get('/createStory')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect({id: 6}, done);
   });
 });
 
