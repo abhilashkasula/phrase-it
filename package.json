@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
-    "allTests": "npm test"
+    "test": "mocha",
+    "lint": "eslint ./",
+    "coverage": "nyc npm test",
+    "allTests": "npm run coverage && npm run lint"
   },
   "repository": {
     "type": "git",
