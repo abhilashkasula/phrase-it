@@ -1,0 +1,12 @@
+html
+  head 
+    title Phrase-it
+    style
+      include ../public/css/index.css
+
+  body
+    div(class= 'container')
+      h1(class= 'title') welcome
+      a(href=`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}` class='link') 
+        button(class= 'login') SignIn Using Github
+  

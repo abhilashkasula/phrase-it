@@ -19,7 +19,6 @@
     "quotes": ["error", "single"],
     "linebreak-style": ["error", "unix"],
     "semi": ["error", "always"],
-    "camelcase": "error",
     "class-methods-use-this": "warn",
     "array-bracket-spacing": ["error"],
     "comma-spacing": "error",
@@ -100,6 +99,7 @@
         "no-console": "off",
         "no-process-env": "off"
       }
+      
     }
   ]
 }

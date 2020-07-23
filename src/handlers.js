@@ -1,10 +1,13 @@
 const https = require('https');
+const statusCodes = require('./statusCodes');
 
 const request = (options) => {
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       let json = '';
-      res.on('data', (chunk) => (json += chunk));
+      res.on('data', function (chunk) {
+        json += chunk;
+      });
       res.on('end', () => {
         const data = JSON.parse(json);
         if (data.error) {
@@ -42,22 +45,22 @@ const requestUserDetails = (req, res, token) => {
     .then((data) => {
       res.json(data);
     })
-    .catch(() => res.status(404).send('Err'));
+    .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
 const getUserToken = function (req, res) {
   const {code} = req.query;
-  const query = `client_id=${this.CLIENT_ID}&client_secret=${this.CLIENT_SECRET}&code=${code}`;
+  const clientId = `client_id=${this.CLIENT_ID}`;
+  const clientSecret = `client_secret=${this.CLIENT_SECRET}`;
+  const query = `${clientId}&${clientSecret}&code=${code}`;
   const tokenOptions = getTokenOptions(query);
   request(tokenOptions)
     .then(({access_token}) => requestUserDetails(req, res, access_token))
-    .catch(() => res.status(404).send('Err'));
+    .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
 const createStory = (req, res) => {
-  req.app.locals.db
-    .createStory('john')
-    .then((id) => res.json({id}));
+  req.app.locals.db.createStory('john').then((id) => res.json({id}));
 };
 
 const saveNewStory = (req, res) => {
