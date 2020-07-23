@@ -74,10 +74,13 @@ describe('Unit Test', () => {
         exec: (query, cb) => cb(null),
       };
       const database = new Database(db);
-      database.updateStory(1, 'Title', 'John', 'Content').then((result) => {
-        assert.deepStrictEqual(result, {status: 'updated'});
-        done();
-      }).catch((err) => done(err));
+      database
+        .updateStory(1, 'Title', 'John', 'Content')
+        .then((result) => {
+          assert.deepStrictEqual(result, {status: 'updated'});
+          done();
+        })
+        .catch((err) => done(err));
     });
     it('should not update the story and give error if id not found', (done) => {
       const db = {
@@ -85,10 +88,33 @@ describe('Unit Test', () => {
         exec: (query, cb) => cb(null),
       };
       const database = new Database(db);
-      database.updateStory(1, 'Title', 'John', 'Content').then((result) => {
-        assert.deepStrictEqual(result, {error: 'unknown id'});
-        done();
-      }).catch((err) => done(err));
+      database
+        .updateStory(1, 'Title', 'John', 'Content')
+        .then((result) => {
+          assert.deepStrictEqual(result, {error: 'unknown id'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('getDrafts', () => {
+    it('should resolve all the drafts', (done) => {
+      const db = {all: (query, cb) => cb(null, [{id: 1}])};
+      const database = new Database(db);
+      database
+        .getDrafts()
+        .then((rows) => {
+          assert.deepStrictEqual(rows, [{id: 1}]);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject when there is an error', async () => {
+      const db = {all: (query, cb) => cb({err: 'error'})};
+      const database = new Database(db);
+      await assert.rejects(() => database.getDrafts());
     });
   });
 });
