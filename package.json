@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "(export DB_NAME='test/database/test.db'; mocha)",
     "lint": "eslint ./",
     "coverage": "nyc npm test",
     "allTests": "npm run coverage && npm run lint"
