@@ -1,0 +1,18 @@
+body {
+  justify-content: center;
+}
+
+.container {
+  height: 400px;
+  width: 600px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.title {
+  color: black;
+}
+
+.login {
+  border: 1px solid black;
+}

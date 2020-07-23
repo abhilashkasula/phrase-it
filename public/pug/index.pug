@@ -1,0 +1,13 @@
+html
+  head 
+    title phrase-it
+    style
+      include ../css/index.css
+
+    script 
+      include ../scripts/index.js
+  body
+    div(class= 'container')
+      h1(class= 'title') welcome
+      a(href=`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`) SignIn Using Github
+  
