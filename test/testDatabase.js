@@ -12,10 +12,13 @@ describe('Unit Test', () => {
     it('should resolve the row if there is no error', (done) => {
       const db = {get: (query, cb) => cb(null, {id: 1})};
       const database = new Database(db);
-      database.get('query').then((row) => {
-        assert.deepStrictEqual(row, {id: 1});
-        done();
-      });
+      database
+        .get('query')
+        .then((row) => {
+          assert.deepStrictEqual(row, {id: 1});
+          done();
+        })
+        .catch((err) => done(err));
     });
   });
 
@@ -29,6 +32,38 @@ describe('Unit Test', () => {
       const db = {exec: (query, cb) => cb(null)};
       const database = new Database(db);
       await assert.doesNotReject(() => database.exec('query'));
+    });
+  });
+
+  describe('createStory', () => {
+    it('should insert story and resolve story id 1 for first story', (done) => {
+      const db = {
+        get: (query, cb) => cb(null, undefined),
+        exec: (query, cb) => cb(null),
+      };
+      const database = new Database(db);
+      database
+        .createStory('John')
+        .then((id) => {
+          assert.strictEqual(id, 1);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should insert story and resolve story id for story present', (done) => {
+      const db = {
+        get: (query, cb) => cb(null, {id: 1}),
+        exec: (query, cb) => cb(null),
+      };
+      const database = new Database(db);
+      database
+        .createStory('John')
+        .then((id) => {
+          assert.strictEqual(id, 2);
+          done();
+        })
+        .catch((err) => done(err));
     });
   });
 });
