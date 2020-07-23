@@ -94,9 +94,11 @@
       }
     },
     {
-      "files": ["lib/models/corporate.js", "lib/models/game.js"],
+      "files": ["server.js"],
       "rules": {
-        "no-magic-numbers": "off"
+        "no-magic-numbers": "off",
+        "no-console": "off",
+        "no-process-env": "off"
       }
     }
   ]
