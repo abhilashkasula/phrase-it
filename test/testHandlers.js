@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../src/app');
+const {app} = require('../src/app');
 
 describe('Integration tests', () => {
   describe('Handlers', () => {
@@ -19,7 +19,7 @@ describe('Integration tests', () => {
           .get('/createStory')
           .expect(200)
           .expect('Content-Type', /json/)
-          .expect({ id: 5 }, done);
+          .expect({id: 5}, done);
       });
 
       it('should create a story with incremented id', (done) => {
@@ -27,7 +27,7 @@ describe('Integration tests', () => {
           .get('/createStory')
           .expect(200)
           .expect('Content-Type', /json/)
-          .expect({ id: 6 }, done);
+          .expect({id: 6}, done);
       });
     });
 
@@ -39,22 +39,22 @@ describe('Integration tests', () => {
             text: 'A small paragraph',
           },
         };
-        const data = { id: 1, title: 'A new app', blocks: [block] };
+        const data = {id: 1, title: 'A new app', blocks: [block]};
         request(app)
           .post('/updateStory')
           .send(data)
           .expect(200)
           .expect('Content-Type', /json/)
-          .expect({ status: 'updated' }, done);
+          .expect({status: 'updated'}, done);
       });
 
       it('should give error for updating story with unknown id', (done) => {
         request(app)
           .post('/updateStory')
-          .send({ id: 100 })
+          .send({id: 100})
           .expect(404)
           .expect('Content-Type', /json/)
-          .expect({ error: 'unknown id' }, done);
+          .expect({error: 'unknown id'}, done);
       });
     });
 
@@ -72,11 +72,26 @@ describe('Integration tests', () => {
 
 describe('handleHomePage', () => {
   it('should get index page if session not exists', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = {isNew: true};
+      next();
+    });
     request(app)
       .get('/')
       .expect(200)
       .expect('Content-Type', /html/)
-      .expect(/SignIn Using Github/, done);
+      .expect(/Login Using Github/, done);
   });
 
+  it('should get welcome page if session not exists', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = {isNew: false};
+      next();
+    });
+    request(app)
+      .get('/')
+      .expect(200)
+      .expect('Content-Type', /html/)
+      .expect(/Welcome/, done);
+  });
 });
