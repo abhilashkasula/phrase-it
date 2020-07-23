@@ -4,7 +4,7 @@ const sqlite = require('sqlite3');
 const session = require('cookie-session');
 const handlers = require('./handlers');
 const Database = require('./database');
-const { DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG } = require('../config');
+const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
 
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
@@ -15,24 +15,19 @@ app.locals.SECRET_MSG = SECRET_MSG;
 
 app.use(logger('common'));
 app.set('view engine', 'pug');
-app.use(express.static('public', { index: false }));
+app.use(express.static('public', {index: false}));
 app.use(express.json());
-app.set('sessionMiddleware', session({ secret: SECRET_MSG }));
+app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));
 
-app.get('/', (req, res) => {
-  if (req.session.isNew) {
-    res.render('index', { CLIENT_ID });
-  }
-  res.render('home', {});
-});
+app.get('/', handlers.handleHomePage);
 
-app.get('/user', handlers.getUserToken);
+app.get('/user', handlers.getUserDetails);
 
 app.get('/newStory', (req, res) => res.render('editor'));
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
 app.get('/drafts', handlers.getDrafts);
 
-module.exports = { app };
+module.exports = {app};
