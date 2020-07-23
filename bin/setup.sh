@@ -18,7 +18,7 @@ fi
 EOF
 
 chmod +x .git/hooks/pre-push
-chmod +x bin/resetresetProductionDB.sh
+chmod +x bin/resetProductionDB.sh
 chmod +x bin/resetTestDB.sh
 chmod +x bin/populateTestDB.sh
 
