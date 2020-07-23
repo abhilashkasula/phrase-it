@@ -73,8 +73,8 @@ const updateStory = (req, res) => {
     });
 };
 
-const showDrafts = (req, res) => {
+const getDrafts = (req, res) => {
   req.app.locals.db.getDrafts().then((drafts) => res.json(drafts));
 };
 
-module.exports = {updateStory, showDrafts, createStory, getUserToken};
+module.exports = {updateStory, getDrafts, createStory, getUserToken};

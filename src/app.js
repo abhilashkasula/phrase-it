@@ -24,6 +24,6 @@ app.get('/user', getUserToken.bind({CLIENT_SECRET, CLIENT_ID}));
 app.get('/newStory', (req, res) => res.render('editor'));
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
-app.get('/showDrafts', handlers.showDrafts);
+app.get('/drafts', handlers.getDrafts);
 
 module.exports = {app};

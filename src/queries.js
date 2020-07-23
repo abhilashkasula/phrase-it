@@ -5,11 +5,13 @@ const insertNewStory = (id, author, title, content) => {
 };
 
 const saveStory = (id, title, content) => {
-  return `update stories
-    set title = '${title}',
+  return `UPDATE stories
+    SET title = '${title}',
       content = '${content}',
       last_modified = DATETIME('now', 'localtime')
-      where id = ${id};`;
+      WHERE id = ${id};`;
 };
 
-module.exports = {insertNewStory, saveStory};
+const getDrafts = () => 'SELECT * FROM stories WHERE is_published = 0';
+
+module.exports = {insertNewStory, saveStory, getDrafts};

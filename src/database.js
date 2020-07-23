@@ -30,7 +30,7 @@ class Database {
 
   createStory(author) {
     return new Promise((resolve, reject) => {
-      this.get('select id from stories order by id desc')
+      this.get('SELECT id FROM stories ORDER BY id DESC')
         .then((row) => {
           const id = row ? row.id + ONE : ONE;
           this.exec(queries.insertNewStory(id, author, '', ''))
@@ -43,7 +43,7 @@ class Database {
 
   async updateStory(id, title, author, content) {
     const query = queries.saveStory(id, title, content);
-    const row = await this.get(`select * from stories where id = ${id}`);
+    const row = await this.get(`SELECT * FROM stories WHERE id = ${id}`);
     if (!row) {
       return {error: 'unknown id'};
     }
@@ -53,7 +53,7 @@ class Database {
 
   getDrafts() {
     return new Promise((resolve, reject) => {
-      this.db.all('SELECT * FROM stories', (err, rows) => {
+      this.db.all(queries.getDrafts(), (err, rows) => {
         if (err) {
           return reject(err);
         }

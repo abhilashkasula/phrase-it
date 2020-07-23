@@ -55,3 +55,13 @@ describe('updateStory', () => {
       .expect({error: 'unknown id'}, done);
   });
 });
+
+describe('getDrafts', () => {
+  it('should get all the drafts available', (done) => {
+    request(app)
+      .get('/drafts')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(/paragraph/, done);
+  });
+});
