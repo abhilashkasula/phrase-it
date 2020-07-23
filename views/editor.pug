@@ -1,0 +1,20 @@
+html
+  head
+    script(src="/js/editor.js")
+    script(src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest")
+    script(src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest")
+    script(src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest")
+    script(src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest")
+    link(rel="stylesheet", href="/css/editor.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+    title New Story
+  body
+    div(class="container")
+      div(id="new-blog")
+        div
+          label Title:
+          br
+          input(type="text", id="title")
+        div
+          label Story:
+          div(id="editor")

@@ -21,8 +21,9 @@ app.get('/', (req, res) => {
 
 app.get('/user', getUserToken.bind({CLIENT_SECRET, CLIENT_ID}));
 
-app.get('/create-story', handlers.createStory);
-app.post('/save-new-story', handlers.saveNewStory);
-app.get('/show-drafts', handlers.showDrafts);
+app.get('/newStory', (req, res) => res.render('editor'));
+app.get('/createStory', handlers.createStory);
+app.post('/saveNewStory', handlers.saveNewStory);
+app.get('/showDrafts', handlers.showDrafts);
 
 module.exports = {app};
