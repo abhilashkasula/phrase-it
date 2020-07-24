@@ -107,6 +107,10 @@ class Database {
       });
     });
   }
+
+  getPublishedStory(id) {
+    return this.get(queries.getPublishedStory(id));
+  }
 }
 
 module.exports = Database;

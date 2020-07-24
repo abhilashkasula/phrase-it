@@ -25,7 +25,7 @@ const main = async() => {
         class: Header,
         config: {
           levels: [2, 3, 4],
-          defaultLevel: 3,
+          defaultLevel: 2,
         },
       },
       delimiter: Delimiter,

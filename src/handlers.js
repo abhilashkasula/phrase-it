@@ -112,6 +112,16 @@ const publish = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
+const storyPage = (req, res) => {
+  req.app.locals.db.getPublishedStory(req.params.id).then((story) => {
+    if (!story) {
+      return res.status(statusCodes.NOT_FOUND).render('notFound');
+    }
+    story.content = JSON.parse(story.content);
+    res.render('story', {story, isAuthenticated: req.session.id, moment});
+  });
+};
+
 module.exports = {
   updateStory,
   createStory,
@@ -121,4 +131,5 @@ module.exports = {
   newStory,
   allowAuthorized,
   publish,
+  storyPage,
 };

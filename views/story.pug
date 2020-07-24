@@ -1,0 +1,36 @@
+html
+  head
+    title Story
+    link(rel="stylesheet", href="/css/story.css")
+    script(src="/js/story.js")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+  body
+    div(class="story-container")
+      div(id="story")
+        h1(id="story-title")=story.title
+        div(class="story-details")
+          div(class="story-author-container")
+            div(id="story-author-avathar")
+              img(src=story.avatar_url)
+            div(class="story-author")
+              div(id="story-author-name")=story.author
+              div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
+          div
+            input(type="text" id="url")
+            button(id="story-url") Copy link
+        div(id="content")
+          each element in story.content
+            case element.type
+              when 'paragraph'
+                p(class="content-para")=element.data.text
+              when 'header'
+                case element.data.level
+                  when 2
+                    h2(class="content-header")=element.data.text
+                  when 3
+                    h3(class="content-header")=element.data.text
+                  when 4
+                    h4(class="content-header")=element.data.text
+              when 'delimiter'
+                div(class="content-delimiter") ...
+

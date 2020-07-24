@@ -26,6 +26,8 @@ app.get('/', handlers.handleHomePage);
 
 app.get('/user', handlers.getUserDetails);
 
+app.get('/story/:id', handlers.storyPage);
+
 app.use(
   ['/newStory', '/createStory', '/updateStory', '/stories'],
   handlers.allowAuthorized

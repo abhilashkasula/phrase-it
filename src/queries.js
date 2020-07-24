@@ -40,6 +40,20 @@ const getPublishedStories = () =>
   `SELECT s.id,s.content,s.title,s.created_by,ps.published_at
               FROM stories s join published_stories ps
              on s.id=ps.id WHERE is_published = 1`;
+             
+const getPublishedStory = (id) => {
+  return `SELECT t1.id,
+    t1.title,
+    t3.username as author,
+    t3.avatar_url,
+    t1.content,
+    t2.published_at,
+    t2.views 
+    FROM stories t1 
+    JOIN published_stories t2 on t1.id = t2.story_id
+    JOIN users t3 on t1.created_by = t3.id 
+    WHERE t1.id = ${id}`;
+};
 
 module.exports = {
   insertNewStory,
@@ -49,5 +63,6 @@ module.exports = {
   getUserDetails,
   getDraft,
   publish,
-  getPublishedStories
+  getPublishedStories,
+  getPublishedStory
 };
