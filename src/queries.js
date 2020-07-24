@@ -21,12 +21,17 @@ const getUserDetails = (id) => {
   return `select username,avatar_url from users where id=${id}`;
 };
 
-const getDrafts = () => 'SELECT * FROM stories WHERE is_published = 0';
+const getDrafts = (userId) =>
+  `SELECT * FROM stories WHERE is_published = 0 AND created_by = ${userId}`;
+
+const getStory = (authorId, storyId) =>
+  `SELECT * FROM stories WHERE id = ${storyId} AND created_by = ${authorId}`;
 
 module.exports = {
   insertNewStory,
   saveStory,
   getDrafts,
   insertUser,
-  getUserDetails
+  getUserDetails,
+  getStory,
 };

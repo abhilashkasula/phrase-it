@@ -41,9 +41,9 @@ class Database {
     });
   }
 
-  async updateStory(id, title, author, content) {
-    const query = queries.saveStory(id, title, content);
-    const row = await this.get(`SELECT * FROM stories WHERE id = ${id}`);
+  async updateStory(storyId, title, authorId, content) {
+    const query = queries.saveStory(storyId, title, content);
+    const row = await this.get(queries.getStory(authorId, storyId));
     if (!row) {
       return { error: 'unknown id' };
     }
@@ -51,9 +51,9 @@ class Database {
     return { status: 'updated' };
   }
 
-  getDrafts() {
+  getDrafts(userId) {
     return new Promise((resolve, reject) => {
-      this.db.all(queries.getDrafts(), (err, rows) => {
+      this.db.all(queries.getDrafts(userId), (err, rows) => {
         if (err) {
           return reject(err);
         }

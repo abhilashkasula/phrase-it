@@ -4,7 +4,13 @@ const { app } = require('../src/app');
 describe('Integration tests', () => {
   describe('Handlers', () => {
     describe('newStory', () => {
-      it('should get editor html', (done) => {
+      before(() => {
+        app.set('sessionMiddleware', (req, res, next) => {
+          req.session = {isNew: false};
+          next();
+        });
+      });
+      it('should get the newStory page for authenticated user', (done) => {
         request(app)
           .get('/newStory')
           .expect(200)
@@ -14,6 +20,13 @@ describe('Integration tests', () => {
     });
 
     describe('createStory', () => {
+      before(() => {
+        app.set('sessionMiddleware', (req, res, next) => {
+          req.session = {isNew: false, id: 111};
+          next();
+        });
+      });
+
       it('should create a story and give back the story id', (done) => {
         request(app)
           .get('/createStory')
@@ -32,6 +45,13 @@ describe('Integration tests', () => {
     });
 
     describe('updateStory', () => {
+      before(() => {
+        app.set('sessionMiddleware', (req, res, next) => {
+          req.session = {isNew: false, id: 58025056};
+          next();
+        });
+      });
+
       it('should update a story title, content for given story id', (done) => {
         const block = {
           type: 'paragraph',

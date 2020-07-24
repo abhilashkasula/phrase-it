@@ -48,13 +48,19 @@ const getUserDetails = function(req, res) {
 };
 
 const createStory = (req, res) => {
-  req.app.locals.db.createStory('john').then((id) => res.json({ id }));
+  if(req.session.isNew) {
+    return res.redirect('/');
+  }
+  req.app.locals.db.createStory(req.session.id).then((id) => res.json({ id }));
 };
 
 const updateStory = (req, res) => {
+  if(req.session.isNew) {
+    return res.redirect('/');
+  }
   const { title, id, blocks } = req.body;
   req.app.locals.db
-    .updateStory(id, title, 'john', JSON.stringify(blocks))
+    .updateStory(id, title, req.session.id, JSON.stringify(blocks))
     .then((result) => {
       const code = result.error ? statusCodes.NOT_FOUND : statusCodes.OK;
       res.status(code).json(result);
@@ -73,8 +79,11 @@ const handleHomePage = function(req, res) {
 };
 
 const handleStoriesPage = (req, res) => {
+  if(req.session.isNew) {
+    return res.redirect('/');
+  }
   req.app.locals.db
-    .getDrafts()
+    .getDrafts(req.session.id)
     .then((drafts) => {
       drafts.forEach(draft => {
         draft.content = JSON.parse(draft.content);
@@ -83,10 +92,18 @@ const handleStoriesPage = (req, res) => {
     });
 };
 
+const newStory = (req, res) => {
+  if(req.session.isNew) {
+    return res.redirect('/');
+  }
+  res.render('editor');
+};
+
 module.exports = {
   updateStory,
   createStory,
   getUserDetails,
   handleHomePage,
-  handleStoriesPage
+  handleStoriesPage,
+  newStory
 };

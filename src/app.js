@@ -25,7 +25,7 @@ app.get('/', handlers.handleHomePage);
 
 app.get('/user', handlers.getUserDetails);
 
-app.get('/newStory', (req, res) => res.render('editor'));
+app.get('/newStory', handlers.newStory);
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
 app.get('/stories', handlers.handleStoriesPage);
