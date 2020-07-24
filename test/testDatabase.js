@@ -180,5 +180,53 @@ describe('Unit Test', () => {
         });
       });
     });
+
+    describe('getPublishedStories', () => {
+      it('should resolve empty when no stories exist', (done) => {
+        const db = { all: (query, cb) => cb(null, []) };
+        const database = new Database(db);
+        database.getPublishedStories().then((publishedStories) => {
+          assert.strictEqual(publishedStories.length, 0);
+          done();
+        });
+      });
+
+      it('should resolve stories when stories is present', (done) => {
+        const stories = [
+          {
+            id: 1,
+            created_by: 'abc',
+            content: 'def',
+            title: 'xyz',
+            published_at: '2020-07-24'
+          },
+          {
+            id: 2,
+            created_by: 'cba',
+            content: 'fed',
+            title: 'zyx',
+            published_at: '2020-07-23'
+          }
+        ];
+
+        const db = { all: (query, cb) => cb(null, stories) };
+        const database = new Database(db);
+        database.getPublishedStories().then((publishedStories) => {
+          assert.deepStrictEqual(publishedStories[0], stories[0]);
+          assert.deepStrictEqual(publishedStories[1], stories[1]);
+          done();
+        });
+      });
+
+      it('should resolve error when there is an error ', (done) => {
+        const db = { all: (query, cb) => cb('Err') };
+        const database = new Database(db);
+        database.getPublishedStories().catch((err) => {
+          assert.strictEqual(err, 'Err');
+          done();
+        });
+      });
+
+    });
   });
 });

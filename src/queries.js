@@ -36,6 +36,11 @@ const publish = (id) => {
     END;`;
 };
 
+const getPublishedStories = () =>
+  `SELECT s.id,s.content,s.title,s.created_by,ps.published_at
+              FROM stories s join published_stories ps
+             on s.id=ps.id WHERE is_published = 1`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -43,5 +48,6 @@ module.exports = {
   insertUser,
   getUserDetails,
   getDraft,
-  publish
+  publish,
+  getPublishedStories
 };
