@@ -74,10 +74,10 @@ class Database {
   }
 
   async getUserDetails(id) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.get(queries.getUserDetails(id)).then((userDetails) => {
         resolve(userDetails);
-      }).catch(() => reject({ error: 'unknown id' }));
+      });
     });
   }
 }

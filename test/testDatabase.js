@@ -171,14 +171,5 @@ describe('Unit Test', () => {
         });
       });
     });
-
-    it('should reject error if user is  not present', (done) => {
-      const db = { get: (query, cb) => cb('Err') };
-      const database = new Database(db);
-      database.getUserDetails(1).catch((err) => {
-        assert.strictEqual(err.error, 'unknown id');
-        done();
-      });
-    });
   });
 });
