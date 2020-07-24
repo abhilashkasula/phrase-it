@@ -61,10 +61,6 @@ const updateStory = (req, res) => {
     });
 };
 
-const getDrafts = (req, res) => {
-  req.app.locals.db.getDrafts().then((drafts) => res.json(drafts));
-};
-
 const handleHomePage = function(req, res) {
   if (req.session.isNew) {
     res.render('index', { CLIENT_ID: req.app.locals.CLIENT_ID });
@@ -89,7 +85,6 @@ const handleStoriesPage = (req, res) => {
 
 module.exports = {
   updateStory,
-  getDrafts,
   createStory,
   getUserDetails,
   handleHomePage,
