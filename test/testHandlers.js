@@ -34,7 +34,7 @@ describe('Integration tests', () => {
       describe('newStory', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false};
+            req.session = {isNew: false, id: 58025056};
             next();
           });
         });

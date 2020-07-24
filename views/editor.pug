@@ -5,10 +5,22 @@ html
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest")
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest")
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest")
+    link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/editor.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
     title New Story
   body
+    div(class="navbar")
+      nav
+        ul
+          li 
+            a(href="/")
+              img(src="https://github.com/abhilashkasula/phrase-it/wiki/images/logo.png", alt="" class="logo")
+        ul
+          li(class="avathar-nav")
+            a(href="/stories")
+              img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+
     div(class="container")
       div(id="new-blog")
         div
