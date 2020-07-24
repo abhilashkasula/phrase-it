@@ -25,6 +25,9 @@ describe('Integration tests', () => {
           .expect(302)
           .expect('location', '/', done);
       });
+      it('should redirect to / for /stories', (done) => {
+        request(app).get('/stories').expect(302).expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -101,6 +104,22 @@ describe('Integration tests', () => {
             .expect(404)
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
+        });
+      });
+      describe('stories', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+
+        it('should give story page with available drafts of user', (done) => {
+          request(app)
+            .get('/stories')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/your stories/i, done);
         });
       });
     });
