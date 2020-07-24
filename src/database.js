@@ -74,8 +74,11 @@ class Database {
   }
 
   async getUserDetails(id) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.get(queries.getUserDetails(id)).then((userDetails) => {
+        if (!userDetails) {
+          return reject({ error: 'unknown id' });
+        }
         resolve(userDetails);
       });
     });

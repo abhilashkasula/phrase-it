@@ -171,6 +171,14 @@ describe('Unit Test', () => {
         });
       });
 
+      it('should resolve userDetails if user is present', (done) => {
+        const db = { get: (query, cb) => cb() };
+        const database = new Database(db);
+        database.getUserDetails(1).catch(({ error }) => {
+          assert.strictEqual(error, 'unknown id');
+          done();
+        });
+      });
     });
   });
 });
