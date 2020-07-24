@@ -4,7 +4,7 @@ const request = (options) => {
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       let json = '';
-      res.on('data', function (chunk) {
+      res.on('data', function(chunk) {
         json += chunk;
       });
       res.on('end', () => {
@@ -18,4 +18,4 @@ const request = (options) => {
     req.end();
   });
 };
-module.exports = {request};
+module.exports = { request };

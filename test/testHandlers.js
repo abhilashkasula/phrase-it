@@ -155,55 +155,85 @@ describe('handleHomePage', () => {
 });
 
 describe('getUserDetails', () => {
-  before(() => {
-    const details =
-    {
-      access_token: 1234,
-      id: 123, name: 'name',
-      login: 'login',
-      avatar_url: 'avatar'
-    };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details))
-    };
-    sinon.replace(https, 'request', (options, cb) => cb(res));
-  });
-
-  after(function() {
-    sinon.restore();
-  });
-
-  it('should get user details if there is no error', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.query = { code: 'somecode' };
-      req.session = {};
-      next();
+  describe('redirect', () => {
+    before(() => {
+      const details =
+      {
+        access_token: 1234,
+        id: 123, name: 'name',
+        login: 'login',
+        avatar_url: 'avatar'
+      };
+      const res = {
+        on: (event, callback) => callback(JSON.stringify(details))
+      };
+      sinon.replace(https, 'request', (options, cb) => cb(res));
     });
-    request(app)
-      .get('/user')
-      .expect(302)
-      .expect('location', '/', done);
+
+    after(function() {
+      sinon.restore();
+    });
+
+    it('should get user details if there is no error', (done) => {
+      app.set('sessionMiddleware', (req, res, next) => {
+        req.query = { code: 'somecode' };
+        req.session = {};
+        next();
+      });
+      request(app)
+        .get('/user')
+        .expect(302)
+        .expect('location', '/', done);
+    });
+
+    it('should redirect to / if query not exists', (done) => {
+      app.set('sessionMiddleware', (req, res, next) => {
+        req.session = {};
+        next();
+      });
+      request(app)
+        .get('/user')
+        .expect(302)
+        .expect('location', '/', done);
+    });
   });
 
-  it('should get error if session not exists', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.query = { code: 'somecode' };
-      next();
+  describe('error', () => {
+    it('should get error if session not exists', (done) => {
+      app.set('sessionMiddleware', (req, res, next) => {
+        req.query = { code: 'somecode' };
+        next();
+      });
+      request(app)
+        .get('/user')
+        .expect(404, done);
     });
-    request(app)
-      .get('/user')
-      .expect(404, done);
-  });
 
-  it('should redirect to / if query not exists', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {};
-      next();
+    it('should redirect to / if query not exists', (done) => {
+
+      before(() => {
+        const details =
+        {
+          error: 'Err'
+        };
+        const res = {
+          on: (event, callback) => callback(JSON.stringify(details))
+        };
+        sinon.replace(https, 'request', (options, cb) => cb(res));
+      });
+
+      after(function() {
+        sinon.restore();
+      });
+
+      app.set('sessionMiddleware', (req, res, next) => {
+        req.session = {};
+        next();
+      });
+      request(app)
+        .get('/user')
+        .expect(404, done);
     });
-    request(app)
-      .get('/user')
-      .expect(302)
-      .expect('location', '/', done);
   });
 
 });
