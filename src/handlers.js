@@ -78,7 +78,7 @@ const handleHomePage = function(req, res) {
   }
 };
 
-const handleStoriesPage = (req, res) => {
+const storiesPage = (req, res) => {
   if(req.session.isNew) {
     return res.redirect('/');
   }
@@ -104,6 +104,6 @@ module.exports = {
   createStory,
   getUserDetails,
   handleHomePage,
-  handleStoriesPage,
+  storiesPage,
   newStory
 };

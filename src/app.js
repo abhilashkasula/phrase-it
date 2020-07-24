@@ -28,6 +28,6 @@ app.get('/user', handlers.getUserDetails);
 app.get('/newStory', handlers.newStory);
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
-app.get('/stories', handlers.handleStoriesPage);
+app.get('/stories', handlers.storiesPage);
 
 module.exports = { app };
