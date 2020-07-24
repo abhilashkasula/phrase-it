@@ -1,0 +1,9 @@
+html
+  head
+    title Not Found
+    link(rel="stylesheet", href="css/notFound.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+  body
+    div(class="container")
+      h1(class="status-code")=statusCode || 404
+      h2(class="message")=message || 'Page Not Found'

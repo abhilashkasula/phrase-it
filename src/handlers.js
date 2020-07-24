@@ -51,17 +51,11 @@ const getUserDetails = function(req, res) {
 };
 
 const createStory = (req, res) => {
-  if (req.session.isNew) {
-    return res.redirect('/');
-  }
-  req.app.locals.db.createStory(req.session.id).then((id) => res.json({ id }));
+  req.app.locals.db.createStory(req.session.id).then((id) => res.json({id}));
 };
 
 const updateStory = (req, res) => {
-  if (req.session.isNew) {
-    return res.redirect('/');
-  }
-  const { title, id, blocks } = req.body;
+  const {title, id, blocks} = req.body;
   req.app.locals.db
     .updateStory(id, title, req.session.id, JSON.stringify(blocks))
     .then((result) => {
@@ -85,9 +79,6 @@ const handleHomePage = function(req, res) {
 };
 
 const storiesPage = (req, res) => {
-  if (req.session.isNew) {
-    return res.redirect('/');
-  }
   req.app.locals.db.getDrafts(req.session.id).then((drafts) => {
     drafts.forEach((draft) => {
       draft.content = JSON.parse(draft.content);
@@ -102,15 +93,19 @@ const storiesPage = (req, res) => {
 };
 
 const newStory = (req, res) => {
-  if (req.session.isNew) {
-    return res.redirect('/');
-  }
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then(({ avatar_url }) => {
       res.render('editor', { avatar_url });
     })
     .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
+};
+
+const allowAuthorized = (req, res, next) => {
+  if (req.session.isNew) {
+    return res.redirect('/');
+  }
+  next();
 };
 
 module.exports = {
@@ -120,4 +115,5 @@ module.exports = {
   handleHomePage,
   storiesPage,
   newStory,
+  allowAuthorized,
 };
