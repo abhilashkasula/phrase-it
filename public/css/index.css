@@ -1,8 +1,8 @@
 body {
   justify-content: center;
   text-align: center;
-  font-family: sans-serif;
   font-size: 20px;
+  font-family: 'Sora', sans-serif;
 }
 
 .container {
@@ -29,6 +29,7 @@ body {
   border-radius: 5px;
   display: flex; 
   justify-content: center; 
+  font-weight: 600;
 }
 
 .login:hover{
@@ -60,7 +61,5 @@ body {
 
 .text{
   position: relative;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-style: italic;
   top:19px;
 }
