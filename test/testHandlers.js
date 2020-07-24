@@ -206,3 +206,17 @@ describe('getUserDetails', () => {
       .expect(404, done);
   });
 });
+
+describe('getPublishedStories', () => {
+  it('get give stories when there is no error', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = { isNew: false, id: 1 };
+      next();
+    });
+    request(app)
+      .get('/publishedStories')
+      .expect(200)
+      .expect(/title/, done);
+  });
+
+});

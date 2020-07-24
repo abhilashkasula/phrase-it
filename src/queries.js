@@ -39,8 +39,8 @@ const publish = (id) => {
 const getPublishedStories = () =>
   `SELECT s.id,s.content,s.title,s.created_by,ps.published_at
               FROM stories s join published_stories ps
-             on s.id=ps.id WHERE is_published = 1`;
-             
+             on s.id=ps.story_id`;
+
 const getPublishedStory = (id) => {
   return `SELECT t1.id,
     t1.title,
