@@ -1,0 +1,66 @@
+body {
+  font-family: 'Sora', sans-serif;
+}
+
+.container {
+  padding: 0 5em 0 5em;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+}
+
+.tab-name {
+  padding: 3px;
+  font-weight: 100;
+  color: #292929;
+}
+
+.stories-title {
+  margin: 4% 0 2.5% 0;
+  font-size: 2.2em;
+  font-weight: 1000;
+}
+
+.selected-tab {
+  border-bottom: 1px solid;
+}
+
+.draft {
+  padding: 1.2% 0 1.2% 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.draft:first-child {
+  border-top: 1px solid #ccc;
+}
+
+.draft > div p {
+  margin: 7px 0 7px 0;
+}
+
+.draft > div p:last-child {
+  margin-bottom: 0;
+}
+
+.draft-summary, .draft-last-edited {
+  margin: 0;
+  font-weight: 100;
+  color: #757575;
+}
+
+.draft-summary {
+  font-size: 14px;
+}
+
+.draft-last-edited {
+  font-size: 12px;
+}
+
+.draft-title {
+  margin: 0;
+}

@@ -1,0 +1,22 @@
+html
+  head
+    title Your Stories
+    link(rel="stylesheet", href="css/stories.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+    script(src="js/stories.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
+  body
+    div(class="container")
+      div(class="stories")
+        h1(class="stories-title") Your Stories
+        div(class="tabs")
+          ul
+            li(id="tab-draft" class="tab-name selected-tab")=`Drafts ${drafts.length || ''}`
+        div(id="drafts")
+          each draft in drafts
+            div(class="draft")
+              div
+                h2(class="draft-title")=draft.title || '(Untitled)'
+                if draft.content.length
+                  p(class="draft-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
+                p(class="draft-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`

@@ -33,7 +33,7 @@ class Database {
       this.get('SELECT id FROM stories ORDER BY id DESC')
         .then((row) => {
           const id = row ? row.id + ONE : ONE;
-          this.exec(queries.insertNewStory(id, author, '', ''))
+          this.exec(queries.insertNewStory(id, author, '', '[]'))
             .then(() => resolve(id))
             .catch((err) => reject(err));
         })

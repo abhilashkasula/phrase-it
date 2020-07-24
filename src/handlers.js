@@ -1,4 +1,5 @@
-const { request } = require('./request');
+const moment = require('moment');
+const {request} = require('./request');
 const statusCodes = require('./statusCodes');
 
 const getDetailsOptions = (token) => ({
@@ -72,10 +73,22 @@ const handleHomePage = function(req, res) {
   }
 };
 
+const handleStoriesPage = (req, res) => {
+  req.app.locals.db
+    .getDrafts()
+    .then((drafts) => {
+      drafts.forEach(draft => {
+        draft.content = JSON.parse(draft.content);
+      });
+      res.render('stories', {drafts, moment});
+    });
+};
+
 module.exports = {
   updateStory,
   getDrafts,
   createStory,
   getUserDetails,
   handleHomePage,
+  handleStoriesPage
 };

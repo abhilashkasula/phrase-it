@@ -29,5 +29,6 @@ app.get('/newStory', (req, res) => res.render('editor'));
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
 app.get('/drafts', handlers.getDrafts);
+app.get('/stories', handlers.handleStoriesPage);
 
 module.exports = { app };
