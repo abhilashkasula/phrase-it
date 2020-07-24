@@ -45,10 +45,10 @@ class Database {
     const query = queries.saveStory(id, title, content);
     const row = await this.get(`SELECT * FROM stories WHERE id = ${id}`);
     if (!row) {
-      return {error: 'unknown id'};
+      return { error: 'unknown id' };
     }
     await this.exec(query);
-    return {status: 'updated'};
+    return { status: 'updated' };
   }
 
   getDrafts() {
@@ -58,6 +58,17 @@ class Database {
           return reject(err);
         }
         resolve(rows);
+      });
+    });
+  }
+
+  addUser({ id, name, avatar_url }) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.insertUser(id, name, avatar_url), (err) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve({ status: 'added user' });
       });
     });
   }
