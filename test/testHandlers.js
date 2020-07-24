@@ -85,13 +85,13 @@ describe('handleHomePage', () => {
 
   it('should get welcome page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {isNew: false};
+      req.session = {isNew: false, userName: 'John'};
       next();
     });
     request(app)
       .get('/')
       .expect(200)
       .expect('Content-Type', /html/)
-      .expect(/Welcome/, done);
+      .expect(/Hello, John/, done);
   });
 });
