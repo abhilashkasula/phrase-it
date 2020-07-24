@@ -90,7 +90,7 @@ describe('Integration tests', () => {
               text: 'A small paragraph',
             },
           };
-          const data = { id: 1, title: 'A new app', blocks: [block] };
+          const data = { id: 2, title: 'A new app', blocks: [block] };
           request(app)
             .post('/updateStory')
             .send(data)

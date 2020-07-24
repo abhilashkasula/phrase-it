@@ -64,3 +64,16 @@ ul {
 .draft-title {
   margin: 0;
 }
+
+.draft-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.draft-title-container button {
+  background: white;
+  border: 1px solid;
+  padding: 0 1.2%;
+  border-radius: 3px;
+  cursor: pointer;
+}

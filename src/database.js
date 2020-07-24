@@ -43,12 +43,12 @@ class Database {
 
   async updateStory(storyId, title, authorId, content) {
     const query = queries.saveStory(storyId, title, content);
-    const row = await this.get(queries.getStory(authorId, storyId));
+    const row = await this.get(queries.getDraft(authorId, storyId));
     if (!row) {
-      return { error: 'unknown id' };
+      return {error: 'unknown id'};
     }
     await this.exec(query);
-    return { status: 'updated' };
+    return {status: 'updated'};
   }
 
   getDrafts(userId) {
@@ -62,13 +62,13 @@ class Database {
     });
   }
 
-  addUser({ id, name, avatar_url }) {
+  addUser({id, name, avatar_url}) {
     return new Promise((resolve, reject) => {
       this.db.run(queries.insertUser(id, name, avatar_url), (err) => {
         if (err) {
           return reject(err);
         }
-        resolve({ status: 'added user' });
+        resolve({status: 'added user'});
       });
     });
   }
@@ -77,6 +77,19 @@ class Database {
     return new Promise((resolve) => {
       this.get(queries.getUserDetails(id)).then((userDetails) => {
         resolve(userDetails);
+      });
+    });
+  }
+
+  publish(authorId, storyId) {
+    return new Promise((resolve, reject) => {
+      this.get(queries.getDraft(authorId, storyId)).then((row) => {
+        if (!row) {
+          return reject({error: 'No draft found'});
+        }
+        this.exec(queries.publish(storyId))
+          .then(() => resolve({status: 'published'}))
+          .catch(() => reject({error: 'Already published'}));
       });
     });
   }

@@ -104,6 +104,14 @@ const allowAuthorized = (req, res, next) => {
   next();
 };
 
+const publish = (req, res) => {
+  const {id} = req.body;
+  req.app.locals.db
+    .publish(req.session.id, id)
+    .then((result) => res.json(result))
+    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+};
+
 module.exports = {
   updateStory,
   createStory,
@@ -112,4 +120,5 @@ module.exports = {
   storiesPage,
   newStory,
   allowAuthorized,
+  publish,
 };

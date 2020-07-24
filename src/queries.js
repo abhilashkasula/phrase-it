@@ -24,8 +24,17 @@ const getUserDetails = (id) => {
 const getDrafts = (userId) =>
   `SELECT * FROM stories WHERE is_published = 0 AND created_by = ${userId}`;
 
-const getStory = (authorId, storyId) =>
-  `SELECT * FROM stories WHERE id = ${storyId} AND created_by = ${authorId}`;
+const getDraft = (authorId, storyId) =>
+  `SELECT * FROM stories
+    WHERE id = ${storyId} AND created_by = ${authorId} AND is_published = 0`;
+
+const publish = (id) => {
+  return `BEGIN;
+    UPDATE stories set is_published = 1 where id = ${id};
+    INSERT INTO published_stories (story_id, published_at)
+      VALUES (${id}, DATETIME('now', 'localtime'));
+    END;`;
+};
 
 module.exports = {
   insertNewStory,
@@ -33,5 +42,6 @@ module.exports = {
   getDrafts,
   insertUser,
   getUserDetails,
-  getStory,
+  getDraft,
+  publish
 };

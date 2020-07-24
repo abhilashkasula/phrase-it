@@ -5,6 +5,7 @@ const session = require('cookie-session');
 const handlers = require('./handlers');
 const Database = require('./database');
 const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
+const statusCodes = require('./statusCodes');
 
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
@@ -33,6 +34,7 @@ app.get('/newStory', handlers.newStory);
 app.get('/createStory', handlers.createStory);
 app.post('/updateStory', handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
-app.use((req, res) => res.render('notFound'));
+app.post('/publish', handlers.publish);
+app.use((req, res) => res.status(statusCodes.NOT_FOUND).render('notFound'));
 
 module.exports = {app};

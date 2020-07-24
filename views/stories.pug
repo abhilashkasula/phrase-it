@@ -18,7 +18,9 @@ html
           each draft in drafts
             div(class="draft")
               div
-                h2(class="draft-title")=draft.title || '(Untitled)'
+                div(class="draft-title-container")
+                  h2(class="draft-title")=draft.title || '(Untitled)'
+                  button(class="publish-button" id=`publish-${draft.id}`) Publish
                 if draft.content.length
                   p(class="draft-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
                 p(class="draft-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`
