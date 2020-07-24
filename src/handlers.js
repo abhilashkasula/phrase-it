@@ -69,7 +69,10 @@ const handleHomePage = function(req, res) {
   if (req.session.isNew) {
     res.render('index', { CLIENT_ID: req.app.locals.CLIENT_ID });
   } else {
-    res.render('home', { username: req.session.userName });
+    const { id } = req.session;
+    req.app.locals.db.getUserDetails(id).then(({ username, avatar_url }) => {
+      res.render('home', { username, avatar_url });
+    }).catch(() => { });
   }
 };
 

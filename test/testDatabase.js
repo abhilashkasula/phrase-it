@@ -158,5 +158,27 @@ describe('Unit Test', () => {
           });
       });
     });
+
+    describe('getUserDetails', () => {
+      it('should resolve userDetails if user is present', (done) => {
+        const userDetails = { username: 'some one', avatar_url: 'avatar' };
+        const db = { get: (query, cb) => cb(null, userDetails) };
+        const database = new Database(db);
+        database.getUserDetails(1).then((details) => {
+          assert.strictEqual(details.username, 'some one');
+          assert.strictEqual(details.avatar_url, 'avatar');
+          done();
+        });
+      });
+    });
+
+    it('should reject error if user is  not present', (done) => {
+      const db = { get: (query, cb) => cb('Err') };
+      const database = new Database(db);
+      database.getUserDetails(1).catch((err) => {
+        assert.strictEqual(err.error, 'unknown id');
+        done();
+      });
+    });
   });
 });

@@ -17,6 +17,16 @@ const insertUser = (id, name, avatar_url) => {
                  values (${id},"${name}","${avatar_url}")`;
 };
 
+const getUserDetails = (id) => {
+  return `select username,avatar_url from users where id=${id}`;
+};
+
 const getDrafts = () => 'SELECT * FROM stories WHERE is_published = 0';
 
-module.exports = { insertNewStory, saveStory, getDrafts, insertUser };
+module.exports = {
+  insertNewStory,
+  saveStory,
+  getDrafts,
+  insertUser,
+  getUserDetails
+};
