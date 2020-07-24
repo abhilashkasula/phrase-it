@@ -16,7 +16,8 @@ const requestUserDetails = (req, res, token) => {
   request(detailsOptions)
     .then(({id, login}) => {
       req.session.id = id;
-      res.render('home', {isUserAuth: true, username: login});
+      req.session.userName = login;
+      res.redirect('/');
     })
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
@@ -63,7 +64,7 @@ const handleHomePage = function (req, res) {
   if (req.session.isNew) {
     res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   } else {
-    res.render('home', {});
+    res.render('home', {username: req.session.userName});
   }
 };
 

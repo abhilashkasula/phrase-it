@@ -2,15 +2,16 @@ div(class="navbar")
   nav
     ul
       li 
-        a(href="#" id="title") PhraseIt
+        a(href="#" id="title")
+          img(src="https://github.com/abhilashkasula/phrase-it/wiki/images/logo.png", alt="" class="logo")
+
     ul
-      if isUserAuth
+        li
+          a(href="#", class="add-container")
+            img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
         li
           a(href="#", class="search-container")
             img(src="https://img.icons8.com/ios-glyphs/30/000000/search.png", alt="")
         li(class="avathar-nav")
           a(href="#")
             img(src="https://avatars0.githubusercontent.com/u/58025056?v=4", alt="" class="navbar-avathar")
-      else 
-        li
-          a(href="#") Login

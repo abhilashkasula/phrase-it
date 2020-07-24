@@ -3,9 +3,12 @@ html
     title Phrase-it
     style
       include ../public/css/navbar.css  
+      include ../public/css/home.css  
 
   body
     include navbar.pug
-
-    h1=`Welcome ${username}`
+    div(class= "message-box text")
+      h1=`Hello, ${username}`
+      img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
+      p Add your first story
 

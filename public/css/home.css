@@ -1,0 +1,18 @@
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.message-box{
+  opacity: .6;
+  position: relative;
+  top:210px;
+  display: inline-block;
+  height:300px;
+  width:600px;
+}
+
+.message-box>p{
+  font-style: italic;
+}
+

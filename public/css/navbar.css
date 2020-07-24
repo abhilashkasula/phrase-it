@@ -58,5 +58,14 @@ body {
 }
 
 .search-container > img {
-  width: 24px;
+  width: 27px;
 }
+
+.add-container > img {
+  width: 27px;
+}
+
+.logo{
+  height:70px;
+}
+
