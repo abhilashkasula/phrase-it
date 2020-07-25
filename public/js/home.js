@@ -15,7 +15,7 @@ const addStoryDetail = function (story, storyBox) {
   const title = document.createElement('h1');
   title.innerText = story.title;
   const author = document.createElement('p');
-  author.innerText = story.created_by;
+  author.innerText = story.author;
   const time = document.createElement('span');
   time.innerText = story.published_at;
   storyBox.appendChild(title);

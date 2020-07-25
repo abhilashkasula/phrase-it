@@ -37,9 +37,16 @@ const publish = (id) => {
 };
 
 const getPublishedStories = () =>
-  `SELECT s.id,s.content,s.title,s.created_by,ps.published_at
-              FROM stories s join published_stories ps
-             on s.id=ps.story_id`;
+  `SELECT s.id,
+          s.content,
+          s.title,
+          s.created_by,
+          ps.published_at,
+          u.username as author
+          FROM stories s 
+          join published_stories ps on s.id=ps.story_id
+          JOIN users u on s.created_by = u.id 
+            `;
 
 const getPublishedStory = (id) => {
   return `SELECT t1.id,
@@ -73,5 +80,5 @@ module.exports = {
   publish,
   getPublishedStories,
   getPublishedStory,
-  getUserPublishedStories
+  getUserPublishedStories,
 };
