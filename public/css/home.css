@@ -14,9 +14,8 @@ body {
 
 .story-box {
   position: relative;
-  /* left: 15px; */
-  padding-bottom: 25px;
-  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }
 
 .story-author-container {
@@ -38,4 +37,14 @@ body {
 
 #story-author-name {
   color: #292929;
+}
+
+.story-content {
+  margin-bottom: 10px;
+  color: #757575;
+}
+
+h1 {
+  margin-bottom: 5px;
+  margin-top: 8px;
 }

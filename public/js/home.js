@@ -12,16 +12,17 @@ const showStory = function(story_id) {
 };
 
 const addStoryDetail = function(story, storyBox) {
+  const totalContent = JSON.parse(story.content);
+  const contentLength = totalContent.length;
+  const content = contentLength ? totalContent[0].data.text.slice(0, 50) : '';
   const storyDetail = `
   <h1 class="title">${story.title}</h1>
+  <div class="story-content">${content} ...</div>
   <div class="story-author-container">
    <div>
      <div id="story-author-name">${story.author}</div>
      <div id="story-time">${story.published_at}</div>
    </div>
- </div>
- <div class="story-content">
- ${JSON.parse(story.content)[0].data.text.slice(0, 40)} ...
  </div>`;
   storyBox.innerHTML = storyDetail;
 };
