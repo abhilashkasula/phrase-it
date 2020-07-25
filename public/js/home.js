@@ -12,15 +12,21 @@ const showStory = function (story_id) {
 };
 
 const addStoryDetail = function (story, storyBox) {
-  const title = document.createElement('h1');
-  title.innerText = story.title;
-  const author = document.createElement('p');
-  author.innerText = story.author;
-  const time = document.createElement('span');
-  time.innerText = story.published_at;
-  storyBox.appendChild(title);
-  storyBox.appendChild(author);
-  storyBox.appendChild(time);
+  const storyDetail = `
+  <h1 class="title">${story.title}</h1>
+  <div class="story-author-container">
+   <div id="story-author-avathar"> 
+    <img src="${story.avatar_url}">
+   </div>
+   <div class="story-author">
+     <div id="story-author-name">${story.author}</div>
+     <div id="story-time">${story.published_at}</div>
+   </div>
+ </div>
+ <div class="story-content">
+ ${JSON.parse(story.content)[0].data.text.slice(0, 40)} ...
+ </div>`;
+  storyBox.innerHTML = storyDetail;
 };
 
 const getPublishedStories = () => {

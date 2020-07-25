@@ -145,6 +145,9 @@ const storyPage = async (req, res) => {
 
 const getPublishedStories = (req, res) => {
   req.app.locals.db.getPublishedStories().then((stories) => {
+    stories.forEach((story) => {
+      story.published_at = moment(story.published_at).startOf('min').fromNow();
+    });
     res.send(JSON.stringify(stories));
   });
 };

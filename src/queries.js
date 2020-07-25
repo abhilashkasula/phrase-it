@@ -42,7 +42,8 @@ const getPublishedStories = () =>
           s.title,
           s.created_by,
           ps.published_at,
-          u.username as author
+          u.username as author,
+          u.avatar_url
           FROM stories s 
           join published_stories ps on s.id=ps.story_id
           JOIN users u on s.created_by = u.id 
