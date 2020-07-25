@@ -8,6 +8,10 @@ body {
   justify-content: center;
 }
 
+#story-author-avathar {
+  margin-right: 5px;
+}
+
 #story-author-avathar img {
   width: 50px;
   border-radius: 50%;
@@ -16,6 +20,7 @@ body {
 .story-author-container {
   display: flex;
   align-items: center;
+  min-width: 60%;
 }
 
 .story-author-container div {
@@ -36,6 +41,7 @@ body {
 .story-details {
   display: flex;
   justify-content: space-between;
+  min-width: 700px;
 }
 
 #story-url {
@@ -118,4 +124,11 @@ body {
   color: #02b902;
   border: 1px solid #02b902;
   cursor: pointer;
+}
+
+.story-details .url-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 300px;
 }

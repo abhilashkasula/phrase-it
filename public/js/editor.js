@@ -1,10 +1,19 @@
 const replaceListener = (id) => {
   const editorNode = document.querySelector('#editor');
   const title = document.querySelector('#title');
+  const publishButton = document.querySelector('#publish');
   editorNode.removeEventListener('input', save);
   title.removeEventListener('input', save);
   editorNode.addEventListener('input', () => save(undefined, id));
   title.addEventListener('input', () => save(undefined, id));
+  publishButton.classList.remove('disabled');
+  publishButton.classList.add('enabled');
+  publishButton.addEventListener('click', () => {
+    if (document.querySelector('#title').value.trim()) {
+      return publish(`story-${id}`);
+    }
+    alert('Please add a title');
+  });
 };
 
 const save = (__, storyId) => {
@@ -32,11 +41,6 @@ const save = (__, storyId) => {
 const addListeners = () => {
   document.querySelector('#editor').addEventListener('input', save);
   document.querySelector('#title').addEventListener('input', save);
-  document.querySelector('#publish').addEventListener('click', () => {
-    if (document.querySelector('#title').value.trim()) {
-      return publish(`story-${id}`);
-    }
-  });
 };
 
 let editor;

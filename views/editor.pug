@@ -1,7 +1,7 @@
 html
   head
-    script(src="/js/editor.js")
     script(src="/js/publish.js")
+    script(src="/js/editor.js")
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest")
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest")
     script(src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest")
@@ -20,7 +20,7 @@ html
         ul
           li(class="options")
             div
-              button(class="publish-button" id="publish") Publish
+              button(class="disabled publish-button" id="publish") Publish
           li(class="avathar-nav")
             a(href="/stories")
               img(src=`${avatar_url}`, alt="" class="navbar-avathar")

@@ -17,7 +17,7 @@ html
             div(class="story-author")
               div(id="story-author-name")=story.author
               div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
-          div
+          div(class="url-container")
             input(type="text" id="url")
             button(id="story-url") Copy link
         div(id="content")
