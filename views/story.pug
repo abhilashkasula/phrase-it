@@ -2,9 +2,11 @@ html
   head
     title Story
     link(rel="stylesheet", href="/css/story.css")
+    link(rel="stylesheet", href="/css/navbar.css")
     script(src="/js/story.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
+    include navbar
     div(class="story-container")
       div(id="story")
         h1(id="story-title")=story.title

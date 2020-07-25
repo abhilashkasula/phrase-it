@@ -92,9 +92,16 @@ const storiesPage = async (req, res) => {
   drafts = parseContent(drafts);
   published = parseContent(published);
   req.app.locals.db
-    .getUserDetails(req.session.id)
+    .getUserDetails(id)
     .then(({username, avatar_url}) => {
-      const options = {username, avatar_url, drafts, moment, published};
+      const options = {
+        username,
+        avatar_url,
+        drafts,
+        moment,
+        published,
+        isUserAuth: id,
+      };
       res.render('stories', options);
     })
     .catch((err) => res.json(err));
@@ -121,13 +128,18 @@ const publish = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
-const storyPage = (req, res) => {
-  req.app.locals.db.getPublishedStory(req.params.id).then((story) => {
-    if (!story) {
-      return res.status(statusCodes.NOT_FOUND).render('notFound');
-    }
-    story.content = JSON.parse(story.content);
-    res.render('story', {story, isAuthenticated: req.session.id, moment});
+const storyPage = async (req, res) => {
+  const {id} = req.params;
+  const story = await req.app.locals.db.getPublishedStory(id);
+  if (!story) {
+    return res.status(statusCodes.NOT_FOUND).render('notFound');
+  }
+  story.content = JSON.parse(story.content);
+  if (!req.session.id) {
+    return res.render('story', {story, isUserAuth: false, moment});
+  }
+  req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
+    res.render('story', {story, isUserAuth: true, avatar_url, moment});
   });
 };
 
