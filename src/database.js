@@ -39,12 +39,12 @@ class Database {
     });
   }
 
-  createStory(author) {
+  createStory(authorId, title, content) {
     return new Promise((resolve, reject) => {
       this.get('SELECT id FROM stories ORDER BY id DESC')
         .then((row) => {
           const id = row ? row.id + ONE : ONE;
-          this.exec(queries.insertNewStory(id, author, '', '[]'))
+          this.exec(queries.insertNewStory(id, authorId, title, content))
             .then(() => resolve(id))
             .catch((err) => reject(err));
         })

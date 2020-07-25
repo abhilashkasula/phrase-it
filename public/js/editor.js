@@ -1,8 +1,17 @@
-const save = (editor, id) => {
+const replaceListener = (id) => {
+  const editorNode = document.querySelector('#editor');
+  const title = document.querySelector('#title');
+  editorNode.removeEventListener('input', save);
+  title.removeEventListener('input', save);
+  editorNode.addEventListener('input', () => save(undefined, id));
+  title.addEventListener('input', () => save(undefined, id));
+};
+
+const save = (__, storyId) => {
   const title = document.querySelector('#title').value;
   editor.save().then((data) => {
     data.title = title;
-    data.id = id;
+    data.id = storyId;
     const options = {
       method: 'POST',
       body: JSON.stringify(data),
@@ -10,17 +19,19 @@ const save = (editor, id) => {
         'Content-Type': 'application/json',
       },
     };
-    fetch('updateStory', options);
+    fetch('/updateStory', options)
+      .then((res) => res.json())
+      .then(({id, error}) => {
+        if (!storyId) {
+          replaceListener(id);
+        }
+      });
   });
 };
 
-const addListeners = (editor, id) => {
-  document
-    .querySelector('#editor')
-    .addEventListener('input', () => save(editor, id));
-  document
-    .querySelector('#title')
-    .addEventListener('input', () => save(editor, id));
+const addListeners = () => {
+  document.querySelector('#editor').addEventListener('input', save);
+  document.querySelector('#title').addEventListener('input', save);
   document.querySelector('#publish').addEventListener('click', () => {
     if (document.querySelector('#title').value.trim()) {
       return publish(`story-${id}`);
@@ -28,11 +39,10 @@ const addListeners = (editor, id) => {
   });
 };
 
-const main = async () => {
-  const res = await fetch('/createStory');
-  const {id} = await res.json();
+let editor;
 
-  const editor = new EditorJS({
+const main = async () => {
+  editor = new EditorJS({
     holder: 'editor',
     tools: {
       header: {
@@ -46,7 +56,7 @@ const main = async () => {
       inlineCode: InlineCode,
     },
   });
-  addListeners(editor, id);
+  addListeners();
 };
 
 window.onload = main;

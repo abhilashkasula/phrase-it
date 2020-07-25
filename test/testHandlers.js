@@ -1,25 +1,19 @@
 const request = require('supertest');
 const https = require('https');
 const sinon = require('sinon');
-const { app } = require('../src/app');
+const {app} = require('../src/app');
 
 describe('Integration tests', () => {
   describe('Handlers', () => {
     describe('unauthorized user', () => {
       before(() => {
         app.set('sessionMiddleware', (req, res, next) => {
-          req.session = { isNew: true };
+          req.session = {isNew: true};
           next();
         });
       });
       it('should redirect to / for /newStory', (done) => {
         request(app).get('/newStory').expect(302).expect('location', '/', done);
-      });
-      it('should redirect to / for /createStory', (done) => {
-        request(app)
-          .get('/createStory')
-          .expect(302)
-          .expect('location', '/', done);
       });
       it('should redirect to / for /updateStory', (done) => {
         request(app)
@@ -46,7 +40,7 @@ describe('Integration tests', () => {
       describe('newStory', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 58025056 };
+            req.session = {isNew: false, id: 58025056};
             next();
           });
         });
@@ -60,35 +54,10 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('createStory', () => {
-        before(() => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 111 };
-            next();
-          });
-        });
-
-        it('should create a story and give back the story id', (done) => {
-          request(app)
-            .get('/createStory')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect({ id: 5 }, done);
-        });
-
-        it('should create a story with incremented id', (done) => {
-          request(app)
-            .get('/createStory')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect({ id: 6 }, done);
-        });
-      });
-
       describe('updateStory', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 58025056 };
+            req.session = {isNew: false, id: 58025056};
             next();
           });
         });
@@ -100,28 +69,42 @@ describe('Integration tests', () => {
               text: 'A small paragraph',
             },
           };
-          const data = { id: 2, title: 'A new app', blocks: [block] };
+          const data = {id: 2, title: 'A new app', blocks: [block]};
           request(app)
             .post('/updateStory')
             .send(data)
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({ status: 'updated' }, done);
+            .expect({status: 'updated'}, done);
         });
 
         it('should give error for updating story with unknown id', (done) => {
           request(app)
             .post('/updateStory')
-            .send({ id: 100 })
+            .send({id: 100})
             .expect(404)
             .expect('Content-Type', /json/)
-            .expect({ error: 'unknown id' }, done);
+            .expect({error: 'unknown id'}, done);
+        });
+
+        it('should create story & give back id if id not present', (done) => {
+          const block = {
+            type: 'paragraph',
+            data: {
+              text: 'A small paragraph',
+            },
+          };
+          request(app)
+            .post('/updateStory')
+            .send({title: 'New blog', blocks: [block]})
+            .expect(200)
+            .expect('Content-Type', /json/, done);
         });
       });
       describe('stories', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 58025056 };
+            req.session = {isNew: false, id: 58025056};
             next();
           });
         });
@@ -136,39 +119,39 @@ describe('Integration tests', () => {
 
         it('should give unknown user id for user not found', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 10000 };
+            req.session = {isNew: false, id: 10000};
             next();
           });
           request(app)
             .get('/stories')
             .expect(401)
             .expect('Content-Type', /json/)
-            .expect({ error: 'unknown id' }, done);
+            .expect({error: 'unknown id'}, done);
         });
       });
 
       describe('publish', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 58025056 };
+            req.session = {isNew: false, id: 58025056};
             next();
           });
         });
         it('should publish a story present', (done) => {
           request(app)
             .post('/publish')
-            .send({ id: 2 })
+            .send({id: 2})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({ status: 'published' }, done);
+            .expect({status: 'published'}, done);
         });
         it('should give No draft found for no draft', (done) => {
           request(app)
             .post('/publish')
-            .send({ id: 2 })
+            .send({id: 2})
             .expect(400)
             .expect('Content-Type', /json/)
-            .expect({ error: 'No draft found' }, done);
+            .expect({error: 'No draft found'}, done);
         });
       });
 
@@ -182,7 +165,7 @@ describe('Integration tests', () => {
         });
         it('should give available options if the user is auth', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = { isNew: false, id: 58025056 };
+            req.session = {isNew: false, id: 58025056};
             next();
           });
           request(app)
@@ -202,7 +185,7 @@ describe('Integration tests', () => {
 describe('handleHomePage', () => {
   it('should get index page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = { isNew: true };
+      req.session = {isNew: true};
       next();
     });
     request(app)
@@ -214,7 +197,7 @@ describe('handleHomePage', () => {
 
   it('should get welcome page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = { isNew: false, id: 56071561 };
+      req.session = {isNew: false, id: 56071561};
       next();
     });
     request(app)
@@ -226,14 +209,14 @@ describe('handleHomePage', () => {
 
   it('should give unknown user id for user not found', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = { isNew: false, id: 10 };
+      req.session = {isNew: false, id: 10};
       next();
     });
     request(app)
       .get('/')
       .expect(401)
       .expect('Content-Type', /json/)
-      .expect({ error: 'unknown id' }, done);
+      .expect({error: 'unknown id'}, done);
   });
 });
 
@@ -252,13 +235,13 @@ describe('getUserDetails', () => {
     sinon.replace(https, 'request', (options, cb) => cb(res));
   });
 
-  after(function() {
+  after(function () {
     sinon.restore();
   });
 
   it('should get user details if there is no error', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = { code: 'somecode' };
+      req.query = {code: 'somecode'};
       req.session = {};
       next();
     });
@@ -275,7 +258,7 @@ describe('getUserDetails', () => {
 
   it('should get error if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = { code: 'somecode' };
+      req.query = {code: 'somecode'};
       next();
     });
     request(app).get('/user').expect(404, done);
@@ -285,10 +268,9 @@ describe('getUserDetails', () => {
 describe('getPublishedStories', () => {
   it('get give stories when there is no error', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = { isNew: false, id: 1 };
+      req.session = {isNew: false, id: 1};
       next();
     });
     request(app).get('/publishedStories').expect(200).expect(/title/, done);
   });
 });
-
