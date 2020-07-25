@@ -3,16 +3,22 @@ body{
   text-align: center;
 }
 
-.message-box{
-  opacity: .6;
+
+.dashBoard{
   position: relative;
-  top:210px;
+  top:20px;
   display: inline-block;
-  height:300px;
-  width:600px;
+  height:620px;
+  width:1000px;
+  overflow: scroll;
 }
 
-.message-box>p{
-  font-style: italic;
-}
 
+.story-box {
+  position: relative;
+  left: 15px;
+  width: 950px;
+  text-align: left;
+  padding-bottom: 25px;
+  border-bottom: 1px solid black;
+}
