@@ -15,7 +15,7 @@ const addStoryDetail = function(story, storyBox) {
   const storyDetail = `
   <h1 class="title">${story.title}</h1>
   <div class="story-author-container">
-   <div class="story-author">
+   <div>
      <div id="story-author-name">${story.author}</div>
      <div id="story-time">${story.published_at}</div>
    </div>
@@ -28,7 +28,7 @@ const addStoryDetail = function(story, storyBox) {
 
 const getPublishedStories = () => {
   sendGetRequest('/publishedStories', (stories) => {
-    stories.forEach((story) => {
+    stories.reverse().forEach((story) => {
       const storyBox = document.createElement('div');
       storyBox.id = story.id;
       storyBox.className = 'story-box';
