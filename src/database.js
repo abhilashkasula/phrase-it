@@ -63,14 +63,7 @@ class Database {
   }
 
   getDrafts(userId) {
-    return new Promise((resolve, reject) => {
-      this.db.all(queries.getDrafts(userId), (err, rows) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(rows);
-      });
-    });
+    return this.all(queries.getDrafts(userId));
   }
 
   addUser({id, name, avatar_url}) {
