@@ -36,6 +36,31 @@ describe('Unit Test', () => {
       });
     });
 
+    describe('all', () => {
+      it('should reject when there is an error', (done) => {
+        const db = {all: (query, cb) => cb({error: 'error'})};
+        const database = new Database(db);
+        database
+          .all('query')
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'error'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+      it('should resolve with rows when there is no error', (done) => {
+        const db = {all: (query, cb) => cb(null, [{id: 1}])};
+        const database = new Database(db);
+        database
+          .all('query')
+          .then((err) => {
+            assert.deepStrictEqual(err, [{id: 1}]);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
+
     describe('createStory', () => {
       it('should insert story and resolve story id for first story', (done) => {
         const db = {
