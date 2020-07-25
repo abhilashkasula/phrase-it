@@ -33,6 +33,13 @@ describe('Integration tests', () => {
       it('should redirect to / for /publish', (done) => {
         request(app).post('/publish').expect(302).expect('location', '/', done);
       });
+      it('should give story page with login option', (done) => {
+        request(app)
+          .get('/story/1')
+          .expect(200)
+          .expect('Content-Type', /html/)
+          .expect(/Login/, done);
+      });
     });
 
     describe('authorized user', () => {
@@ -162,6 +169,30 @@ describe('Integration tests', () => {
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
+        });
+      });
+
+      describe('/story', () => {
+        it('should give story page if the story id is present', (done) => {
+          request(app)
+            .get('/story/1')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/story/i, done);
+        });
+        it('should give available options if the user is auth', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+          request(app)
+            .get('/story/1')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/\/newStory/, done);
+        });
+        it('should give not found if the story id is absent', (done) => {
+          request(app).get('/story/10').expect(404, done);
         });
       });
     });
