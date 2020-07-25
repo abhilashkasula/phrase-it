@@ -7,14 +7,14 @@ const sendGetRequest = (url, callback) => {
     .then((res) => callback(res));
 };
 
-const showStory = function (story_id) {
+const showStory = function(story_id) {
   location.replace(`/story/${story_id}`);
 };
 
-const addStoryDetail = function (story, storyBox) {
+const addStoryDetail = function(story, storyBox) {
   const totalContent = JSON.parse(story.content);
   const contentLength = totalContent.length;
-  const content = contentLength ? totalContent[0].data.text.slice(0, 150) : '';
+  const content = contentLength ? totalContent[0].data.text.slice(0, 70) : '';
   const storyDetail = `
   <h1 class="title">${story.title}</h1>
   <div class="story-content">${content} ...</div>
