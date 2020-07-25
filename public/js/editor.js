@@ -21,8 +21,11 @@ const addListeners = (editor, id) => {
   document
     .querySelector('#title')
     .addEventListener('input', () => save(editor, id));
-  document.querySelector('#publish')
-    .addEventListener('click', () => publish(`story-${id}`));
+  document.querySelector('#publish').addEventListener('click', () => {
+    if (document.querySelector('#title').value.trim()) {
+      return publish(`story-${id}`);
+    }
+  });
 };
 
 const main = async () => {
