@@ -1,9 +1,10 @@
 nav {
+  
   padding: 0.2%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 30%);
+  width: calc(100% - 9.5%);
 }
 
 ul {

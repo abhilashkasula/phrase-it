@@ -1,24 +1,22 @@
 body{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
 }
 
 
 .dashBoard{
   position: relative;
   top:20px;
+  left: 5.5%;
   display: inline-block;
-  height:620px;
-  width:1000px;
+  height:650px;
+  width: 89%;
   overflow: scroll;
 }
 
 
 .story-box {
   position: relative;
-  left: 15px;
-  width: 950px;
-  text-align: left;
+  /* left: 15px; */
   padding-bottom: 25px;
   border-bottom: 1px solid black;
 }

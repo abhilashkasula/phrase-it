@@ -6,12 +6,18 @@ div(class="navbar")
           img(src="https://github.com/abhilashkasula/phrase-it/wiki/images/logo.png", alt="" class="logo")
 
     ul
-        li
-          a(href="/newStory", class="add-container")
-            img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
-        li
-          a(href="#", class="search-container")
-            img(src="https://img.icons8.com/ios-glyphs/30/000000/search.png", alt="")
-        li(class="avathar-nav")
-          a(href="/stories")
-            img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+        if isUserAuth
+          li
+            a(href="/newStory", class="add-container")
+              img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
+          li
+            a(href="#", class="search-container")
+              img(src="https://img.icons8.com/ios-glyphs/30/000000/search.png", alt="")
+          li(class="avathar-nav")
+            a(href="/stories")
+              img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+        
+        else 
+            li
+              a(href="/login")
+                span Login
