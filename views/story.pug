@@ -22,7 +22,7 @@ html
           each element in story.content
             case element.type
               when 'paragraph'
-                p(class="content-para")=element.data.text
+                p(class="content-para") !{element.data.text}
               when 'header'
                 case element.data.level
                   when 2

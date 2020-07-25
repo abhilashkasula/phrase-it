@@ -78,17 +78,26 @@ const handleHomePage = function(req, res) {
   }
 };
 
-const storiesPage = (req, res) => {
-  req.app.locals.db.getDrafts(req.session.id).then((drafts) => {
-    drafts.forEach((draft) => {
-      draft.content = JSON.parse(draft.content);
-    });
-    req.app.locals.db
-      .getUserDetails(req.session.id)
-      .then(({ username, avatar_url }) => {
-        res.render('stories', { username, avatar_url, drafts, moment });
-      });
+const parseContent = (stories) => {
+  return stories.map((story) => {
+    story.content = JSON.parse(story.content);
+    return story;
   });
+};
+
+const storiesPage = async (req, res) => {
+  const {id} = req.session;
+  let drafts = await req.app.locals.db.getDrafts(id);
+  let published = await req.app.locals.db.getUserPublishedStories(id);
+  drafts = parseContent(drafts);
+  published = parseContent(published);
+  req.app.locals.db
+    .getUserDetails(req.session.id)
+    .then(({username, avatar_url}) => {
+      const options = {username, avatar_url, drafts, moment, published};
+      res.render('stories', options);
+    })
+    .catch((err) => res.json(err));
 };
 
 const newStory = (req, res) => {

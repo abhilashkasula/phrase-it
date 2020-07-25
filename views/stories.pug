@@ -13,14 +13,25 @@ html
         h1(class="stories-title") Your Stories
         div(class="tabs")
           ul
-            li(id="tab-draft" class="tab-name selected-tab")=`Drafts ${drafts.length || ''}`
-        div(id="drafts")
+            li(id="tab-drafts" class="tab-name selected-tab")=`Drafts ${drafts.length || ''}`
+            li(id="tab-published" class="tab-name")=`Published ${published.length || ''}`
+        div(id="drafts" class="tab")
           each draft in drafts
-            div(class="draft")
+            div(class="story")
               div
-                div(class="draft-title-container")
-                  h2(class="draft-title")=draft.title || '(Untitled)'
+                div(class="story-title-container")
+                  h2(class="story-title")=draft.title || '(Untitled)'
                   button(class="publish-button" id=`publish-${draft.id}`) Publish
                 if draft.content.length
-                  p(class="draft-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
-                p(class="draft-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`
+                  p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
+                p(class="story-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`
+        div(id="published" class="hidden tab")
+          each publishedStory in published
+            a(href=`/story/${publishedStory.id}`)
+              div(class="story")
+               div
+                 div(class="story-title-container")
+                   h2(class="story-title")=publishedStory.title || '(Untitled)'
+                 if publishedStory.content.length
+                   p(class="story-summary")=`${publishedStory.content[0].data.text.slice(0, 50)}...`
+                 p(class="story-last-edited")=`Published ${moment(publishedStory.published_at).startOf('min').fromNow()}`

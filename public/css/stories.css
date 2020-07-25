@@ -18,6 +18,7 @@ ul {
   padding: 3px;
   font-weight: 100;
   color: #292929;
+  cursor: pointer;
 }
 
 .stories-title {
@@ -30,50 +31,63 @@ ul {
   border-bottom: 1px solid;
 }
 
-.draft {
+.story {
   padding: 1.2% 0 1.2% 0;
   border-bottom: 1px solid #ccc;
 }
 
-.draft:first-child {
-  border-top: 1px solid #ccc;
-}
-
-.draft > div p {
+.story > div p {
   margin: 7px 0 7px 0;
 }
 
-.draft > div p:last-child {
+.story > div p:last-child {
   margin-bottom: 0;
 }
 
-.draft-summary, .draft-last-edited {
+.story-summary, .story-last-edited {
   margin: 0;
   font-weight: 100;
   color: #757575;
 }
 
-.draft-summary {
+.story-summary {
   font-size: 14px;
 }
 
-.draft-last-edited {
+.story-last-edited {
   font-size: 12px;
 }
 
-.draft-title {
+.story-title {
   margin: 0;
 }
 
-.draft-title-container {
+.story-title-container {
   display: flex;
   justify-content: space-between;
 }
 
-.draft-title-container button {
+.story-title-container button {
   background: white;
   border: 1px solid;
   padding: 0 1.2%;
   border-radius: 3px;
   cursor: pointer;
+}
+
+.tab-name:last-child {
+  margin-left: 30px;
+}
+
+.hidden {
+  display: none;
+}
+
+.tabs ul {
+  border-bottom: 1px solid #ccc;
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }

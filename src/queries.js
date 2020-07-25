@@ -55,6 +55,14 @@ const getPublishedStory = (id) => {
     WHERE t1.id = ${id}`;
 };
 
+const getUserPublishedStories = (userId) =>
+  `SELECT t1.id,
+    t1.content,
+    t1.title,
+    t2.published_at
+  FROM stories t1 JOIN published_stories t2 ON t1.id = t2.story_id
+  WHERE is_published = 1 AND t1.created_by = ${userId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -64,5 +72,6 @@ module.exports = {
   getDraft,
   publish,
   getPublishedStories,
-  getPublishedStory
+  getPublishedStory,
+  getUserPublishedStories
 };
