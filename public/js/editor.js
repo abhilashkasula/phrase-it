@@ -14,7 +14,7 @@ const save = (editor, id) => {
   });
 };
 
-const addListeners = (id) => {
+const addListeners = (editor, id) => {
   document
     .querySelector('#editor')
     .addEventListener('input', () => save(editor, id));
@@ -43,7 +43,7 @@ const main = async () => {
       inlineCode: InlineCode,
     },
   });
-  addListeners(id);
+  addListeners(editor, id);
 };
 
 window.onload = main;
