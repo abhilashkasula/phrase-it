@@ -14,7 +14,18 @@ const save = (editor, id) => {
   });
 };
 
-const main = async() => {
+const addListeners = (id) => {
+  document
+    .querySelector('#editor')
+    .addEventListener('input', () => save(editor, id));
+  document
+    .querySelector('#title')
+    .addEventListener('input', () => save(editor, id));
+  document.querySelector('#publish')
+    .addEventListener('click', () => publish(`story-${id}`));
+};
+
+const main = async () => {
   const res = await fetch('/createStory');
   const {id} = await res.json();
 
@@ -32,13 +43,7 @@ const main = async() => {
       inlineCode: InlineCode,
     },
   });
-
-  document
-    .querySelector('#editor')
-    .addEventListener('input', () => save(editor, id));
-  document
-    .querySelector('#title')
-    .addEventListener('input', () => save(editor, id));
+  addListeners(id);
 };
 
 window.onload = main;
