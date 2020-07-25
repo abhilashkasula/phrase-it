@@ -30,6 +30,9 @@ describe('Integration tests', () => {
       it('should redirect to / for /stories', (done) => {
         request(app).get('/stories').expect(302).expect('location', '/', done);
       });
+      it('should redirect to / for /publish', (done) => {
+        request(app).post('/publish').expect(302).expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -122,6 +125,43 @@ describe('Integration tests', () => {
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/your stories/i, done);
+        });
+
+        it('should give unknown user id for user not found', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 10000};
+            next();
+          });
+          request(app)
+            .get('/stories')
+            .expect(401)
+            .expect('Content-Type', /json/)
+            .expect({error: 'unknown id'}, done);
+        });
+      });
+
+      describe('publish', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should publish a story present', (done) => {
+          request(app)
+            .post('/publish')
+            .send({id: 2})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'published'}, done);
+        });
+        it('should give No draft found for no draft', (done) => {
+          request(app)
+            .post('/publish')
+            .send({id: 2})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'No draft found'}, done);
         });
       });
     });

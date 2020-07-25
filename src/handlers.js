@@ -104,7 +104,7 @@ const storiesPage = async (req, res) => {
       };
       res.render('stories', options);
     })
-    .catch((err) => res.json(err));
+    .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
 };
 
 const newStory = (req, res) => {

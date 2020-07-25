@@ -29,7 +29,7 @@ app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 
 app.use(
-  ['/newStory', '/createStory', '/updateStory', '/stories'],
+  ['/newStory', '/createStory', '/updateStory', '/stories', '/publish'],
   handlers.allowAuthorized
 );
 app.get('/newStory', handlers.newStory);
