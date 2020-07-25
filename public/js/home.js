@@ -7,17 +7,14 @@ const sendGetRequest = (url, callback) => {
     .then((res) => callback(res));
 };
 
-const showStory = function (story_id) {
+const showStory = function(story_id) {
   location.replace(`/story/${story_id}`);
 };
 
-const addStoryDetail = function (story, storyBox) {
+const addStoryDetail = function(story, storyBox) {
   const storyDetail = `
   <h1 class="title">${story.title}</h1>
   <div class="story-author-container">
-   <div id="story-author-avathar"> 
-    <img src="${story.avatar_url}">
-   </div>
    <div class="story-author">
      <div id="story-author-name">${story.author}</div>
      <div id="story-time">${story.published_at}</div>

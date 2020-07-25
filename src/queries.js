@@ -36,8 +36,8 @@ const publish = (id) => {
     END;`;
 };
 
-const getPublishedStories = () =>
-  `SELECT s.id,
+const getPublishedStories = () => {
+  return `SELECT s.id,
           s.content,
           s.title,
           s.created_by,
@@ -46,8 +46,8 @@ const getPublishedStories = () =>
           u.avatar_url
           FROM stories s 
           join published_stories ps on s.id=ps.story_id
-          JOIN users u on s.created_by = u.id 
-            `;
+          JOIN users u on s.created_by = u.id `;
+};
 
 const getPublishedStory = (id) => {
   return `SELECT t1.id,
