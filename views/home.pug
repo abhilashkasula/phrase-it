@@ -2,6 +2,8 @@ html
   head 
     title Phrase-it
     link(rel="stylesheet", href="/css/story.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+
     style
       include ../public/css/navbar.css  
       include ../public/css/home.css 
@@ -10,4 +12,8 @@ html
   body
     include navbar.pug
     div(class="dashBoard")
+      div(class= "message-box text")
+        h1=`Hello, ${username}`
+        img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
+        p Add your story
 

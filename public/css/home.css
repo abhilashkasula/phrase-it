@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Sora', sans-serif;
 }
 
 .dashBoard {
@@ -10,6 +10,22 @@ body {
   height: 650px;
   width: 89%;
   overflow: scroll;
+}
+
+
+.message-box{
+  text-align: center;
+  opacity: .6;
+  position: relative;
+  top:210px;
+  display: inline-block;
+  height:300px;
+  width:85vw;
+  display:none
+}
+
+.message-box>p{
+  font-style: italic;
 }
 
 .story-box {
