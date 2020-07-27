@@ -266,11 +266,23 @@ describe('getUserDetails', () => {
 });
 
 describe('getPublishedStories', () => {
-  it('get give stories when there is no error', (done) => {
+  it('should not give stories when user is not authorized', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = { isNew: true };
+      next();
+    });
+    request(app)
+      .get('/publishedStories')
+      .expect(302)
+      .expect('location', '/', done);
+  });
+
+  it('should give stories when there is no error', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = { isNew: false, id: 1 };
       next();
     });
     request(app).get('/publishedStories').expect(200).expect(/title/, done);
   });
+
 });
