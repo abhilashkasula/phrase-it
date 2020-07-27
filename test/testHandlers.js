@@ -153,6 +153,14 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({ error: 'No draft found' }, done);
         });
+        it('should not publish a story with no content and title', (done) => {
+          request(app)
+            .post('/publish')
+            .send({id: 5})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'Too little story. Please extend the story'}, done);
+        });
       });
 
       describe('/story', () => {

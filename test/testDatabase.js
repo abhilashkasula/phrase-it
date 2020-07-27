@@ -205,9 +205,10 @@ describe('Unit Test', () => {
     });
 
     describe('publish', () => {
+      const content = '[{type: "paragraph"}]';
       it('should resolve with status published for story found', (done) => {
         const db = {
-          get: (query, cb) => cb(null, {id: 5}),
+          get: (query, cb) => cb(null, {id: 5, title: 'Title', content}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
@@ -221,7 +222,7 @@ describe('Unit Test', () => {
       });
       it('should reject if the story already published', (done) => {
         const db = {
-          get: (query, cb) => cb(null, {id: 5}),
+          get: (query, cb) => cb(null, {id: 5, title: 'Title', content}),
           exec: (query, cb) => cb({err: 'not published'}),
         };
         const database = new Database(db);
@@ -240,6 +241,21 @@ describe('Unit Test', () => {
           .publish(1, 1)
           .catch((err) => {
             assert.deepStrictEqual(err, {error: 'No draft found'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+      it('should reject if the title and content is empty', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, {id: 5, title: '', content: '[]'}),
+        };
+        const database = new Database(db);
+        database
+          .publish(1, 1)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {
+              error: 'Too little story. Please extend the story',
+            });
             done();
           })
           .catch((err) => done(err));

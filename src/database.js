@@ -94,6 +94,9 @@ class Database {
         if (!row) {
           return reject({error: 'No draft found'});
         }
+        if (!row.title.trim() && !JSON.parse(row.content).length) {
+          return reject({error: 'Too little story. Please extend the story'});
+        }
         this.exec(queries.publish(storyId))
           .then(() => resolve({status: 'published'}))
           .catch(() => reject({error: 'Already published'}));
