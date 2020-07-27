@@ -26,7 +26,14 @@ app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 
 app.use(
-  ['/newStory', '/updateStory', '/stories', '/publish', '/publishedStories'],
+  [
+    '/newStory',
+    '/updateStory',
+    '/stories',
+    '/publish',
+    '/publishedStories',
+    '/responses',
+  ],
   handlers.allowAuthorized
 );
 app.get('/newStory', handlers.newStory);
@@ -34,6 +41,7 @@ app.get('/publishedStories', handlers.getPublishedStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
+app.get('/responses', handlers.getResponses);
 app.use(handlers.notFound);
 
 module.exports = {app};

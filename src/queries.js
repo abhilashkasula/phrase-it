@@ -74,6 +74,9 @@ const getUserPublishedStories = (userId) =>
   WHERE is_published = 1 AND t1.created_by = ${userId}
   ORDER BY t2.published_at DESC`;
 
+const getResponses = (storyId) =>
+  `SELECT * FROM responses WHERE response_on = ${storyId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -85,4 +88,5 @@ module.exports = {
   getPublishedStories,
   getPublishedStory,
   getUserPublishedStories,
+  getResponses,
 };

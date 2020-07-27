@@ -122,6 +122,10 @@ class Database {
   getPublishedStory(id) {
     return this.get(queries.getPublishedStory(id));
   }
+
+  getResponses(storyId) {
+    return this.all(queries.getResponses(storyId));
+  }
 }
 
 module.exports = Database;

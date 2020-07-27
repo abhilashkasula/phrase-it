@@ -155,6 +155,13 @@ const getPublishedStories = (req, res) => {
   });
 };
 
+const getResponses = (req, res) => {
+  const {id} = req.query;
+  req.app.locals.db.getResponses(id).then((responses) => {
+    res.json(JSON.stringify(responses));
+  });
+};
+
 const hasFields = (fields) => {
   return (req, res, next) => {
     if (fields.every((field) => field in req.body)) {
@@ -180,4 +187,5 @@ module.exports = {
   getPublishedStories,
   hasFields,
   notFound,
+  getResponses,
 };
