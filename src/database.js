@@ -119,12 +119,21 @@ class Database {
     return this.all(queries.getUserPublishedStories(userId));
   }
 
-  getPublishedStory(id) {
-    return this.get(queries.getPublishedStory(id));
+  getPublishedStoryDetails(id) {
+    return this.get(queries.getPublishedStoryDetails(id));
   }
 
   getResponses(storyId) {
-    return this.all(queries.getResponses(storyId));
+    return new Promise((resolve, reject) => {
+      this.get(queries.getPublishedStory(storyId)).then((story) => {
+        if (!story) {
+          return reject({error: 'unknown id'});
+        }
+        this.all(queries.getResponses(storyId)).then((responses) =>
+          resolve(responses)
+        );
+      });
+    });
   }
 }
 

@@ -133,7 +133,7 @@ const publish = (req, res) => {
 
 const storyPage = async (req, res) => {
   const {id} = req.params;
-  const story = await req.app.locals.db.getPublishedStory(id);
+  const story = await req.app.locals.db.getPublishedStoryDetails(id);
   if (!story) {
     return res.status(statusCodes.NOT_FOUND).render('notFound');
   }
@@ -157,9 +157,14 @@ const getPublishedStories = (req, res) => {
 
 const getResponses = (req, res) => {
   const {id} = req.query;
-  req.app.locals.db.getResponses(id).then((responses) => {
-    res.json(JSON.stringify(responses));
-  });
+  req.app.locals.db
+    .getResponses(id)
+    .then((responses) => {
+      res.json({responses});
+    })
+    .catch((error) => {
+      res.status(statusCodes.BAD_REQUEST).json(error);
+    });
 };
 
 const hasFields = (fields) => {
