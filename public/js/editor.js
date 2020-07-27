@@ -13,6 +13,15 @@ const replaceListener = (id) => {
   });
 };
 
+const showStatus = () => {
+  const elem = document.querySelector('#status');
+  elem.classList.remove('status-hide');
+  elem.innerText = 'saving';
+  setTimeout(() => {
+    elem.innerText = 'saved';
+  }, 1000);
+};
+
 const save = (__, storyId) => {
   const title = document.querySelector('#title').value;
   editor.save().then((data) => {
@@ -28,6 +37,7 @@ const save = (__, storyId) => {
     fetch('/updateStory', options)
       .then((res) => res.json())
       .then(({id, error}) => {
+        showStatus();
         if (!storyId) {
           replaceListener(id);
         }
