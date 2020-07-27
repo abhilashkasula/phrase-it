@@ -308,5 +308,34 @@ describe('Unit Test', () => {
         });
       });
     });
+
+    describe('getResponses', () => {
+      const response = {
+        id: 1,
+        response_on: 1,
+        responded_by: 1,
+        responded_at: 'some time',
+        response: 'response',
+      };
+      it('should give list of responses for existing story id', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, {id: 1}),
+          all: (query, cb) => cb(null, [response]),
+        };
+        const database = new Database(db);
+        database
+          .getResponses(1)
+          .then((res) => {
+            assert.deepStrictEqual(res, [response]);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+      it('should reject for unknown id', async () => {
+        const db = {get: (query, cb) => cb({err: 'unknown id'})};
+        const database = new Database(db);
+        await assert.rejects(() => database.getResponses(100));
+      });
+    });
   });
 });
