@@ -4,22 +4,18 @@ const sqlite = require('sqlite3');
 const session = require('cookie-session');
 const handlers = require('./handlers');
 const Database = require('./database');
-const { DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG } = require('../config');
-const statusCodes = require('./statusCodes');
+const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
 
 const updateField = ['title', 'blocks'];
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
-app.locals.db = db;
-app.locals.CLIENT_ID = CLIENT_ID;
-app.locals.CLIENT_SECRET = CLIENT_SECRET;
-app.locals.SECRET_MSG = SECRET_MSG;
+app.locals = {db, CLIENT_ID, CLIENT_SECRET, SECRET_MSG};
 
 app.use(logger('common'));
 app.set('view engine', 'pug');
-app.use(express.static('public', { index: false }));
+app.use(express.static('public', {index: false}));
 app.use(express.json());
-app.set('sessionMiddleware', session({ secret: SECRET_MSG }));
+app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));
 
@@ -38,6 +34,6 @@ app.get('/publishedStories', handlers.getPublishedStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
-app.use((req, res) => res.status(statusCodes.NOT_FOUND).render('notFound'));
+app.use(handlers.notFound);
 
-module.exports = { app };
+module.exports = {app};

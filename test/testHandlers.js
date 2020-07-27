@@ -360,3 +360,13 @@ describe('hasFields', () => {
     request(app).post('/publish').expect(400, done);
   });
 });
+
+describe('notFound', () => {
+  it('should respond with not found for invalid url', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = {isNew: false};
+      next();
+    });
+    request(app).post('/abc').expect(404, done);
+  });
+});
