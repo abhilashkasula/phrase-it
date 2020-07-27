@@ -11,12 +11,12 @@ const showTab = (tab) => {
 };
 
 const main = () => {
-  const publishButtons = document.querySelectorAll('.publish-button');
-  publishButtons.forEach((button) => {
-    const cb = (err) => showErr(err);
-    button.addEventListener('click', () => publish(button.id, cb));
-  });
+  // const publishButtons = document.querySelectorAll('.publish-button');
   const tabs = Array.from(document.querySelectorAll('.tab-name'));
+  // publishButtons.forEach((button) => {
+  //   const cb = (err) => showErr(err);
+  //   button.addEventListener('click', () => publish(button.id, cb));
+  // });
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => showTab(tab));
   });

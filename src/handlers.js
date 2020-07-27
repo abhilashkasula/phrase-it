@@ -180,6 +180,21 @@ const notFound = function (req, res) {
   res.status(statusCodes.NOT_FOUND).render('notFound');
 };
 
+const editDraft = (req, res) => {
+  req.app.locals.db.getUserDetails(req.session.id).then((user) => {
+    res.render('editDraft', {avatar_url: user.avatar_url});
+  });
+};
+
+const serveDraft = (req, res) => {
+  req.app.locals.db.getDraft(req.params.id, req.session.id).then((draft) => {
+    if (!draft) {
+      return res.status(statusCodes.NOT_FOUND).json({error: 'Draft not found'});
+    }
+    res.json({draft});
+  });
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -193,4 +208,6 @@ module.exports = {
   hasFields,
   notFound,
   getResponses,
+  editDraft,
+  serveDraft,
 };

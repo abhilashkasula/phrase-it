@@ -54,7 +54,7 @@ class Database {
 
   async updateStory(storyId, title, authorId, content) {
     const query = queries.saveStory(storyId, title, content);
-    const row = await this.get(queries.getDraft(authorId, storyId));
+    const row = await this.getDraft(storyId, authorId);
     if (!row) {
       return {error: 'unknown id'};
     }
@@ -88,9 +88,13 @@ class Database {
     });
   }
 
+  getDraft(draftId, authorId) {
+    return this.get(queries.getDraft(authorId, draftId));
+  }
+
   publish(authorId, storyId) {
     return new Promise((resolve, reject) => {
-      this.get(queries.getDraft(authorId, storyId)).then((row) => {
+      this.getDraft(storyId, authorId).then((row) => {
         if (!row) {
           return reject({error: 'No draft found'});
         }

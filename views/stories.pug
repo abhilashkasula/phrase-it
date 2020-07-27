@@ -20,14 +20,15 @@ html
             li(id="tab-published" class="tab-name")=`Published ${published.length || ''}`
         div(id="drafts" class="tab")
           each draft in drafts
-            div(class="story")
-              div
-                div(class="story-title-container")
-                  h2(class="story-title")=draft.title || 'Untitled story'
-                  button(class="publish-button" id=`publish-${draft.id}`) Publish
-                if draft.content.length
-                  p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
-                p(class="story-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`
+            a(href=`/edit/${draft.id}`)
+              div(class="story")
+                div
+                  div(class="story-title-container")
+                    h2(class="story-title")=draft.title || 'Untitled story'
+                    button(class="publish-button" id=`publish-${draft.id}`) Publish
+                  if draft.content.length
+                    p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
+                  p(class="story-last-edited")=`Last edited ${moment(draft.last_modified).startOf('min').fromNow()}`
         div(id="published" class="hidden tab")
           each publishedStory in published
             a(href=`/story/${publishedStory.id}`)

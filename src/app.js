@@ -34,6 +34,8 @@ app.get('/publishedStories', handlers.getPublishedStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
+app.get('/edit/:id', handlers.editDraft);
+app.get('/draft/:id', handlers.serveDraft);
 app.use(handlers.notFound);
 
 module.exports = {app};

@@ -1,0 +1,24 @@
+div(class="navbar")
+      nav
+        ul
+          li 
+            a(href="/")
+              img(src="https://github.com/abhilashkasula/phrase-it/wiki/images/logo.png", alt="" class="logo")
+        ul
+          li(class="options")
+            div
+              button(class="disabled publish-button" id="publish") Publish
+          li(class="avathar-nav")
+            a(href="/stories")
+              img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+div(id="status" class="status-hide") status
+div(id="error" class="err-hide") error
+div(class="container")
+  div(id="new-blog")
+    div
+      label Title:
+      br
+      input(type="text", id="title")
+    div
+      label Story:
+      div(id="editor")
