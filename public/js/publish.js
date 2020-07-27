@@ -1,4 +1,4 @@
-const publish = (id) => {
+const publish = (id, cb) => {
   const storyId = id.split('-')[1];
   const options = {
     method: 'POST',
@@ -9,5 +9,10 @@ const publish = (id) => {
   };
   fetch('/publish', options)
     .then((res) => res.json())
-    .then(({status}) => status && location.replace(`/story/${storyId}`));
+    .then(({status, error}) => {
+      if(error) {
+        return cb(error);
+      }
+      status && location.replace(`/story/${storyId}`);
+    });
 };

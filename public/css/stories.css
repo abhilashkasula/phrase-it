@@ -22,7 +22,7 @@ ul {
 }
 
 .stories-title {
-  margin: 4% 0 2.5% 0;
+  margin: 3.5% 0 2.5% 0;
   font-size: 2.2em;
   font-weight: 1000;
 }
@@ -90,4 +90,15 @@ ul {
 a {
   color: black;
   text-decoration: none;
+}
+
+#error {
+  color: red;
+  text-align: center;
+  font-weight: 100;
+  font-size: 16px;
+}
+
+.err-hide {
+  visibility: hidden;
 }

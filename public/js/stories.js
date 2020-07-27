@@ -13,7 +13,8 @@ const showTab = (tab) => {
 const main = () => {
   const publishButtons = document.querySelectorAll('.publish-button');
   publishButtons.forEach((button) => {
-    button.addEventListener('click', () => publish(button.id));
+    const cb = (err) => showErr(err);
+    button.addEventListener('click', () => publish(button.id, cb));
   });
   const tabs = Array.from(document.querySelectorAll('.tab-name'));
   tabs.forEach((tab) => {

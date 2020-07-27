@@ -9,10 +9,7 @@ const replaceListener = (id) => {
   publishButton.classList.remove('disabled');
   publishButton.classList.add('enabled');
   publishButton.addEventListener('click', () => {
-    if (document.querySelector('#title').value.trim()) {
-      return publish(`story-${id}`);
-    }
-    alert('Please add a title');
+    publish(`story-${id}`, (error) => error && showErr(error));
   });
 };
 
