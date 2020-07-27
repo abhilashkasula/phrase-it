@@ -22,7 +22,9 @@ const getUserDetails = (id) => {
 };
 
 const getDrafts = (userId) =>
-  `SELECT * FROM stories WHERE is_published = 0 AND created_by = ${userId}`;
+  `SELECT * FROM stories
+    WHERE is_published = 0 AND created_by = ${userId}
+    ORDER BY last_modified DESC`;
 
 const getDraft = (authorId, storyId) =>
   `SELECT * FROM stories
@@ -69,7 +71,8 @@ const getUserPublishedStories = (userId) =>
     t1.title,
     t2.published_at
   FROM stories t1 JOIN published_stories t2 ON t1.id = t2.story_id
-  WHERE is_published = 1 AND t1.created_by = ${userId}`;
+  WHERE is_published = 1 AND t1.created_by = ${userId}
+  ORDER BY t2.published_at DESC`;
 
 module.exports = {
   insertNewStory,
