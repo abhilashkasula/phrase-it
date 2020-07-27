@@ -78,10 +78,10 @@ describe('Integration tests', () => {
             .expect({ status: 'updated' }, done);
         });
 
-        it('should give error for updating story with unknown id', (done) => {
+        it('should give 404 for updating story with unknown id', (done) => {
           request(app)
             .post('/updateStory')
-            .send({ id: 100 })
+            .send({id: 100, title: 'Title', blocks: ''})
             .expect(404)
             .expect('Content-Type', /json/)
             .expect({ error: 'unknown id' }, done);
@@ -285,4 +285,14 @@ describe('getPublishedStories', () => {
     request(app).get('/publishedStories').expect(200).expect(/title/, done);
   });
 
+});
+
+describe('hasFields', () => {
+  it('should give 400 if required fields not present for /publish', (done) => {
+    app.set('sessionMiddleware', (req, res, next) => {
+      req.session = {isNew: false};
+      next();
+    });
+    request(app).post('/publish').expect(400, done);
+  });
 });

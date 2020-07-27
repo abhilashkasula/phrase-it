@@ -155,6 +155,15 @@ const getPublishedStories = (req, res) => {
   });
 };
 
+const hasFields = (fields) => {
+  return (req, res, next) => {
+    if (fields.every((field) => field in req.body)) {
+      return next();
+    }
+    res.status(statusCodes.BAD_REQUEST).send('Bad Request');
+  };
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -165,4 +174,5 @@ module.exports = {
   publish,
   storyPage,
   getPublishedStories,
+  hasFields,
 };

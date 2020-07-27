@@ -7,6 +7,7 @@ const Database = require('./database');
 const { DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG } = require('../config');
 const statusCodes = require('./statusCodes');
 
+const updateField = ['title', 'blocks'];
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
 app.locals.db = db;
@@ -34,9 +35,9 @@ app.use(
 );
 app.get('/newStory', handlers.newStory);
 app.get('/publishedStories', handlers.getPublishedStories);
-app.post('/updateStory', handlers.updateStory);
+app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
-app.post('/publish', handlers.publish);
+app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.use((req, res) => res.status(statusCodes.NOT_FOUND).render('notFound'));
 
 module.exports = { app };
