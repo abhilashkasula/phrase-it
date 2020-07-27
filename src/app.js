@@ -22,18 +22,11 @@ app.use((...args) => app.get('sessionMiddleware')(...args));
 app.get('/', handlers.handleHomePage);
 
 app.get('/user', handlers.getUserDetails);
-
 app.get('/story/:id', handlers.storyPage);
+app.get('/responses', handlers.getResponses);
 
 app.use(
-  [
-    '/newStory',
-    '/updateStory',
-    '/stories',
-    '/publish',
-    '/publishedStories',
-    '/responses',
-  ],
+  ['/newStory', '/updateStory', '/stories', '/publish', '/publishedStories'],
   handlers.allowAuthorized
 );
 app.get('/newStory', handlers.newStory);
@@ -41,7 +34,6 @@ app.get('/publishedStories', handlers.getPublishedStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
-app.get('/responses', handlers.getResponses);
 app.use(handlers.notFound);
 
 module.exports = {app};
