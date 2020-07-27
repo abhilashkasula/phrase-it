@@ -1,5 +1,5 @@
 const moment = require('moment');
-const {request} = require('./request');
+const { request } = require('./request');
 const statusCodes = require('./statusCodes');
 
 const getDetailsOptions = (token) => ({
@@ -24,11 +24,11 @@ const getTokenOptions = (query) => ({
 const requestUserDetails = (req, res, token) => {
   const detailsOptions = getDetailsOptions(token);
   request(detailsOptions)
-    .then(({id, login, name, avatar_url}) => {
+    .then(({ id, login, name, avatar_url }) => {
       req.session.id = id;
       req.session.userName = login;
       req.app.locals.db
-        .addUser({id, name, avatar_url})
+        .addUser({ id, name: name || login, avatar_url })
         .then(() => {
           res.redirect('/');
         })
@@ -39,23 +39,23 @@ const requestUserDetails = (req, res, token) => {
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
-const getUserDetails = function (req, res) {
-  const {code} = req.query;
+const getUserDetails = function(req, res) {
+  const { code } = req.query;
   const clientId = `client_id=${req.app.locals.CLIENT_ID}`;
   const clientSecret = `client_secret=${req.app.locals.CLIENT_SECRET}`;
   const query = `${clientId}&${clientSecret}&code=${code}`;
   const tokenOptions = getTokenOptions(query);
   request(tokenOptions)
-    .then(({access_token}) => requestUserDetails(req, res, access_token))
+    .then(({ access_token }) => requestUserDetails(req, res, access_token))
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
 
 const updateStory = (req, res) => {
-  const {title, id, blocks} = req.body;
+  const { title, id, blocks } = req.body;
   if (!id) {
     return req.app.locals.db
       .createStory(req.session.id, title, JSON.stringify(blocks))
-      .then((id) => res.json({id}));
+      .then((id) => res.json({ id }));
   }
   req.app.locals.db
     .updateStory(id, title, req.session.id, JSON.stringify(blocks))
@@ -65,15 +65,15 @@ const updateStory = (req, res) => {
     });
 };
 
-const handleHomePage = function (req, res) {
+const handleHomePage = function(req, res) {
   if (req.session.isNew) {
-    res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
+    res.render('index', { CLIENT_ID: req.app.locals.CLIENT_ID });
   } else {
-    const {id} = req.session;
+    const { id } = req.session;
     req.app.locals.db
       .getUserDetails(id)
-      .then(({username, avatar_url}) => {
-        res.render('home', {username, avatar_url, isUserAuth: true});
+      .then(({ username, avatar_url }) => {
+        res.render('home', { username, avatar_url, isUserAuth: true });
       })
       .catch((err) => {
         res.status(statusCodes.NOT_AUTH).json(err);
@@ -89,14 +89,14 @@ const parseContent = (stories) => {
 };
 
 const storiesPage = async (req, res) => {
-  const {id} = req.session;
+  const { id } = req.session;
   let drafts = await req.app.locals.db.getDrafts(id);
   let published = await req.app.locals.db.getUserPublishedStories(id);
   drafts = parseContent(drafts);
   published = parseContent(published);
   req.app.locals.db
     .getUserDetails(id)
-    .then(({username, avatar_url}) => {
+    .then(({ username, avatar_url }) => {
       const options = {
         username,
         avatar_url,
@@ -111,8 +111,8 @@ const storiesPage = async (req, res) => {
 };
 
 const newStory = (req, res) => {
-  req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-    res.render('editor', {avatar_url});
+  req.app.locals.db.getUserDetails(req.session.id).then(({ avatar_url }) => {
+    res.render('editor', { avatar_url });
   });
 };
 
@@ -124,7 +124,7 @@ const allowAuthorized = (req, res, next) => {
 };
 
 const publish = (req, res) => {
-  const {id} = req.body;
+  const { id } = req.body;
   req.app.locals.db
     .publish(req.session.id, id)
     .then((result) => res.json(result))
@@ -132,17 +132,17 @@ const publish = (req, res) => {
 };
 
 const storyPage = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const story = await req.app.locals.db.getPublishedStory(id);
   if (!story) {
     return res.status(statusCodes.NOT_FOUND).render('notFound');
   }
   story.content = JSON.parse(story.content);
   if (!req.session.id) {
-    return res.render('story', {story, isUserAuth: false, moment});
+    return res.render('story', { story, isUserAuth: false, moment });
   }
-  req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-    res.render('story', {story, isUserAuth: true, avatar_url, moment});
+  req.app.locals.db.getUserDetails(req.session.id).then(({ avatar_url }) => {
+    res.render('story', { story, isUserAuth: true, avatar_url, moment });
   });
 };
 
