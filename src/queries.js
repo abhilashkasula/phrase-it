@@ -76,7 +76,14 @@ const getUserPublishedStories = (userId) =>
   ORDER BY t2.published_at DESC`;
 
 const getResponses = (storyId) =>
-  `SELECT * FROM responses WHERE response_on = ${storyId}`;
+  `SELECT t1.response,
+  t1.responded_at,
+  t2.username,
+  t2.avatar_url
+  FROM responses t1
+  LEFT JOIN
+  users t2 on t1.responded_by = t2.id
+  WHERE response_on = ${storyId}`;
 
 const getResponsesCount = (storyId) =>
   `SELECT COUNT(*) AS count FROM responses WHERE response_on = ${storyId}`;

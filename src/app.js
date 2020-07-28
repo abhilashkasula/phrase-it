@@ -25,20 +25,6 @@ app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);
 
-<<<<<<< HEAD
-const privateRoutes = [
-  '/newStory',
-  '/updateStory',
-  '/stories',
-  '/publish',
-  '/publishedStories',
-  '/edit',
-  '/draft',
-];
-
-app.use(privateRoutes, handlers.allowAuthorized);
-
-=======
 app.use(
   [
     '/newStory',
@@ -52,7 +38,6 @@ app.use(
   ],
   handlers.allowAuthorized
 );
->>>>>>> | #20 | Rashmi/Anil | Added addResponse route
 app.get('/newStory', handlers.newStory);
 app.get('/publishedStories', handlers.getPublishedStories);
 app.get('/dashboardStories', handlers.serveDashBoardStories);
@@ -61,15 +46,12 @@ app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
-<<<<<<< HEAD
 app.post('/follow', handlers.hasFields(['authorId']), handlers.followAuthor);
-=======
 app.post(
   '/addResponse',
   handlers.hasFields(['id', 'response']),
   handlers.addResponse
 );
->>>>>>> | #20 | Rashmi/Anil | Added addResponse route
 app.use(handlers.notFound);
 
 module.exports = {app};

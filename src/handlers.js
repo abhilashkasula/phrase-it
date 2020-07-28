@@ -185,7 +185,7 @@ const addResponse = (req, res) => {
   const {id, response} = req.body;
   req.app.locals.db
     .addResponse(id, req.session.id, response)
-    .then(() => res.redirect(`/response?id=${id}`))
+    .then((result) => res.json(result))
     .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
 };
 

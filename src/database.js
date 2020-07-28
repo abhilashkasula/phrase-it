@@ -153,7 +153,6 @@ class Database {
     });
   }
 
-<<<<<<< HEAD
   followAuthor(followerId, authorId) {
     return new Promise((resolve, reject) => {
       this.get(queries.getFollower(authorId, followerId)).then((follower) => {
@@ -170,7 +169,6 @@ class Database {
   getFollowingStories(userId) {
     return this.all(queries.followingStories(userId));
   }
-=======
   addResponse(storyId, userId, response) {
     return new Promise((resolve, reject) => {
       this.get(queries.getPublishedStory(storyId)).then((story) => {
@@ -183,7 +181,6 @@ class Database {
       });
     });
   }
->>>>>>> | #20 | Rashmi/Anil | Added addResponse route
 }
 
 module.exports = Database;

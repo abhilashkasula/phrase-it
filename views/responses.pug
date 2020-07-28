@@ -22,3 +22,15 @@ html
       div(class="new-response")
         textarea(name="response",id="response" class="response", placeholder="Type your response here...")
         button(id="submit-response" class="submit-response" onclick=`respond(${story.id})`) Respond
+    div(class="responses-holder")
+      each response in responses
+        div(class="story-container")
+          div(id="story")
+            div(class="story-details")
+              div(class="story-author-container")
+                div(id="story-author-avathar")
+                  img(src=response.avatar_url)
+                div(class="story-author")
+                  div(id="story-author-name")=response.username
+                  div(id="story-time")=`Responded ${moment(response.responded_at).startOf('min').fromNow()}`
+                  p(class="response")=response.response
