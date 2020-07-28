@@ -200,16 +200,22 @@ describe('Integration tests', () => {
       describe('/edit', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
+            req.session = {isNew: false, id: 58028408};
             next();
           });
         });
         it('should give draft editor page for /edit', (done) => {
           request(app)
-            .get('/edit/1')
+            .get('/edit/6')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/publish/, done);
+        });
+        it('should give not found for /edit if draft is absent', (done) => {
+          request(app)
+            .get('/edit/1')
+            .expect(404)
+            .expect('Content-Type', /html/, done);
         });
       });
 
