@@ -8,7 +8,7 @@ html
   body
     include navbar
     div(class="header-container")
-      div(class="header")
+      div(class="header" onclick=`(()=>window.location.href='/story/${story.id}')()`)
         p(class="title")=story.title
         div(class="subheader-container")
           div(class="subheader")
