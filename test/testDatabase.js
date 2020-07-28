@@ -337,5 +337,20 @@ describe('Unit Test', () => {
         await assert.rejects(() => database.getResponses(100));
       });
     });
+
+    describe('getDraft', () => {
+      it('should resolve with draft for given draft id', (done) => {
+        const draft = {id: 5, title: 'Title', content: '[]'};
+        const db = {get: (query, cb) => cb(null, draft)};
+        const database = new Database(db);
+        database
+          .getDraft(1, 1)
+          .then((res) => {
+            assert.deepStrictEqual(res, draft);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });
