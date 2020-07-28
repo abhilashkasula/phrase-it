@@ -262,11 +262,11 @@ describe('Unit Test', () => {
       });
     });
 
-    describe('getPublishedStories', () => {
+    describe('getDiscoverStories', () => {
       it('should resolve empty when no stories exist', (done) => {
         const db = {all: (query, cb) => cb(null, [])};
         const database = new Database(db);
-        database.getPublishedStories().then((publishedStories) => {
+        database.getDiscoverStories().then((publishedStories) => {
           assert.strictEqual(publishedStories.length, 0);
           done();
         });
@@ -292,7 +292,7 @@ describe('Unit Test', () => {
 
         const db = {all: (query, cb) => cb(null, stories)};
         const database = new Database(db);
-        database.getPublishedStories().then((publishedStories) => {
+        database.getDiscoverStories().then((publishedStories) => {
           assert.deepStrictEqual(publishedStories[0], stories[0]);
           assert.deepStrictEqual(publishedStories[1], stories[1]);
           done();
@@ -302,7 +302,7 @@ describe('Unit Test', () => {
       it('should resolve error when there is an error ', (done) => {
         const db = {all: (query, cb) => cb('Err')};
         const database = new Database(db);
-        database.getPublishedStories().catch((err) => {
+        database.getDiscoverStories().catch((err) => {
           assert.strictEqual(err, 'Err');
           done();
         });

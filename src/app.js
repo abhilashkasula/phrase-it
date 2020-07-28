@@ -25,21 +25,21 @@ app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);
 
-app.use(
-  [
-    '/newStory',
-    '/updateStory',
-    '/stories',
-    '/publish',
-    '/publishedStories',
-    '/edit',
-    '/draft',
-    '/addResponse',
-  ],
-  handlers.allowAuthorized
-);
+const privateRoutes = [
+  '/newStory',
+  '/updateStory',
+  '/stories',
+  '/publish',
+  '/discoverStories',
+  '/edit',
+  '/draft',
+  '/addResponse',
+];
+
+app.use(privateRoutes, handlers.allowAuthorized);
+
 app.get('/newStory', handlers.newStory);
-app.get('/publishedStories', handlers.getPublishedStories);
+app.get('/discoverStories', handlers.getDiscoverStories);
 app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);

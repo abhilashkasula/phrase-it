@@ -38,17 +38,22 @@ const publish = (id) => {
     END;`;
 };
 
-const getPublishedStories = () => {
-  return `SELECT s.id,
-          s.content,
-          s.title,
-          s.created_by,
-          ps.published_at,
-          u.username as author,
-          u.avatar_url
-          FROM stories s 
-          join published_stories ps on s.id=ps.story_id
-          JOIN users u on s.created_by = u.id `;
+const getDiscoverStories = (userId) => {
+  return `
+  WITH user_following as (
+    SELECT * from followers where follower_id = ${userId}
+  )
+  SELECT t1.id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t3.username author
+  from stories t1 
+  join published_stories t2 ON t1.id = t2.story_id 
+  join users t3 ON t1.created_by = t3.id
+  join user_following t4
+    ON t1.created_by != t4.user_id AND t1.created_by != ${userId}
+  ORDER BY t2.published_at DESC;`;
 };
 
 const getPublishedStoryDetails = (id) => {
@@ -104,7 +109,7 @@ const addFollower = (authorId, followerId) =>
   `INSERT INTO followers (user_id, follower_id)
     VALUES (${authorId}, ${followerId})`;
 
-const followingStories = (userId) => 
+const followingStories = (userId) =>
   `WITH user_following as (
     SELECT * from followers where follower_id = ${userId}
   )
@@ -128,7 +133,7 @@ module.exports = {
   getUserDetails,
   getDraft,
   publish,
-  getPublishedStories,
+  getDiscoverStories,
   getPublishedStoryDetails,
   getUserPublishedStories,
   addResponse,

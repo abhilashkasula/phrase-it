@@ -109,15 +109,8 @@ class Database {
     });
   }
 
-  getPublishedStories() {
-    return new Promise((resolve, reject) => {
-      this.db.all(queries.getPublishedStories(), (err, stories) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(stories);
-      });
-    });
+  getDiscoverStories(userId) {
+    return this.all(queries.getDiscoverStories(userId));
   }
 
   getUserPublishedStories(userId) {

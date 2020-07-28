@@ -150,8 +150,8 @@ const storyPage = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
-const getPublishedStories = (req, res) => {
-  req.app.locals.db.getPublishedStories().then((stories) => {
+const getDiscoverStories = (req, res) => {
+  req.app.locals.db.getDiscoverStories(req.session.id).then((stories) => {
     stories.forEach((story) => {
       story.published_at = moment(story.published_at).startOf('min').fromNow();
     });
@@ -244,7 +244,7 @@ module.exports = {
   allowAuthorized,
   publish,
   storyPage,
-  getPublishedStories,
+  getDiscoverStories,
   hasFields,
   notFound,
   getResponses,

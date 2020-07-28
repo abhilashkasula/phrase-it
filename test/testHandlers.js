@@ -414,24 +414,24 @@ describe('getUserDetails', () => {
   });
 });
 
-describe('getPublishedStories', () => {
+describe('/discoverStories', () => {
   it('should not give stories when user is not authorized', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {isNew: true};
       next();
     });
     request(app)
-      .get('/publishedStories')
+      .get('/discoverStories')
       .expect(302)
       .expect('location', '/', done);
   });
 
   it('should give stories when there is no error', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {isNew: false, id: 1};
+      req.session = {isNew: false, id: 58025419};
       next();
     });
-    request(app).get('/publishedStories').expect(200).expect(/title/, done);
+    request(app).get('/discoverStories').expect(200).expect(/title/, done);
   });
 });
 
