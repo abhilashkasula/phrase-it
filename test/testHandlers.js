@@ -270,6 +270,30 @@ describe('Integration tests', () => {
             .expect({error: 'unknown id'}, done);
         });
       });
+      describe('/addResponse', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58028408};
+            next();
+          });
+        });
+        it('should add response for a published story id', (done) => {
+          request(app)
+            .post('/addResponse')
+            .send({id: 2, response: 'some response'})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'added'}, done);
+        });
+        it('should give bad request for unknown id', (done) => {
+          request(app)
+            .post('/addResponse')
+            .send({id: 100, response: 'some response'})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'unknown id'}, done);
+        });
+      });
     });
   });
 });

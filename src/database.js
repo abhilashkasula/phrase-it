@@ -121,7 +121,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.get(queries.getPublishedStoryDetails(id)).then((storyDetails) => {
         if (!storyDetails) {
-          reject({error: 'unknown id'});
+          return reject({error: 'unknown id'});
         }
         this.get(queries.getResponsesCount(id)).then((responsesCount) => {
           storyDetails.responsesCount = responsesCount.count;

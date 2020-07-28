@@ -417,5 +417,35 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('addResponse', () => {
+      it('should add response if the story is published', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, {id: 2}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .addResponse(2, 58025419, 'some response')
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'added'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+      it('should reject if the given story id is unknown', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, undefined),
+        };
+        const database = new Database(db);
+        database
+          .addResponse(100, 58025419, 'response')
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'unknown id'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });

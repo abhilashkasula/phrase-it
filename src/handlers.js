@@ -136,9 +136,6 @@ const storyPage = (req, res) => {
   req.app.locals.db
     .getPublishedStoryDetails(id)
     .then((story) => {
-      if (!story) {
-        return res.status(statusCodes.NOT_FOUND).render('notFound');
-      }
       story.content = JSON.parse(story.content);
       if (!req.session.id) {
         return res.render('story', {story, isUserAuth: false, moment});
