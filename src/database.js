@@ -139,7 +139,7 @@ class Database {
             return reject({error: 'unknown id'});
           }
           this.all(queries.getResponses(storyId)).then((responses) =>
-            resolve(responses)
+            resolve(responses.reverse())
           );
         })
         .catch((err) => reject(err));
