@@ -1,0 +1,24 @@
+html
+  head
+    title Story
+    link(rel="stylesheet", href="/css/story.css")
+    link(rel="stylesheet", href="/css/navbar.css")
+    link(rel="stylesheet", href="/css/response.css")
+    script(src="/js/story.js")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+  body
+    include navbar
+    div(class="story-container")
+      div(id="story")
+        h1(id="story-title")=story.title
+        div(class="story-details")
+          div(class="story-author-container")
+            div(id="story-author-avathar")
+              img(src=story.avatar_url)
+            div(class="story-author")
+              div(id="story-author-name")=story.author
+              div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
+    div(class="new-response-block")
+      div(class="new-response")
+        textarea(name="response", class="response", placeholder="Type your response here...")
+        button(id="submit-response" class="submit-response") Respond

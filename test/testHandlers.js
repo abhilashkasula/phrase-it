@@ -34,12 +34,12 @@ describe('Integration tests', () => {
           .expect('Content-Type', /html/)
           .expect(/Login/, done);
       });
-      it('should give list of responses for /responses', (done) => {
+      it('should give responses page for /responses', (done) => {
         request(app)
           .get('/responses?id=1')
           .expect(200)
-          .expect('Content-Type', /json/)
-          .expect(/responses/, done);
+          .expect('Content-Type', /html/)
+          .expect(/response/, done);
       });
       it('should redirect to / for /edit', (done) => {
         request(app).get('/edit/1').expect(302).expect('location', '/', done);
@@ -254,6 +254,22 @@ describe('Integration tests', () => {
             .expect({error: 'Draft not found'}, done);
         });
       });
+      describe('/responses', () => {
+        it('should give responses page for proper id', (done) => {
+          request(app)
+            .get('/responses?id=2')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/response/, done);
+        });
+        it('should give badRequest for unknown id', (done) => {
+          request(app)
+            .get('/responses?id=100')
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'unknown id'}, done);
+        });
+      });
     });
   });
 });
@@ -416,23 +432,6 @@ describe('getPublishedStories', () => {
       next();
     });
     request(app).get('/publishedStories').expect(200).expect(/title/, done);
-  });
-});
-
-describe('/responses', () => {
-  it('should give list of responses for proper id', (done) => {
-    request(app)
-      .get('/responses?id=1')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .expect(/responses/, done);
-  });
-  it('should give badRequest for unknown id', (done) => {
-    request(app)
-      .get('/responses?id=100')
-      .expect(400)
-      .expect('Content-Type', /json/)
-      .expect({error: 'unknown id'}, done);
   });
 });
 

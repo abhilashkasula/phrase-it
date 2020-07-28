@@ -164,11 +164,21 @@ const getResponses = (req, res) => {
   req.app.locals.db
     .getResponses(id)
     .then((responses) => {
-      res.json({responses});
+      req.app.locals.db.getPublishedStoryDetails(id).then((story) => {
+        const options = {story, responses, moment, isUserAuth: true};
+        if (!req.session.id) {
+          options.isUserAuth = false;
+          return res.render('responses', options);
+        }
+        req.app.locals.db
+          .getUserDetails(req.session.id)
+          .then(({avatar_url}) => {
+            options.avatar_url = avatar_url;
+            res.render('responses', options);
+          });
+      });
     })
-    .catch((error) => {
-      res.status(statusCodes.BAD_REQUEST).json(error);
-    });
+    .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
 };
 
 const hasFields = (fields) => {
