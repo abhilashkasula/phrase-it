@@ -26,7 +26,15 @@ app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);
 
 app.use(
-  ['/newStory', '/updateStory', '/stories', '/publish', '/publishedStories'],
+  [
+    '/newStory',
+    '/updateStory',
+    '/stories',
+    '/publish',
+    '/publishedStories',
+    '/edit',
+    '/draft',
+  ],
   handlers.allowAuthorized
 );
 app.get('/newStory', handlers.newStory);

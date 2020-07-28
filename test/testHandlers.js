@@ -41,6 +41,9 @@ describe('Integration tests', () => {
           .expect('Content-Type', /json/)
           .expect(/responses/, done);
       });
+      it('should redirect to / for /edit', (done) => {
+        request(app).get('/edit/1').expect(302).expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -191,6 +194,22 @@ describe('Integration tests', () => {
         });
         it('should give not found if the story id is absent', (done) => {
           request(app).get('/story/10').expect(404, done);
+        });
+      });
+
+      describe('/edit', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should give draft editor page for /edit', (done) => {
+          request(app)
+            .get('/edit/1')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/publish/, done);
         });
       });
     });
