@@ -146,22 +146,26 @@ class Database {
     });
   }
 
-  followAuthor(followerId, authorId) {
-    return new Promise((resolve, reject) => {
-      this.get(queries.getFollower(authorId, followerId)).then((follower) => {
-        if (follower) {
-          return reject({error: 'Already following'});
-        }
-        this.exec(queries.addFollower(authorId, followerId)).then(() => {
-          resolve({status: 'Followed'});
-        });
-      });
-    });
+  async followAuthor(followerId, authorId) {
+    if (followerId === authorId) {
+      throw {error: 'You cannot follow yourself'};
+    }
+    const author = await this.get(queries.getUserDetails(authorId));
+    if (!author) {
+      throw {error: 'No author found'};
+    }
+    const follower = await this.get(queries.getFollower(authorId, followerId));
+    if (follower) {
+      throw {error: 'Already following'};
+    }
+    await this.exec(queries.addFollower(authorId, followerId));
+    return {status: 'following'};
   }
 
   getFollowingStories(userId) {
     return this.all(queries.followingStories(userId));
   }
+
   addResponse(storyId, userId, response) {
     return new Promise((resolve, reject) => {
       this.get(queries.getPublishedStory(storyId)).then((story) => {

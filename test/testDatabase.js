@@ -352,5 +352,70 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('followAuthor', () => {
+      it('should resolve with status for following an author', (done) => {
+        const db = {
+          get: (query, cb) => {
+            if (query.includes(58025419)) {
+              return cb(null, undefined);
+            }
+            cb(null, {id: 58025419});
+          },
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .followAuthor(58025419, 58025056)
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'following'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject for following yourself', (done) => {
+        const db = {};
+        const database = new Database(db);
+        database
+          .followAuthor(58025419, 58025419)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'You cannot follow yourself'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+      it('should reject for following an author not present', (done) => {
+        const db = {get: (query, cb) => cb(null, undefined)};
+        const database = new Database(db);
+        database
+          .followAuthor(58025419, 1)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'No author found'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject for following an author not present', (done) => {
+        const db = {
+          get: (query, cb) => {
+            if (query.includes(58025419)) {
+              return cb(null, {id: 58025419});
+            }
+            cb(null, {id: 1});
+          },
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .followAuthor(58025419, 1)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'Already following'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });
