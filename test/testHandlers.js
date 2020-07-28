@@ -169,7 +169,10 @@ describe('Integration tests', () => {
             .send({id: 5})
             .expect(400)
             .expect('Content-Type', /json/)
-            .expect({error: 'Too little story. Please extend the story'}, done);
+            .expect(
+              {error: 'Cannot publish a story with empty title and content'},
+              done
+            );
         });
       });
 

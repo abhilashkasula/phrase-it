@@ -99,7 +99,8 @@ class Database {
           return reject({error: 'No draft found'});
         }
         if (!row.title.trim() && !JSON.parse(row.content).length) {
-          return reject({error: 'Too little story. Please extend the story'});
+          const error = 'Cannot publish a story with empty title and content';
+          return reject({error});
         }
         this.exec(queries.publish(storyId))
           .then(() => resolve({status: 'published'}))

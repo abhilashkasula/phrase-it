@@ -254,7 +254,7 @@ describe('Unit Test', () => {
           .publish(1, 1)
           .catch((err) => {
             assert.deepStrictEqual(err, {
-              error: 'Too little story. Please extend the story',
+              error: 'Cannot publish a story with empty title and content',
             });
             done();
           })
