@@ -7,7 +7,7 @@ body {
 
 .container {
   position: relative;
-  top:100px;
+  top: 25px;
   height: 500px;
   width: 700px;
   display: inline-block;
@@ -22,44 +22,44 @@ body {
 
 .login {
   position: relative;
-  top:28px;
-  border: 1px solid rgba(180, 180, 180, .8);
-  width: 380px;
+  top: 28px;
+  border: 1px solid rgba(180, 180, 180, 0.8);
+  width: 400px;
   height: 65px;
   border-radius: 5px;
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   font-weight: 600;
 }
 
-.login:hover{
-  box-shadow: 0 4px 8px 0 rgba(200, 200, 200, .8);
+.login:hover {
+  box-shadow: 0 4px 8px 0 rgba(200, 200, 200, 0.8);
 }
 
-.box{
-  height:320px;
-  width :380px;
+.box {
+  height: 320px;
+  width: 380px;
   display: inline-block;
   text-align: center;
 }
 
-.logo{
-  height:280px;
+.logo {
+  height: 400px;
 }
 
-.link{
+.link {
   text-decoration: none;
   color: black;
 }
 
-.github{
+.github {
   position: relative;
-  top:10px;
-  height:46px;
-  width :85px;
+  top: 10px;
+  height: 46px;
+  width: 85px;
 }
 
-.text{
+.text {
   position: relative;
-  top:19px;
+  top: 19px;
 }
