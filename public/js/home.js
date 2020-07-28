@@ -19,11 +19,12 @@ const addStoryDetail = function(story, storyBox) {
   <h1 class="title">${story.title}</h1>
   <div class="story-content">${content} ...</div>
   <div class="story-author-container">
-   <div>
-     <div id="story-author-name">${story.author}</div>
-     <div id="story-time">${story.published_at}</div>
-   </div>
- </div>`;
+    <div>
+      <div id="story-author-name">${story.author}</div>
+      <div id="story-time">${story.published_at}</div>
+    </div>
+  </div>
+  `;
   storyBox.innerHTML = storyDetail;
 };
 

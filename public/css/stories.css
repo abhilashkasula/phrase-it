@@ -3,7 +3,7 @@ body {
 }
 
 .container {
-  padding: 0 5em 0 5em;
+  padding: 0 7em 0 7em;
 }
 
 ul {
@@ -22,7 +22,7 @@ ul {
 }
 
 .stories-title {
-  margin: 3.5% 0 2.5% 0;
+  margin: 3.5% 0 3% 0;
   font-size: 2.2em;
   font-weight: 1000;
 }
@@ -32,7 +32,7 @@ ul {
 }
 
 .story {
-  padding: 1.2% 0 1.2% 0;
+  padding: 1.4% 0 1.4% 0;
   border-bottom: 1px solid #ccc;
 }
 
@@ -51,7 +51,7 @@ ul {
 }
 
 .story-summary {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .story-last-edited {
@@ -60,6 +60,7 @@ ul {
 
 .story-title {
   margin: 0;
+  font-size: 19px;
 }
 
 .story-title-container {

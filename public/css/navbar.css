@@ -4,7 +4,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 9.5%);
+  width: calc(100% - 13.5%);
 }
 
 ul {
@@ -52,6 +52,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 1px 1px 4px #ccc;
 }
 .navbar-avathar {
   width: 36px;
@@ -67,6 +68,6 @@ body {
 }
 
 .logo{
-  height:70px;
+  height: 52px;
 }
 
