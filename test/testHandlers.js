@@ -212,6 +212,39 @@ describe('Integration tests', () => {
             .expect(/publish/, done);
         });
       });
+
+      describe('/draft', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58028408};
+            next();
+          });
+        });
+        it('should give the draft for given draft id present', (done) => {
+          const expected = {
+            draft: {
+              id: 6,
+              title: 'Title',
+              created_by: 58028408,
+              content: '[{"type":"paragraph","data":{"text":"Content1"}}]',
+              is_published: 0,
+              last_modified: '2020-07-24 15:22:33',
+            },
+          };
+          request(app)
+            .get('/draft/6')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(expected, done);
+        });
+
+        it('should give not found if given draft id not present', (done) => {
+          request(app)
+            .get('/draft/117')
+            .expect('Content-Type', /json/)
+            .expect({error: 'Draft not found'}, done);
+        });
+      });
     });
   });
 });
