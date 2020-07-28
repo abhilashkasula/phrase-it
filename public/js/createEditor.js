@@ -1,4 +1,4 @@
-const createEditor = (id) => {
+const createEditor = (id, placeholder) => {
   return new EditorJS({
     holder: id,
     tools: {
@@ -12,5 +12,6 @@ const createEditor = (id) => {
       delimiter: Delimiter,
       inlineCode: InlineCode,
     },
+    placeholder
   });
 };

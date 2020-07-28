@@ -7,18 +7,16 @@ div(class="navbar")
         ul
           li(class="options")
             div
+              div(id="status" class="status-hide") status
+            div
               button(class="disabled publish-button" id="publish") Publish
           li(class="avathar-nav")
             a(href="/stories")
               img(src=`${avatar_url}`, alt="" class="navbar-avathar")
-div(id="status" class="status-hide") status
 div(id="error" class="err-hide") error
 div(class="container")
   div(id="new-blog")
     div
-      label Title:
-      br
-      input(type="text", id="title")
+      input(type="text", id="title" placeholder="Title" maxLength="39")
     div
-      label Story:
       div(id="editor")
