@@ -214,6 +214,19 @@ const serveDraft = (req, res) => {
   });
 };
 
+const followAuthor = (req, res) => {
+  req.app.locals.db
+    .followAuthor(req.session.id, req.body.authorId)
+    .then((status) => res.json(status))
+    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+};
+
+const serveDashBoardStories = (req, res) => {
+  req.app.locals.db
+    .getFollowingStories(req.session.id)
+    .then((stories) => res.json(stories));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -229,4 +242,6 @@ module.exports = {
   getResponses,
   serveEditDraftPage,
   serveDraft,
+  followAuthor,
+  serveDashBoardStories,
 };

@@ -56,6 +56,7 @@ const getPublishedStoryDetails = (id) => {
     t1.title,
     t3.username as author,
     t3.avatar_url,
+    t3.id as authorId,
     t1.content,
     t2.published_at,
     t2.views 
@@ -83,6 +84,30 @@ const getResponsesCount = (storyId) =>
 const getPublishedStory = (storyId) =>
   `SELECT * FROM published_stories WHERE story_id = ${storyId}`;
 
+const getFollower = (authorId, followerId) =>
+  `SELECT * FROM followers
+    WHERE user_id = ${authorId} AND follower_id = ${followerId}`;
+
+const addFollower = (authorId, followerId) =>
+  `INSERT INTO followers (user_id, follower_id)
+    VALUES (${authorId}, ${followerId})`;
+
+const followingStories = (userId) => 
+  `WITH user_following as (
+    SELECT * from followers where follower_id = ${userId}
+  )
+  SELECT t1.id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t3.username author
+  from stories t1 
+  join published_stories t2 ON t1.id = t2.story_id 
+  join users t3 ON t1.created_by = t3.id
+  join user_following t4
+    ON t1.created_by = t4.user_id OR t1.created_by = ${userId}
+  ORDER BY t2.published_at DESC;`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -97,4 +122,7 @@ module.exports = {
   getResponses,
   getResponsesCount,
   getPublishedStory,
+  getFollower,
+  addFollower,
+  followingStories,
 };

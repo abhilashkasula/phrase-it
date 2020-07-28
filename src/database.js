@@ -152,6 +152,23 @@ class Database {
         .catch((err) => reject(err));
     });
   }
+
+  followAuthor(followerId, authorId) {
+    return new Promise((resolve, reject) => {
+      this.get(queries.getFollower(authorId, followerId)).then((follower) => {
+        if (follower) {
+          return reject({error: 'Already following'});
+        }
+        this.exec(queries.addFollower(authorId, followerId)).then(() => {
+          resolve({status: 'Followed'});
+        });
+      });
+    });
+  }
+
+  getFollowingStories(userId) {
+    return this.all(queries.followingStories(userId));
+  }
 }
 
 module.exports = Database;

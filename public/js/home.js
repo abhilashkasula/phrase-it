@@ -29,9 +29,9 @@ const addStoryDetail = function(story, storyBox) {
 };
 
 const getPublishedStories = () => {
-  sendGetRequest('/publishedStories', (stories) => {
+  sendGetRequest('/dashboardStories', (stories) => {
     const dashBoard = document.querySelector('.dashBoard');
-    stories.reverse().forEach((story) => {
+    stories.forEach((story) => {
       const storyBox = document.createElement('div');
       storyBox.id = story.id;
       storyBox.className = 'story-box';

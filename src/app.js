@@ -25,25 +25,27 @@ app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);
 
-app.use(
-  [
-    '/newStory',
-    '/updateStory',
-    '/stories',
-    '/publish',
-    '/publishedStories',
-    '/edit',
-    '/draft',
-  ],
-  handlers.allowAuthorized
-);
+const privateRoutes = [
+  '/newStory',
+  '/updateStory',
+  '/stories',
+  '/publish',
+  '/publishedStories',
+  '/edit',
+  '/draft',
+];
+
+app.use(privateRoutes, handlers.allowAuthorized);
+
 app.get('/newStory', handlers.newStory);
 app.get('/publishedStories', handlers.getPublishedStories);
+app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
 app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
+app.post('/follow', handlers.hasFields(['authorId']), handlers.followAuthor);
 app.use(handlers.notFound);
 
 module.exports = {app};
