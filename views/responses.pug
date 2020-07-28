@@ -1,36 +1,34 @@
 html
   head
     title Story
-    link(rel="stylesheet", href="/css/story.css")
     link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/response.css")
     script(src="/js/response.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
     include navbar
-    div(class="story-container")
-      div(id="story")
-        h1(id="story-title")=story.title
-        div(class="story-details")
-          div(class="story-author-container")
-            div(id="story-author-avathar")
-              img(src=story.avatar_url)
-            div(class="story-author")
-              div(id="story-author-name")=story.author
-              div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
+    div(class="header-container")
+      div(class="header")
+        p(class="title")=story.title
+        div(class="subheader-container")
+          div(class="subheader")
+            p(class="author")=story.author
+            p(class="published-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
+          div(class="response-summary")
+            img(src='/images/response.png' class="response-icon")
+            p(class="response-count")=`${story.responsesCount} ${story.responsesCount == 1 ? 'Response' : 'Responses'}`
     div(class="new-response-block")
       div(class="new-response")
-        textarea(name="response",id="response" class="response", placeholder="Type your response here...")
+        textarea(name="response",id="response" class="response-text", placeholder="Type your response here...")
         button(id="submit-response" class="submit-response" onclick=`respond(${story.id})`) Respond
     div(class="responses-holder")
       each response in responses
-        div(class="story-container")
-          div(id="story")
-            div(class="story-details")
-              div(class="story-author-container")
-                div(id="story-author-avathar")
-                  img(src=response.avatar_url)
-                div(class="story-author")
-                  div(id="story-author-name")=response.username
-                  div(id="story-time")=`Responded ${moment(response.responded_at).startOf('min').fromNow()}`
-                  p(class="response")=response.response
+        div(class="response-container")
+          div(id="response")
+            div(class="response-details")
+              div(class="response-author-container")
+                img(src=response.avatar_url class="response-avatar")
+                div(class="response-author")
+                  p(class="response-author-name")=response.username
+                  p(class="response-time")=`Responded ${moment(response.responded_at).startOf('min').fromNow()}`
+            p(class="response")=response.response
