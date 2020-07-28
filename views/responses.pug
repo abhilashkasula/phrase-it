@@ -4,7 +4,7 @@ html
     link(rel="stylesheet", href="/css/story.css")
     link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/response.css")
-    script(src="/js/story.js")
+    script(src="/js/response.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
     include navbar
@@ -20,5 +20,5 @@ html
               div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
     div(class="new-response-block")
       div(class="new-response")
-        textarea(name="response", class="response", placeholder="Type your response here...")
-        button(id="submit-response" class="submit-response") Respond
+        textarea(name="response",id="response" class="response", placeholder="Type your response here...")
+        button(id="submit-response" class="submit-response" onclick=`respond(${story.id})`) Respond

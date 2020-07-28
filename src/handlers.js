@@ -181,6 +181,14 @@ const getResponses = (req, res) => {
     .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
 };
 
+const addResponse = (req, res) => {
+  const {id, response} = req.body;
+  req.app.locals.db
+    .addResponse(id, req.session.id, response)
+    .then(() => res.redirect(`/response?id=${id}`))
+    .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
+};
+
 const hasFields = (fields) => {
   return (req, res, next) => {
     if (fields.every((field) => field in req.body)) {
@@ -240,6 +248,7 @@ module.exports = {
   hasFields,
   notFound,
   getResponses,
+  addResponse,
   serveEditDraftPage,
   serveDraft,
   followAuthor,

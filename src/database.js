@@ -153,6 +153,7 @@ class Database {
     });
   }
 
+<<<<<<< HEAD
   followAuthor(followerId, authorId) {
     return new Promise((resolve, reject) => {
       this.get(queries.getFollower(authorId, followerId)).then((follower) => {
@@ -169,6 +170,20 @@ class Database {
   getFollowingStories(userId) {
     return this.all(queries.followingStories(userId));
   }
+=======
+  addResponse(storyId, userId, response) {
+    return new Promise((resolve, reject) => {
+      this.get(queries.getPublishedStory(storyId)).then((story) => {
+        if (!story) {
+          return reject({error: 'unknown id'});
+        }
+        this.exec(queries.addResponse(storyId, userId, response)).then(() =>
+          resolve({status: 'added'})
+        );
+      });
+    });
+  }
+>>>>>>> | #20 | Rashmi/Anil | Added addResponse route
 }
 
 module.exports = Database;
