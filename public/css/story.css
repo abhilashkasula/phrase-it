@@ -111,7 +111,8 @@ body {
   cursor: pointer;
 }
 
-#story-clap-count, #story-response-count {
+#story-clap-count,
+#story-response-count {
   opacity: 0.7;
   font-size: small;
 }
@@ -131,4 +132,25 @@ body {
   justify-content: flex-end;
   align-items: center;
   width: 300px;
+}
+
+.response-block {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  align-self: start;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.response-icon {
+  height: 30px;
+  width: auto;
+  margin-top: 12px;
+  margin-right: 5px;
+}
+
+.response-count {
+  font-weight: 600;
 }

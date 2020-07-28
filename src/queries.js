@@ -77,6 +77,9 @@ const getUserPublishedStories = (userId) =>
 const getResponses = (storyId) =>
   `SELECT * FROM responses WHERE response_on = ${storyId}`;
 
+const getResponsesCount = (storyId) =>
+  `SELECT COUNT(*) AS count FROM responses WHERE response_on = ${storyId}`;
+
 const getPublishedStory = (storyId) =>
   `SELECT * FROM published_stories WHERE story_id = ${storyId}`;
 
@@ -92,5 +95,6 @@ module.exports = {
   getPublishedStoryDetails,
   getUserPublishedStories,
   getResponses,
+  getResponsesCount,
   getPublishedStory,
 };

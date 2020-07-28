@@ -125,7 +125,17 @@ class Database {
   }
 
   getPublishedStoryDetails(id) {
-    return this.get(queries.getPublishedStoryDetails(id));
+    return new Promise((resolve, reject) => {
+      this.get(queries.getPublishedStoryDetails(id)).then((storyDetails) => {
+        if (!storyDetails) {
+          reject({error: 'unknown id'});
+        }
+        this.get(queries.getResponsesCount(id)).then((responsesCount) => {
+          storyDetails.responsesCount = responsesCount.count;
+          resolve(storyDetails);
+        });
+      });
+    });
   }
 
   getResponses(storyId) {
