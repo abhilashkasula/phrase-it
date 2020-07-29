@@ -93,19 +93,21 @@ const addFollower = (authorId, followerId) =>
 
 const followingStories = (userId) =>
   `WITH user_following as (
-    SELECT * from followers where follower_id = ${userId}
-  )
+     SELECT * from followers where follower_id = ${userId}
+   )
   SELECT t1.id,
     t1.title,
     t1.content,
     t2.published_at,
-    t3.username author
-  from stories t1 
-  join published_stories t2 ON t1.id = t2.story_id 
-  join users t3 ON t1.created_by = t3.id
-  join user_following t4
+    t3.username author,
+    t3.id authorId
+  FROM stories t1 
+  JOIN published_stories t2 ON t1.id = t2.story_id 
+  JOIN users t3 ON t1.created_by = t3.id
+  LEFT JOIN user_following t4
     ON t1.created_by = t4.user_id OR t1.created_by = ${userId}
-  ORDER BY t2.published_at DESC;`;
+    WHERE t3.id = ${userId} OR t4.user_id IS NOT NULL
+    ORDER BY published_at DESC;`;
 
 module.exports = {
   insertNewStory,

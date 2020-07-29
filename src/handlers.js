@@ -212,7 +212,7 @@ const serveDraft = (req, res) => {
 
 const followAuthor = (req, res) => {
   req.app.locals.db
-    .followAuthor(req.session.id, req.body.authorId)
+    .followAuthor(req.session.id, +req.body.authorId)
     .then((status) => res.json(status))
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
