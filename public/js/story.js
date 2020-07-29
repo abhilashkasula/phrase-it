@@ -44,11 +44,10 @@ const follow = (authorId) => {
 
 const main = () => {
   const copy = document.querySelector('#story-url');
-  const followButton = document.querySelector('#follow');
-  const unFollowButton = document.querySelector('#unfollow');
-  const userId = followButton.getAttribute('userId');
+  const time = document.querySelector('#story-time');
+  const value = time.getAttribute('published_at');
+  time.innerText = `Published ${moment(value).startOf('min').fromNow()}`;
   copy.addEventListener('click', copyUrl);
-  followButton.addEventListener('click', () => follow(userId));
-  unFollowButton.addEventListener('click', () => unFollow(userId));
 };
+
 window.onload = main;

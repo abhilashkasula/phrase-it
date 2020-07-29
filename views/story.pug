@@ -3,6 +3,7 @@ html
     title Story
     link(rel="stylesheet", href="/css/story.css")
     link(rel="stylesheet", href="/css/navbar.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js") 
     script(src="/js/story.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
@@ -16,10 +17,10 @@ html
               img(src=story.avatar_url)
             div(class="story-author")
               div(id="story-author-name")=story.author
-              div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
+              div(id="story-time" published_at=`${story.published_at}`)
             if isUserAuth && isUserAuth != story.authorId
-              button(id="unfollow" userId=`${story.authorId}` class=`${story.is_following ? '' : 'hide-btn'}`) Unfollow
-              button(id="follow" userId=`${story.authorId}` class=`${story.is_following ? 'hide-btn': ''}`) Follow
+              button(id="unfollow" onclick=`unFollow(${story.authorId})` class=`${story.is_following ? '' : 'hide-btn'}`) Unfollow
+              button(id="follow" onclick=`follow(${story.authorId})` class=`${story.is_following ? 'hide-btn': ''}`) Follow
           div(class="url-container")
             input(type="text" id="url")
             button(id="story-url") Copy link

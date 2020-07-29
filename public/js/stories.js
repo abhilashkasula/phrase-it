@@ -10,13 +10,19 @@ const showTab = (tab) => {
   document.querySelector(`#${id}`).classList.remove('hidden');
 };
 
+const setTime = (stories, text) => {
+  stories.forEach(story => {
+    const time = story.getAttribute('published_at');
+    story.innerText = `${text} ${moment(time).startOf('min').fromNow()}`;
+  });
+};
+
 const main = () => {
-  // const publishButtons = document.querySelectorAll('.publish-button');
   const tabs = Array.from(document.querySelectorAll('.tab-name'));
-  // publishButtons.forEach((button) => {
-  //   const cb = (err) => showErr(err);
-  //   button.addEventListener('click', () => publish(button.id, cb));
-  // });
+  const drafts = Array.from(document.querySelectorAll('.draft-last-edited'));
+  const publish = Array.from(document.querySelectorAll('.publish-last-edited'));
+  setTime(drafts, 'Last edited');
+  setTime(publish, 'Published');
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => showTab(tab));
   });

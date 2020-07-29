@@ -1,4 +1,3 @@
-const moment = require('moment');
 const {request} = require('./request');
 const statusCodes = require('./statusCodes');
 
@@ -101,7 +100,6 @@ const storiesPage = async (req, res) => {
         username,
         avatar_url,
         drafts,
-        moment,
         published,
         isUserAuth: id,
       };
@@ -138,10 +136,10 @@ const storyPage = (req, res) => {
     .then((story) => {
       story.content = JSON.parse(story.content);
       if (!req.session.id) {
-        return res.render('story', {story, isUserAuth: false, moment});
+        return res.render('story', {story, isUserAuth: false});
       }
       req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-        const options = {story, isUserAuth: req.session.id, avatar_url, moment};
+        const options = {story, isUserAuth: req.session.id, avatar_url};
         res.render('story', options);
       });
     })
@@ -154,7 +152,7 @@ const getResponses = (req, res) => {
     .getResponses(id)
     .then((responses) => {
       req.app.locals.db.getPublishedStoryDetails(id).then((story) => {
-        const options = {story, responses, moment, isUserAuth: true};
+        const options = {story, responses, isUserAuth: true};
         if (!req.session.id) {
           options.isUserAuth = false;
           return res.render('responses', options);

@@ -15,13 +15,14 @@ const addStoryDetail = function (story, storyBox) {
   const totalContent = JSON.parse(story.content);
   const contentLength = totalContent.length;
   const content = contentLength ? totalContent[0].data.text.slice(0, 70) : '';
+  const publishedAt = moment(story.published_at).startOf('min').fromNow();
   const storyDetail = `
   <h1 class="title">${story.title}</h1>
   <div class="story-content">${content} ...</div>
   <div class="story-author-container">
     <div>
       <div class="story-author-name">${story.author}</div>
-      <div class="story-time">${story.published_at}</div>
+      <div class="story-time">${publishedAt}</div>
     </div>
   </div>
   `;
