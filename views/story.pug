@@ -37,6 +37,9 @@ html
               when 'delimiter'
                 div(class="content-delimiter") * * *
         div(id="bottom-bar" class="bottom-bar")
+          div(id="clap" class="clap-block")
+            img(src='/images/clap.png' class="clap-icon")
+            p(class="clap-count")=`${story.clapsCount} ${story.clapsCount == 1 ? 'Clap' : 'Claps'}`
           a(id="response" class="response-block" href=`/responses?id=${story.id}`)
             img(src='/images/response.png' class="response-icon")
             p(class="response-count")=`${story.responsesCount} ${story.responsesCount == 1 ? 'Response' : 'Responses'}`

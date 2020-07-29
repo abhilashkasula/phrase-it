@@ -75,6 +75,9 @@ const getResponses = (storyId) =>
 const getResponsesCount = (storyId) =>
   `SELECT COUNT(*) AS count FROM responses WHERE response_on = ${storyId}`;
 
+const getClapsCount = (storyId) =>
+  `SELECT COUNT(*) AS count FROM claps WHERE story_id = ${storyId}`;
+
 const addResponse = (storyId, userId, response) =>
   `INSERT INTO responses 
   (response_on, responded_by, responded_at, response)
@@ -122,6 +125,7 @@ module.exports = {
   addResponse,
   getResponses,
   getResponsesCount,
+  getClapsCount,
   getPublishedStory,
   getFollower,
   addFollower,

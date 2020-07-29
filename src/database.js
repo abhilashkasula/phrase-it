@@ -119,9 +119,12 @@ class Database {
         if (!storyDetails) {
           return reject({error: 'unknown id'});
         }
-        this.get(queries.getResponsesCount(id)).then((responsesCount) => {
-          storyDetails.responsesCount = responsesCount.count;
-          resolve(storyDetails);
+        this.get(queries.getResponsesCount(id)).then(({count}) => {
+          storyDetails.responsesCount = count;
+          this.get(queries.getClapsCount(id)).then(({count}) => {
+            storyDetails.clapsCount = count;
+            resolve(storyDetails);
+          });
         });
       });
     });
