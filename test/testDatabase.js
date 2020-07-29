@@ -400,5 +400,25 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('getFollowingStories', () => {
+      it('should resolve with following and my stories', (done) => {
+        const stories = [
+          {
+            id: 1,
+            title: 'Title',
+            content: '[]',
+            author: 'Author',
+            authorId: 1111,
+          },
+        ];
+        const db = {all: (query, cb) => cb(null, stories)};
+        const database = new Database(db);
+        database.getFollowingStories(1111).then((res) => {
+          assert.deepStrictEqual(res, stories);
+          done();
+        });
+      });
+    });
   });
 });
