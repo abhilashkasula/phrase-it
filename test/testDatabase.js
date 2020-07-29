@@ -163,17 +163,16 @@ describe('Unit Test', () => {
     });
 
     describe('addUser', () => {
-      it('should resolve status added user if there is no error', (done) => {
-        const db = {run: (query, cb) => cb()};
+      it('should not reject when adding a user', (done) => {
+        const db = {exec: (query, cb) => cb()};
         const database = new Database(db);
-        database.addUser('query').then((res) => {
-          assert.strictEqual(res.status, 'added user');
+        database.addUser('query').then(() => {
           done();
         });
       });
 
-      it('should reject error if there is  error', (done) => {
-        const db = {run: (query, cb) => cb('Err')};
+      it('should reject when adding a user already present', (done) => {
+        const db = {exec: (query, cb) => cb('Err')};
         const database = new Database(db);
         database.addUser('query').catch((err) => {
           assert.strictEqual(err, 'Err');

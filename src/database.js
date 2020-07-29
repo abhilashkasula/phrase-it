@@ -67,14 +67,15 @@ class Database {
   }
 
   addUser({id, name, avatar_url}) {
-    return new Promise((resolve, reject) => {
-      this.db.run(queries.insertUser(id, name, avatar_url), (err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve({status: 'added user'});
-      });
-    });
+    return this.exec(queries.insertUser(id, name, avatar_url));
+    // return new Promise((resolve, reject) => {
+    //   this.db.run(queries.insertUser(id, name, avatar_url), (err) => {
+    //     if (err) {
+    //       return reject(err);
+    //     }
+    //     resolve({status: 'added user'});
+    //   });
+    // });
   }
 
   async getUserDetails(id) {
