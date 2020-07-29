@@ -205,7 +205,7 @@ describe('Integration tests', () => {
             .expect(/\/newStory/, done);
         });
         it('should give not found if the story id is absent', (done) => {
-          request(app).get('/story/10').expect(400, done);
+          request(app).get('/story/10').expect(404, done);
         });
       });
 

@@ -6,7 +6,6 @@ const handlers = require('./handlers');
 const Database = require('./database');
 const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
 
-const updateField = ['title', 'blocks'];
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
 app.locals = {db, CLIENT_ID, CLIENT_SECRET, SECRET_MSG};
@@ -20,7 +19,6 @@ app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 app.use((...args) => app.get('sessionMiddleware')(...args));
 
 app.get('/', handlers.handleHomePage);
-
 app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);
@@ -38,9 +36,9 @@ const privateRoutes = [
   '/unFollow',
   '/clap',
 ];
+const updateField = ['title', 'blocks'];
 
 app.use(privateRoutes, handlers.allowAuthorized);
-
 app.get('/newStory', handlers.newStory);
 app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);

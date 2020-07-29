@@ -131,7 +131,7 @@ const storyPage = (req, res) => {
         res.render('story', options);
       });
     })
-    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
 };
 
 const getResponses = (req, res) => {
