@@ -178,6 +178,14 @@ const addResponse = (req, res) => {
     .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
 };
 
+const clap = (req, res) => {
+  const {id} = req.body;
+  req.app.locals.db
+    .clap(id, req.session.id)
+    .then((result) => res.json(result))
+    .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
+};
+
 const hasFields = (fields) => {
   return (req, res, next) => {
     if (fields.every((field) => field in req.body)) {
@@ -249,4 +257,5 @@ module.exports = {
   followAuthor,
   serveDashBoardStories,
   unFollow,
+  clap,
 };

@@ -36,6 +36,7 @@ const privateRoutes = [
   '/draft',
   '/addResponse',
   '/unFollow',
+  '/clap',
 ];
 
 app.use(privateRoutes, handlers.allowAuthorized);
@@ -54,6 +55,7 @@ app.post(
   handlers.hasFields(['id', 'response']),
   handlers.addResponse
 );
+app.post('/clap', handlers.hasFields(['id']), handlers.clap);
 app.use(handlers.notFound);
 
 module.exports = {app};

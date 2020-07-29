@@ -192,6 +192,20 @@ class Database {
       });
     });
   }
+
+  async clap(storyId, userId) {
+    const story = await this.get(queries.getPublishedStory(storyId));
+    if (!story) {
+      throw {error: 'unknown id'};
+    }
+    const row = await this.get(queries.getClapDetails(storyId, userId));
+    if (row) {
+      await this.exec(queries.removeClap(storyId, userId));
+      return {status: 'removed'};
+    }
+    await this.exec(queries.addClap(storyId, userId));
+    return {status: 'added'};
+  }
 }
 
 module.exports = Database;
