@@ -50,6 +50,9 @@ describe('Integration tests', () => {
       it('should redirect to / for /follow', (done) => {
         request(app).get('/follow').expect('location', '/', done);
       });
+      it('should redirect to / for /clap', (done) => {
+        request(app).get('/clap').expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -377,6 +380,39 @@ describe('Integration tests', () => {
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'You are not a follower of this author'}, done);
+        });
+      });
+
+      describe('clap', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should clap if the user have not clapped already', (done) => {
+          request(app)
+            .post('/clap')
+            .send({id: 2})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'added', clapCount: 1}, done);
+        });
+        it('should remove clap if the user clapped already', (done) => {
+          request(app)
+            .post('/clap')
+            .send({id: 3})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'removed', clapCount: 0}, done);
+        });
+        it('should give bad request for unknown id', (done) => {
+          request(app)
+            .post('/clap')
+            .send({id: 4})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'unknown id'}, done);
         });
       });
     });
