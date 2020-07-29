@@ -401,6 +401,56 @@ describe('Unit Test', () => {
       });
     });
 
+    describe('clap', () => {
+      it('should add clap if the user is not already clapped', (done) => {
+        const db = {
+          get: (query, cb) =>
+            query.includes('clapped_by') ? cb(null) : cb(null, {count: 2}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .clap(2, 58025419)
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'added', clapCount: 3});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should remove clap if the user already clapped', (done) => {
+        const db = {
+          get: (query, cb) =>
+            query.includes('clapped_by')
+              ? cb(null, {id: 2})
+              : cb(null, {count: 2}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .clap(2, 58025419)
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'removed', clapCount: 1});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject if the given story id is unknown', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, undefined),
+        };
+        const database = new Database(db);
+        database
+          .clap(100, 58025419)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'unknown id'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
+
     describe('getFollowingStories', () => {
       it('should resolve with following and my stories', (done) => {
         const stories = [
