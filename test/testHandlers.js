@@ -294,6 +294,46 @@ describe('Integration tests', () => {
             .expect({error: 'unknown id'}, done);
         });
       });
+      describe('/follow', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should follow the author for a valid authorId', (done) => {
+          request(app)
+            .post('/follow')
+            .send({authorId: 58026249})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'following'}, done);
+        });
+        it('should give error for following yourself', (done) => {
+          request(app)
+            .post('/follow')
+            .send({authorId: 58025056})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'You cannot follow yourself'}, done);
+        });
+        it('should give error for following an invalid author', (done) => {
+          request(app)
+            .post('/follow')
+            .send({authorId: 1})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'No author found'}, done);
+        });
+        it('should give err for following already following author', (done) => {
+          request(app)
+            .post('/follow')
+            .send({authorId: 58025419})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'Already following'}, done);
+        });
+      });
     });
   });
 });
