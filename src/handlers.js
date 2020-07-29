@@ -28,12 +28,8 @@ const requestUserDetails = (req, res, token) => {
       req.session.userName = login;
       req.app.locals.db
         .addUser({id, name: name || login, avatar_url})
-        .then(() => {
-          res.redirect('/');
-        })
-        .catch(() => {
-          res.redirect('/');
-        });
+        .then(() => res.redirect('/'))
+        .catch(() => res.redirect('/'));
     })
     .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
 };
@@ -74,9 +70,7 @@ const handleHomePage = function (req, res) {
       .then(({username, avatar_url}) => {
         res.render('home', {username, avatar_url, isUserAuth: true});
       })
-      .catch((err) => {
-        res.status(statusCodes.NOT_AUTH).json(err);
-      });
+      .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
   }
 };
 
@@ -96,13 +90,7 @@ const storiesPage = async (req, res) => {
   req.app.locals.db
     .getUserDetails(id)
     .then(({username, avatar_url}) => {
-      const options = {
-        username,
-        avatar_url,
-        drafts,
-        published,
-        isUserAuth: id,
-      };
+      const options = {username, avatar_url, drafts, published, isUserAuth: id};
       res.render('stories', options);
     })
     .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
@@ -217,7 +205,7 @@ const serveDraft = (req, res) => {
   });
 };
 
-const followAuthor = (req, res) => {
+const follow = (req, res) => {
   req.app.locals.db
     .followAuthor(req.session.id, +req.body.authorId)
     .then((status) => res.json(status))
@@ -252,7 +240,7 @@ module.exports = {
   addResponse,
   serveEditDraftPage,
   serveDraft,
-  followAuthor,
+  follow,
   serveDashBoardStories,
   unFollow,
   clap,
