@@ -44,6 +44,12 @@ describe('Integration tests', () => {
       it('should redirect to / for /edit', (done) => {
         request(app).get('/edit/1').expect(302).expect('location', '/', done);
       });
+      it('should redirect to / for /dashboardStories', (done) => {
+        request(app).get('/dashboardStories').expect('location', '/', done);
+      });
+      it('should redirect to / for /follow', (done) => {
+        request(app).get('/follow').expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
