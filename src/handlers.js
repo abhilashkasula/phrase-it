@@ -17,7 +17,7 @@ const requestUserDetails = (req, res, token) => {
     .catch(() => res.status(statusCodes.NOT_FOUND).json({error}));
 };
 
-const getUserDetails = function (req, res) {
+const getUserDetails = (req, res) => {
   const {code} = req.query;
   const error = 'Code not found';
   const clientId = `client_id=${req.app.locals.CLIENT_ID}`;
@@ -44,7 +44,7 @@ const updateStory = (req, res) => {
     });
 };
 
-const handleHomePage = function (req, res) {
+const handleHomePage = (req, res) => {
   if (req.session.isNew) {
     res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   } else {
@@ -165,7 +165,7 @@ const hasFields = (fields) => {
   };
 };
 
-const notFound = function (req, res) {
+const notFound = (req, res) => {
   res.status(statusCodes.NOT_FOUND).render('notFound');
 };
 
