@@ -18,7 +18,7 @@ app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));
 
-app.get('/', handlers.handleHomePage);
+app.get('/', handlers.serveHomePage);
 app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.storyPage);
 app.get('/responses', handlers.getResponses);

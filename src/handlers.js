@@ -44,7 +44,7 @@ const updateStory = (req, res) => {
     });
 };
 
-const handleHomePage = (req, res) => {
+const serveHomePage = (req, res) => {
   if (req.session.isNew) {
     res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   } else {
@@ -212,7 +212,7 @@ const unFollow = (req, res) => {
 module.exports = {
   updateStory,
   getUserDetails,
-  handleHomePage,
+  serveHomePage,
   storiesPage,
   newStory,
   allowAuthorized,
