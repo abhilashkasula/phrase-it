@@ -334,6 +334,21 @@ describe('Integration tests', () => {
             .expect({error: 'Already following'}, done);
         });
       });
+      describe('/dashboardStories', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should give the following and my stories', (done) => {
+          request(app)
+            .get('/dashboardStories')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(/A new app/, done);
+        });
+      });
     });
   });
 });
