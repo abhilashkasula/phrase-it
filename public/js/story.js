@@ -42,6 +42,27 @@ const follow = (authorId) => {
     .then(({status}) => status && changeOptionToUnFollow());
 };
 
+const updateClapsCount = (status, clapCount) => {
+  const text = clapCount === 1 ? 'Clap' : 'Claps';
+  const clapCountContainer = document.querySelector('#clap-count');
+  clapCountContainer.innerText = `${clapCount} ${text}`;
+  const imgSrc = status === 'added' ? '/clap.png' : '/un-clap.png';
+  document.querySelector('#clap-icon').src = `/images/${imgSrc}`;
+};
+
+const clap = (storyId) => {
+  const options = {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({id: storyId}),
+  };
+  fetch('/clap', options)
+    .then((res) => res.json())
+    .then(({status, clapCount}) => {
+      status && updateClapsCount(status, clapCount);
+    });
+};
+
 const main = () => {
   const copy = document.querySelector('#story-url');
   const time = document.querySelector('#story-time');

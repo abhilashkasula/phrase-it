@@ -199,12 +199,13 @@ class Database {
       throw {error: 'unknown id'};
     }
     const row = await this.get(queries.getClapDetails(storyId, userId));
+    let {count} = await this.get(queries.getClapsCount(storyId));
     if (row) {
       await this.exec(queries.removeClap(storyId, userId));
-      return {status: 'removed'};
+      return {status: 'removed', clapCount: --count};
     }
     await this.exec(queries.addClap(storyId, userId));
-    return {status: 'added'};
+    return {status: 'added', clapCount: ++count};
   }
 }
 

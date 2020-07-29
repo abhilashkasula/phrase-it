@@ -117,7 +117,8 @@ body {
   font-size: small;
 }
 
-#follow, #unfollow {
+#follow,
+#unfollow {
   margin-top: -17px;
   margin-left: 8px;
   background-color: white;
@@ -146,7 +147,7 @@ body {
   text-decoration: none;
   color: black;
   cursor: pointer;
-  margin-right: 50px;
+  width: 180px;
 }
 
 .response-icon {
