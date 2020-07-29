@@ -4,6 +4,7 @@ const {getDetailsOptions, getTokenOptions} = require('./options');
 
 const requestUserDetails = (req, res, token) => {
   const detailsOptions = getDetailsOptions(token);
+  const error = 'No user found';
   request(detailsOptions)
     .then(({id, login, name, avatar_url}) => {
       req.session.id = id;
@@ -13,18 +14,19 @@ const requestUserDetails = (req, res, token) => {
         .then(() => res.redirect('/'))
         .catch(() => res.redirect('/'));
     })
-    .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
+    .catch(() => res.status(statusCodes.NOT_FOUND).json({error}));
 };
 
 const getUserDetails = function (req, res) {
   const {code} = req.query;
+  const error = 'Code not found';
   const clientId = `client_id=${req.app.locals.CLIENT_ID}`;
   const clientSecret = `client_secret=${req.app.locals.CLIENT_SECRET}`;
   const query = `${clientId}&${clientSecret}&code=${code}`;
   const tokenOptions = getTokenOptions(query);
   request(tokenOptions)
     .then(({access_token}) => requestUserDetails(req, res, access_token))
-    .catch(() => res.status(statusCodes.NOT_FOUND).send('Err'));
+    .catch(() => res.status(statusCodes.NOT_FOUND).json({error}));
 };
 
 const updateStory = (req, res) => {
