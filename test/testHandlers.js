@@ -94,7 +94,7 @@ describe('Integration tests', () => {
             .send(data)
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'updated'}, done);
+            .expect({status: 'Story updated'}, done);
         });
 
         it('should give 404 for updating story with unknown id', (done) => {
@@ -103,7 +103,7 @@ describe('Integration tests', () => {
             .send({id: 100, title: 'Title', blocks: ''})
             .expect(404)
             .expect('Content-Type', /json/)
-            .expect({error: 'unknown id'}, done);
+            .expect({error: 'No draft found'}, done);
         });
 
         it('should create story & give back id if id not present', (done) => {

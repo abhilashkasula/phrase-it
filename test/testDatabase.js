@@ -121,7 +121,7 @@ describe('Unit Test', () => {
         database
           .updateStory(1, 'Title', 'John', 'Content')
           .then((result) => {
-            assert.deepStrictEqual(result, {status: 'updated'});
+            assert.deepStrictEqual(result, {status: 'Story updated'});
             done();
           })
           .catch((err) => done(err));
@@ -135,7 +135,7 @@ describe('Unit Test', () => {
         database
           .updateStory(1, 'Title', 'John', 'Content')
           .catch((result) => {
-            assert.deepStrictEqual(result, {error: 'unknown id'});
+            assert.deepStrictEqual(result, {error: 'No draft found'});
             done();
           })
           .catch((err) => done(err));

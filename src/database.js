@@ -56,10 +56,10 @@ class Database {
     const query = queries.saveStory(storyId, title, content);
     const row = await this.getDraft(storyId, authorId);
     if (!row) {
-      throw {error: 'unknown id'};
+      throw {error: 'No draft found'};
     }
     await this.exec(query);
-    return {status: 'updated'};
+    return {status: 'Story updated'};
   }
 
   getDrafts(userId) {
