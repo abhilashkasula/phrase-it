@@ -113,23 +113,20 @@ class Database {
     return this.all(queries.getUserPublishedStories(userId));
   }
 
-  getPublishedStoryDetails(storyId, userId = 'NULL') {
-    return new Promise((resolve, reject) => {
-      this.get(queries.getPublishedStoryDetails(storyId, userId)).then(
-        (storyDetails) => {
-          if (!storyDetails) {
-            return reject({error: 'unknown id'});
-          }
-          this.get(queries.getResponsesCount(storyId)).then(({count}) => {
-            storyDetails.responsesCount = count;
-            this.get(queries.getClapsCount(storyId)).then(({count}) => {
-              storyDetails.clapsCount = count;
-              resolve(storyDetails);
-            });
-          });
-        }
-      );
-    });
+  async getPublishedStoryDetails(storyId, userId = 'NULL') {
+    const storyDetails = await this.get(
+      queries.getPublishedStoryDetails(storyId, userId)
+    );
+    if (!storyDetails) {
+      throw {error: 'unknown id'};
+    }
+    const responsesCount = await this.get(queries.getResponsesCount(storyId));
+    storyDetails.responsesCount = responsesCount.count;
+    const clapCount = await this.get(queries.getClapsCount(storyId));
+    storyDetails.clapsCount = clapCount.count;
+    const userClap = await this.get(queries.getClapDetails(storyId, userId));
+    storyDetails.isClapped = Boolean(userClap);
+    return storyDetails;
   }
 
   getResponses(storyId) {

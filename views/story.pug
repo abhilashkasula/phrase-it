@@ -41,7 +41,7 @@ html
                 div(class="content-delimiter") * * *
         div(id="bottom-bar" class="bottom-bar")
           div(id="clap" class="clap-block")
-            img(src='/images/clap.png' id="clap-icon" class="clap-icon" onclick=`clap(${story.id})`)
+            img(src=`/images/${story.isClapped ? 'clap' : 'un-clap'}.png` id="clap-icon" class="clap-icon" onclick=`clap(${story.id})`)
             p(class="clap-count", id="clap-count")=`${story.clapsCount} ${story.clapsCount == 1 ? 'Clap' : 'Claps'}`
           a(id="response" class="response-block" href=`/responses?id=${story.id}`)
             img(src='/images/response.png' class="response-icon")
