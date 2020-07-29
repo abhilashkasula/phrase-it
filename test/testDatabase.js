@@ -420,5 +420,38 @@ describe('Unit Test', () => {
         });
       });
     });
+
+    describe('unFollowAuthor', () => {
+      it('should resolve status unfollowed if already following', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, {id: 111}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .unFollowAuthor(111, 222)
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'Unfollowed'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject error if not already following', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, undefined),
+        };
+        const database = new Database(db);
+        database
+          .unFollowAuthor(111, 222)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {
+              error: 'You are not a follower of this author',
+            });
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });
