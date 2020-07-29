@@ -20,7 +20,7 @@ app.use((...args) => app.get('sessionMiddleware')(...args));
 
 app.get('/', handlers.serveHomePage);
 app.get('/user', handlers.getUserDetails);
-app.get('/story/:id', handlers.storyPage);
+app.get('/story/:id', handlers.serveStoryPage);
 app.get('/responses', handlers.getResponses);
 
 const privateRoutes = [

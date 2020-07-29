@@ -101,7 +101,7 @@ const publish = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
-const storyPage = (req, res) => {
+const serveStoryPage = (req, res) => {
   const {id} = req.params;
   req.app.locals.db
     .getPublishedStoryDetails(id, req.session.id)
@@ -217,7 +217,7 @@ module.exports = {
   newStory,
   allowAuthorized,
   publish,
-  storyPage,
+  serveStoryPage,
   hasFields,
   notFound,
   getResponses,
