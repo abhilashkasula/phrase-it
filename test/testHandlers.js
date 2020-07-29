@@ -355,6 +355,30 @@ describe('Integration tests', () => {
             .expect(/A new app/, done);
         });
       });
+      describe('/unFollow', () => {
+        before(() => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+        });
+        it('should unfollow for given already following authorId', (done) => {
+          request(app)
+            .post('/unFollow')
+            .send({authorId: 58025419})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'Unfollowed'}, done);
+        });
+        it('should give error for not following authorId given', (done) => {
+          request(app)
+            .post('/unFollow')
+            .send({authorId: 56071561})
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'You are not a follower of this author'}, done);
+        });
+      });
     });
   });
 });
