@@ -214,7 +214,7 @@ describe('Unit Test', () => {
         database
           .publish(1, 1)
           .then((result) => {
-            assert.deepStrictEqual(result, {status: 'published'});
+            assert.deepStrictEqual(result, {status: 'Published'});
             done();
           })
           .catch((err) => done(err));

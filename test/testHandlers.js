@@ -162,7 +162,7 @@ describe('Integration tests', () => {
             .send({id: 2})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'published'}, done);
+            .expect({status: 'Published'}, done);
         });
         it('should give No draft found for no draft', (done) => {
           request(app)

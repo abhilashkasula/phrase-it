@@ -96,7 +96,7 @@ class Database {
           return reject({error});
         }
         this.exec(queries.publish(storyId))
-          .then(() => resolve({status: 'published'}))
+          .then(() => resolve({status: 'Published'}))
           .catch(() => reject({error: 'Already published'}));
       });
     });
