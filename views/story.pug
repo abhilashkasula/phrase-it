@@ -17,7 +17,9 @@ html
             div(class="story-author")
               div(id="story-author-name")=story.author
               div(id="story-time")=`Published ${moment(story.published_at).startOf('min').fromNow()}`
-            button(id="follow" userId=`${story.authorId}`) Follow
+            if isUserAuth && isUserAuth != story.authorId
+              button(id="unfollow" userId=`${story.authorId}` class=`${story.is_following ? '' : 'hide-btn'}`) Unfollow
+              button(id="follow" userId=`${story.authorId}` class=`${story.is_following ? 'hide-btn': ''}`) Follow
           div(class="url-container")
             input(type="text" id="url")
             button(id="story-url") Copy link

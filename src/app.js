@@ -35,6 +35,7 @@ const privateRoutes = [
   '/edit',
   '/draft',
   '/addResponse',
+  '/unFollow',
 ];
 
 app.use(privateRoutes, handlers.allowAuthorized);
@@ -47,6 +48,7 @@ app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.followAuthor);
+app.post('/unFollow', handlers.hasFields(['authorId']), handlers.unFollow);
 app.post(
   '/addResponse',
   handlers.hasFields(['id', 'response']),

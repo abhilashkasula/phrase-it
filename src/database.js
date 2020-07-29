@@ -113,20 +113,22 @@ class Database {
     return this.all(queries.getUserPublishedStories(userId));
   }
 
-  getPublishedStoryDetails(id) {
+  getPublishedStoryDetails(storyId, userId = 'NULL') {
     return new Promise((resolve, reject) => {
-      this.get(queries.getPublishedStoryDetails(id)).then((storyDetails) => {
-        if (!storyDetails) {
-          return reject({error: 'unknown id'});
-        }
-        this.get(queries.getResponsesCount(id)).then(({count}) => {
-          storyDetails.responsesCount = count;
-          this.get(queries.getClapsCount(id)).then(({count}) => {
-            storyDetails.clapsCount = count;
-            resolve(storyDetails);
+      this.get(queries.getPublishedStoryDetails(storyId, userId)).then(
+        (storyDetails) => {
+          if (!storyDetails) {
+            return reject({error: 'unknown id'});
+          }
+          this.get(queries.getResponsesCount(storyId)).then(({count}) => {
+            storyDetails.responsesCount = count;
+            this.get(queries.getClapsCount(storyId)).then(({count}) => {
+              storyDetails.clapsCount = count;
+              resolve(storyDetails);
+            });
           });
-        });
-      });
+        }
+      );
     });
   }
 
@@ -174,6 +176,19 @@ class Database {
         this.exec(queries.addResponse(storyId, userId, response)).then(() =>
           resolve({status: 'added'})
         );
+      });
+    });
+  }
+
+  unFollowAuthor(followerId, authorId) {
+    return new Promise((resolve, reject) => {
+      this.get(queries.getFollower(authorId, followerId)).then((follower) => {
+        if (!follower) {
+          return reject({error: 'You are not a follower of this author'});
+        }
+        this.exec(queries.removeFollower(authorId, followerId)).then(() => {
+          resolve({status: 'Unfollowed'});
+        });
       });
     });
   }

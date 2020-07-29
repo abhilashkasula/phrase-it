@@ -38,19 +38,28 @@ const publish = (id) => {
     END;`;
 };
 
-const getPublishedStoryDetails = (id) => {
-  return `SELECT t1.id,
-    t1.title,
-    t3.username as author,
-    t3.avatar_url,
-    t3.id as authorId,
-    t1.content,
-    t2.published_at,
-    t2.views 
-    FROM stories t1 
-    JOIN published_stories t2 on t1.id = t2.story_id
-    JOIN users t3 on t1.created_by = t3.id 
-    WHERE t1.id = ${id}`;
+const getPublishedStoryDetails = (storyId, userId) => {
+  return `
+  WITH user_following as (
+      SELECT * from followers where follower_id = ${userId}
+    )
+  SELECT t1.id,
+      t1.title,
+      t3.username as author,
+      t3.avatar_url,
+      t3.id as authorId,
+      t1.content,
+      t2.published_at,
+      t2.views,
+      CASE WHEN t4.user_id = t3.id
+        THEN 1
+        ELSE 0
+      END as is_following
+      FROM stories t1 
+      JOIN published_stories t2 on t1.id = t2.story_id
+      JOIN users t3 on t1.created_by = t3.id 
+      LEFT JOIN user_following t4 on t4.user_id = t3.id
+      WHERE t1.id = ${storyId};`;
 };
 
 const getUserPublishedStories = (userId) =>
@@ -112,6 +121,10 @@ const followingStories = (userId) =>
     WHERE t3.id = ${userId} OR t4.user_id IS NOT NULL
     ORDER BY published_at DESC;`;
 
+const removeFollower = (authorId, followerId) =>
+  `DELETE FROM followers
+    WHERE user_id = ${authorId} AND follower_id = ${followerId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -130,4 +143,5 @@ module.exports = {
   getFollower,
   addFollower,
   followingStories,
+  removeFollower,
 };

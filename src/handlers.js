@@ -134,14 +134,15 @@ const publish = (req, res) => {
 const storyPage = (req, res) => {
   const {id} = req.params;
   req.app.locals.db
-    .getPublishedStoryDetails(id)
+    .getPublishedStoryDetails(id, req.session.id)
     .then((story) => {
       story.content = JSON.parse(story.content);
       if (!req.session.id) {
         return res.render('story', {story, isUserAuth: false, moment});
       }
       req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-        res.render('story', {story, isUserAuth: true, avatar_url, moment});
+        const options = {story, isUserAuth: req.session.id, avatar_url, moment};
+        res.render('story', options);
       });
     })
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
@@ -223,6 +224,13 @@ const serveDashBoardStories = (req, res) => {
     .then((stories) => res.json(stories));
 };
 
+const unFollow = (req, res) => {
+  req.app.locals.db
+    .unFollowAuthor(req.session.id, +req.body.authorId)
+    .then((status) => res.json(status))
+    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -240,4 +248,5 @@ module.exports = {
   serveDraft,
   followAuthor,
   serveDashBoardStories,
+  unFollow,
 };

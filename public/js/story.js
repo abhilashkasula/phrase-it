@@ -13,7 +13,23 @@ const copyUrl = () => {
 };
 
 const changeOptionToUnFollow = () => {
-  document.querySelector('#follow').innerText = 'Unfollow';
+  document.querySelector('#follow').classList.add('hide-btn');
+  document.querySelector('#unfollow').classList.remove('hide-btn');
+};
+
+const changeOptionToFollow = () => {
+  document.querySelector('#unfollow').classList.add('hide-btn');
+  document.querySelector('#follow').classList.remove('hide-btn');
+};
+
+const unFollow = (authorId) => {
+  fetch('/unFollow', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({authorId}),
+  })
+    .then((res) => res.json())
+    .then(({status}) => status && changeOptionToFollow());
 };
 
 const follow = (authorId) => {
@@ -29,8 +45,10 @@ const follow = (authorId) => {
 const main = () => {
   const copy = document.querySelector('#story-url');
   const followButton = document.querySelector('#follow');
+  const unFollowButton = document.querySelector('#unfollow');
   const userId = followButton.getAttribute('userId');
   copy.addEventListener('click', copyUrl);
   followButton.addEventListener('click', () => follow(userId));
+  unFollowButton.addEventListener('click', () => unFollow(userId));
 };
 window.onload = main;
