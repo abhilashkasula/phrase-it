@@ -145,7 +145,7 @@ describe('Integration tests', () => {
             .get('/stories')
             .expect(401)
             .expect('Content-Type', /json/)
-            .expect({error: 'unknown id'}, done);
+            .expect({error: 'No user found'}, done);
         });
       });
 
@@ -419,7 +419,7 @@ describe('Integration tests', () => {
   });
 });
 
-describe('handleHomePage', () => {
+describe('serveHomePage', () => {
   it('should get index page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {isNew: true};
@@ -453,7 +453,7 @@ describe('handleHomePage', () => {
       .get('/')
       .expect(401)
       .expect('Content-Type', /json/)
-      .expect({error: 'unknown id'}, done);
+      .expect({error: 'No user found'}, done);
   });
 });
 

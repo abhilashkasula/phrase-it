@@ -197,7 +197,7 @@ describe('Unit Test', () => {
         const db = {get: (query, cb) => cb()};
         const database = new Database(db);
         database.getUserDetails(1).catch(({error}) => {
-          assert.strictEqual(error, 'unknown id');
+          assert.strictEqual(error, 'No user found');
           done();
         });
       });

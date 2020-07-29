@@ -74,7 +74,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.get(queries.getUserDetails(id)).then((userDetails) => {
         if (!userDetails) {
-          return reject({error: 'unknown id'});
+          return reject({error: 'No user found'});
         }
         resolve(userDetails);
       });
