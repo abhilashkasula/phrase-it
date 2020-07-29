@@ -38,10 +38,8 @@ const updateStory = (req, res) => {
   }
   req.app.locals.db
     .updateStory(id, title, req.session.id, JSON.stringify(blocks))
-    .then((result) => {
-      const code = result.error ? statusCodes.NOT_FOUND : statusCodes.OK;
-      res.status(code).json(result);
-    });
+    .then((result) => res.json(result))
+    .catch(err => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
 const serveHomePage = (req, res) => {

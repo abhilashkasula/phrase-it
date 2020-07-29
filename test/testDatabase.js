@@ -134,7 +134,7 @@ describe('Unit Test', () => {
         const database = new Database(db);
         database
           .updateStory(1, 'Title', 'John', 'Content')
-          .then((result) => {
+          .catch((result) => {
             assert.deepStrictEqual(result, {error: 'unknown id'});
             done();
           })
