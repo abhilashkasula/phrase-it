@@ -109,10 +109,6 @@ class Database {
     });
   }
 
-  getDiscoverStories(userId) {
-    return this.all(queries.getDiscoverStories(userId));
-  }
-
   getUserPublishedStories(userId) {
     return this.all(queries.getUserPublishedStories(userId));
   }

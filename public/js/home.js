@@ -28,30 +28,9 @@ const addStoryDetail = function (story, storyBox) {
   storyBox.innerHTML = storyDetail;
 };
 
-const createDiscoverStory = (story) => {
-  return `
-  <h1 class="title">${story.title}</h1>
-  <div class="story-author-container">
-    <div>
-      <div class="story-author-name">${story.author}</div>
-      <div class="story-time">${story.published_at}</div>
-    </div>
-  </div>`;
-};
-
 const getPublishedStories = () => {
-  sendGetRequest('/discoverStories', (stories) => {
-    const discover = document.querySelector('#discover');
-    stories.forEach((story) => {
-      const discoverStory = document.createElement('div');
-      discoverStory.className = 'discover-story-box';
-      discoverStory.setAttribute('onclick', `showStory(${story.id})`);
-      discoverStory.innerHTML = createDiscoverStory(story);
-      discover.appendChild(discoverStory);
-    });
-  });
   sendGetRequest('/dashboardStories', (stories) => {
-    const dashBoard = document.querySelector('#following');
+    const dashBoard = document.querySelector('.dashboard');
     stories.forEach((story) => {
       const storyBox = document.createElement('div');
       storyBox.className = 'story-box';

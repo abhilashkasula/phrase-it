@@ -39,7 +39,6 @@ const privateRoutes = [
 app.use(privateRoutes, handlers.allowAuthorized);
 
 app.get('/newStory', handlers.newStory);
-app.get('/discoverStories', handlers.getDiscoverStories);
 app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
