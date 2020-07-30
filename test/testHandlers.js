@@ -53,6 +53,9 @@ describe('Integration tests', () => {
       it('should redirect to / for /clap', (done) => {
         request(app).get('/clap').expect('location', '/', done);
       });
+      it('should redirect to / for /profile', (done) => {
+        request(app).get('/profile').expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -263,6 +266,7 @@ describe('Integration tests', () => {
             .expect({error: 'Draft not found'}, done);
         });
       });
+
       describe('/responses', () => {
         it('should give responses page for proper id', (done) => {
           request(app)
@@ -279,6 +283,7 @@ describe('Integration tests', () => {
             .expect({error: 'unknown id'}, done);
         });
       });
+
       describe('/addResponse', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -303,6 +308,7 @@ describe('Integration tests', () => {
             .expect({error: 'unknown id'}, done);
         });
       });
+
       describe('/follow', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -343,6 +349,7 @@ describe('Integration tests', () => {
             .expect({error: 'Already following'}, done);
         });
       });
+
       describe('/dashboardStories', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -358,6 +365,7 @@ describe('Integration tests', () => {
             .expect(/A new app/, done);
         });
       });
+
       describe('/unFollow', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -383,7 +391,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('clap', () => {
+      describe('/clap', () => {
         before(() => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -413,6 +421,31 @@ describe('Integration tests', () => {
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
+        });
+      });
+
+      describe('/profile', () => {
+        it('should give profile for existing user id', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+          request(app)
+            .get('/profile')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/Profile/, done);
+        });
+        it('should give not found for unknown user id', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 1};
+            next();
+          });
+          request(app)
+            .get('/profile')
+            .expect(404)
+            .expect('Content-Type', /html/)
+            .expect(/Not Found/, done);
         });
       });
     });

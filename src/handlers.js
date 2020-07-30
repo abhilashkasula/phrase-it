@@ -219,7 +219,7 @@ const serveProfilePage = (req, res) => {
       userDetails.isUserAuth = true;
       res.render('profile', userDetails);
     })
-    .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
+    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
 };
 
 module.exports = {
