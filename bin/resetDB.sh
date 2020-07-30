@@ -5,7 +5,7 @@ sqlite3 $1 << 'END_SQL'
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id INTEGER PRIMARY KEY,
-  username VARCHAR(50) UNIQUE NOT NULL,
+  username VARCHAR(50) NOT NULL,
   avatar_url TEXT
 );
 DROP TABLE IF EXISTS stories;
