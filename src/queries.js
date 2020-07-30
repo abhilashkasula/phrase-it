@@ -130,6 +130,18 @@ const removeFollower = (authorId, followerId) =>
   `DELETE FROM followers
     WHERE user_id = ${authorId} AND follower_id = ${followerId}`;
 
+const getFollowers = (userId) =>
+  `SELECT t2.username, t2.id 
+  FROM followers t1
+  JOIN users t2 ON t1.follower_id = t2.id
+  AND t1.user_id = ${userId}`;
+
+const getFollowing = (userId) =>
+  `SELECT t2.username, t2.id 
+  FROM followers t1
+  JOIN users t2 ON t1.user_id = t2.id
+  AND t1.follower_id = ${userId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -152,4 +164,6 @@ module.exports = {
   addFollower,
   followingStories,
   removeFollower,
+  getFollowers,
+  getFollowing,
 };

@@ -212,6 +212,16 @@ const logout = (req, res) => {
   res.json({status: 'Logged out'});
 };
 
+const serveProfilePage = (req, res) => {
+  req.app.locals.db
+    .getUserDetails(req.session.id)
+    .then((userDetails) => {
+      userDetails.isUserAuth = true;
+      res.render('profile', userDetails);
+    })
+    .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -232,4 +242,5 @@ module.exports = {
   unFollow,
   clap,
   logout,
+  serveProfilePage,
 };

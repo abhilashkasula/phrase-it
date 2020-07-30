@@ -184,11 +184,19 @@ describe('Unit Test', () => {
     describe('getUserDetails', () => {
       it('should resolve userDetails if user is present', (done) => {
         const userDetails = {username: 'some one', avatar_url: 'avatar'};
-        const db = {get: (query, cb) => cb(null, userDetails)};
+        const db = {
+          get: (query, cb) => cb(null, userDetails),
+          all: (query, cb) => cb(null, [{id: 1, username: 'some one'}]),
+        };
         const database = new Database(db);
         database.getUserDetails(1).then((details) => {
-          assert.strictEqual(details.username, 'some one');
-          assert.strictEqual(details.avatar_url, 'avatar');
+          const expected = {
+            username: 'some one',
+            avatar_url: 'avatar',
+            followers: [{id: 1, username: 'some one'}],
+            following: [{id: 1, username: 'some one'}],
+          };
+          assert.deepStrictEqual(details, expected);
           done();
         });
       });

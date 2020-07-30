@@ -70,15 +70,14 @@ class Database {
     return this.exec(queries.insertUser(id, name, avatar_url));
   }
 
-  getUserDetails(id) {
-    return new Promise((resolve, reject) => {
-      this.get(queries.getUserDetails(id)).then((userDetails) => {
-        if (!userDetails) {
-          return reject({error: 'No user found'});
-        }
-        resolve(userDetails);
-      });
-    });
+  async getUserDetails(id) {
+    const userDetails = await this.get(queries.getUserDetails(id));
+    if (!userDetails) {
+      throw {error: 'No user found'};
+    }
+    userDetails.followers = await this.all(queries.getFollowers(id));
+    userDetails.following = await this.all(queries.getFollowing(id));
+    return userDetails;
   }
 
   getDraft(draftId, authorId) {

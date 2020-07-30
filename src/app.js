@@ -35,17 +35,19 @@ const privateRoutes = [
   '/addResponse',
   '/unFollow',
   '/clap',
+  '/profile',
 ];
 const updateField = ['title', 'blocks'];
 
 app.use(privateRoutes, handlers.allowAuthorized);
 app.get('/newStory', handlers.newStory);
 app.get('/dashboardStories', handlers.serveDashBoardStories);
-app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.get('/stories', handlers.storiesPage);
-app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
+app.get('/profile', handlers.serveProfilePage);
+app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
+app.post('/publish', handlers.hasFields(['id']), handlers.publish);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.follow);
 app.post('/unFollow', handlers.hasFields(['authorId']), handlers.unFollow);
 app.post(

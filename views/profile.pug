@@ -1,0 +1,15 @@
+html
+  head
+    title Profile
+    link(rel="stylesheet", href="css/navbar.css")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+    link(rel="stylesheet", href="css/profile.css")
+  body
+    include navbar
+    div(id="profile-container" class="profile-container")
+      div(class="user-info")
+        img(src=`${avatar_url}` class="profile-image")
+        h1(class="username")=username
+      div(class="followers-container")
+        div(class="followers")
+        div(class="following")
