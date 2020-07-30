@@ -4,12 +4,16 @@ const addListeners = (id) => {
   const editorElem = document.querySelector('#editor');
   const title = document.querySelector('#title');
   const publishButton = document.querySelector('#publish');
+  const popupButton = document.querySelector('#popup-publish');
   editorElem.addEventListener('input', () => save(undefined, id));
   title.addEventListener('input', () => save(undefined, id));
-  publishButton.classList.remove('disabled');
-  publishButton.classList.add('enabled');
+  popupButton.classList.remove('disabled');
+  popupButton.classList.add('enabled');
+  popupButton.href = '#tag-popup';
   publishButton.addEventListener('click', () => {
-    publish(`story-${id}`, (error) => error && showErr(error));
+    const tagContainer = Array.from(document.querySelectorAll('.tag'));
+    const tags = tagContainer.map(tag => tag.innerText.trim());
+    publish(`story-${id}`, tags, (error) => error && showErr(error));
   });
 };
 

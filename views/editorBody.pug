@@ -9,9 +9,9 @@ div(class="navbar")
             div
               div(id="status" class="status-hide") status
             div
-              button(class="disabled publish-button" id="publish") Publish
-          li(class="avatar-nav")
-            img(src=`${avatar_url}`, alt="" class="navbar-avatar")
+              a(class="disabled publish-button" id="popup-publish" onclick="hideEditor()") Publish
+          li(class="avathar-nav")
+            img(src=`${avatar_url}`, alt="" class="navbar-avathar")
             div(class="dropdown-links")
               div(class="links") 
                 a(href="/profile")
@@ -27,3 +27,12 @@ div(class="container")
       input(type="text", id="title" placeholder="Title" maxLength="39")
     div
       div(id="editor")
+  div(id="tag-popup" class="overlay")
+    div(class="popup")
+      h2 Add tags
+      a(href="#" class="close" onclick="showEditor()") &times
+      div(class="content") 
+        div(id="tags")
+        div(class="options")
+          input(type="text" onkeydown="addTags()" id="tag-field" placeholder="Add tag here")
+          button(class="publish-button enabled" id="publish") Publish

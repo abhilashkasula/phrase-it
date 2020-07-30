@@ -27,10 +27,6 @@ li a {
   margin-right: 20px;
 }
 
-li a:hover:not(#title) {
-  color: black;
-}
-
 @media only screen and (max-width: 600px) {
   li a {
     font-size: 15px;
