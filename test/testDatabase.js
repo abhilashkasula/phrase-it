@@ -264,7 +264,7 @@ describe('Unit Test', () => {
     describe('getResponses', () => {
       const response = {
         id: 1,
-        response_on: 1,
+        responded_on: 1,
         responded_by: 1,
         responded_at: 'some time',
         response: 'response',

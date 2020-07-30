@@ -39,7 +39,7 @@ const updateStory = (req, res) => {
   req.app.locals.db
     .updateStory(id, title, req.session.id, JSON.stringify(blocks))
     .then((result) => res.json(result))
-    .catch(err => res.status(statusCodes.NOT_FOUND).json(err));
+    .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
 const serveHomePage = (req, res) => {

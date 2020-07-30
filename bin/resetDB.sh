@@ -26,13 +26,13 @@ CREATE TABLE published_stories (
 DROP TABLE IF EXISTS claps;
 CREATE TABLE claps (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  story_id INTEGER NOT NULL,
+  clapped_on INTEGER NOT NULL,
   clapped_by INTEGER NOT NULL
 );
 DROP TABLE IF EXISTS responses;
 CREATE TABLE responses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  response_on INTEGER NOT NULL,
+  responded_on INTEGER NOT NULL,
   responded_by INTEGER NOT NULL,
   responded_at TIMESTAMP NOT NULL,
   response TEXT NOT NULL

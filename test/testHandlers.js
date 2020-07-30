@@ -475,11 +475,13 @@ describe('getUserDetails', () => {
     sinon.replace(https, 'request', (options, cb) => cb(res));
 
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = {code: 'somecode'};
       req.session = {};
       next();
     });
-    request(app).get('/user').expect(302).expect('location', '/', done);
+    request(app)
+      .get('/user?code=somecode')
+      .expect(302)
+      .expect('location', '/', done);
   });
 
   it('should redirect to / if query not exists', (done) => {
@@ -498,7 +500,10 @@ describe('getUserDetails', () => {
       req.session = {};
       next();
     });
-    request(app).get('/user').expect(302).expect('location', '/', done);
+    request(app)
+      .get('/user?code=somecode')
+      .expect(302)
+      .expect('location', '/', done);
   });
 
   it('should give error if session not exists', (done) => {
@@ -514,10 +519,9 @@ describe('getUserDetails', () => {
     };
     sinon.replace(https, 'request', (options, cb) => cb(res));
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = {code: 'somecode'};
       next();
     });
-    request(app).get('/user').expect(404, done);
+    request(app).get('/user?code=somecode').expect(404, done);
   });
 
   it('should give error if user data is not present', (done) => {
@@ -530,11 +534,10 @@ describe('getUserDetails', () => {
     sinon.replace(https, 'request', (options, cb) => cb(res));
 
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = {code: 'somecode'};
       req.session = {};
       next();
     });
-    request(app).get('/user').expect(404, done);
+    request(app).get('/user?code=somecode').expect(404, done);
   });
 
   it('should redirect to / if user name is absent', (done) => {
@@ -551,11 +554,13 @@ describe('getUserDetails', () => {
     sinon.replace(https, 'request', (options, cb) => cb(res));
 
     app.set('sessionMiddleware', (req, res, next) => {
-      req.query = {code: 'somecode'};
       req.session = {};
       next();
     });
-    request(app).get('/user').expect(302).expect('location', '/', done);
+    request(app)
+      .get('/user?code=somecode')
+      .expect(302)
+      .expect('location', '/', done);
   });
 });
 
