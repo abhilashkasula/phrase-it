@@ -320,7 +320,7 @@ describe('Unit Test', () => {
         database
           .followAuthor(58025419, 58025056)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'following'});
+            assert.deepStrictEqual(res, {status: 'Following'});
             done();
           })
           .catch((err) => done(err));

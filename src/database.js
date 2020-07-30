@@ -150,7 +150,7 @@ class Database {
       throw {error: 'Already following'};
     }
     await this.exec(queries.addFollower(authorId, followerId));
-    return {status: 'following'};
+    return {status: 'Following'};
   }
 
   getFollowingStories(userId) {

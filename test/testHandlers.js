@@ -316,7 +316,7 @@ describe('Integration tests', () => {
             .send({authorId: 58026249})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'following'}, done);
+            .expect({status: 'Following'}, done);
         });
         it('should give error for following yourself', (done) => {
           request(app)
