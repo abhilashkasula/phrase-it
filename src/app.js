@@ -36,6 +36,7 @@ const privateRoutes = [
   '/unFollow',
   '/clap',
   '/profile',
+  '/logout',
 ];
 const updateField = ['title', 'blocks'];
 

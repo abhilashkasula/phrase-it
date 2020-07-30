@@ -448,6 +448,22 @@ describe('Integration tests', () => {
             .expect(/Not Found/, done);
         });
       });
+
+      describe('/logout', () => {
+        beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false};
+            next();
+          });
+        });
+        it('should logout from the session', (done) => {
+          request(app)
+            .post('/logout')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'Logged out'}, done);
+        });
+      });
     });
   });
 });
