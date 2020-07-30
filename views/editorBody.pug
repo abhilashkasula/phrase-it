@@ -11,8 +11,11 @@ div(class="navbar")
             div
               button(class="disabled publish-button" id="publish") Publish
           li(class="avathar-nav")
-            a(href="/stories")
-              img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+            img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+            div(class="dropdown-links")
+              div(class="links") 
+                a(href="/stories") Your stories
+                div(id="Logout" onclick="logout()") Logout
 div(id="error" class="err-hide") error
 div(class="container")
   div(id="new-blog")

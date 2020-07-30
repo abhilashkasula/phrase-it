@@ -54,6 +54,7 @@ app.post(
   handlers.addResponse
 );
 app.post('/clap', handlers.hasFields(['id']), handlers.clap);
+app.post('/logout', handlers.logout);
 app.use(handlers.notFound);
 
 module.exports = {app};

@@ -207,6 +207,11 @@ const unFollow = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
+const logout = (req, res) => {
+  req.session = null;
+  res.json({status: 'Logged out'});
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -226,4 +231,5 @@ module.exports = {
   serveDashBoardStories,
   unFollow,
   clap,
+  logout,
 };
