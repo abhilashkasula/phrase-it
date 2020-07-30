@@ -1,4 +1,4 @@
-const copyUrl = () => {
+const copyUrl = (copy) => {
   const url = document.querySelector('#url');
   url.style['visibility'] = 'visible';
   url.value = document.URL;
@@ -68,7 +68,7 @@ const main = () => {
   const time = document.querySelector('#story-time');
   const value = time.getAttribute('published_at');
   time.innerText = `Published ${moment(value).startOf('min').fromNow()}`;
-  copy.addEventListener('click', copyUrl);
+  copy.addEventListener('click', () => copyUrl(copy));
 };
 
 window.onload = main;
