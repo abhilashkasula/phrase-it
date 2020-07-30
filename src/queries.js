@@ -142,6 +142,17 @@ const getFollowing = (userId) =>
   JOIN users t2 ON t1.user_id = t2.id
   AND t1.follower_id = ${userId}`;
 
+const generateValues = (id, tag) => {
+  return `(${id}, '${tag}')`;
+};
+
+const addTags = (id, tags) =>
+  `INSERT INTO tags (story_id, tag)
+    VALUES ${tags.map((tag) => generateValues(id, tag)).join(',')}`;
+
+const getTags = (id) => 
+  `SELECT tag from tags where story_id = ${id}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -166,4 +177,6 @@ module.exports = {
   removeFollower,
   getFollowers,
   getFollowing,
+  addTags,
+  getTags,
 };

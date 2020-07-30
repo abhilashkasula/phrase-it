@@ -39,6 +39,9 @@ html
                     h4(class="content-header")=element.data.text
               when 'delimiter'
                 div(class="content-delimiter") * * *
+        div(class="tags")
+          each tag in story.tags
+            div(class="tag")=tag.tag
         div(id="bottom-bar" class="bottom-bar")
           div(id="clap" class="clap-block")
             - const onClickListener = story.isAuthor? '' : `clap(${story.id})`

@@ -117,7 +117,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'Story updated'}, done);
         });
-        
+
         it('should give 404 for updating story with unknown id', (done) => {
           request(app)
             .post('/updateStory')
@@ -169,7 +169,7 @@ describe('Integration tests', () => {
         it('should give No draft found for no draft', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 1})
+            .send({id: 1, tags: ['tech']})
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
@@ -178,7 +178,7 @@ describe('Integration tests', () => {
         it('should not publish a story with no content and title', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 5})
+            .send({id: 5, tags: ['tech']})
             .expect(400)
             .expect('Content-Type', /json/)
             .expect(
@@ -190,7 +190,7 @@ describe('Integration tests', () => {
         it('should publish a story present', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 2})
+            .send({id: 2, tags: []})
             .expect(200)
             .expect('Content-Type', /json/)
             .expect({status: 'Published'}, done);
@@ -428,7 +428,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
         });
-        
+
         it('should remove clap if the user clapped already', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58028408};
@@ -647,7 +647,10 @@ describe('hasFields', () => {
       req.session = {isNew: false};
       next();
     });
-    request(app).post('/publish').expect(400, done);
+    request(app)
+      .post('/publish')
+      .expect(400)
+      .expect({error: 'Bad Request'}, done);
   });
 });
 

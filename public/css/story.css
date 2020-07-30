@@ -181,3 +181,19 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3% 0;
+}
+
+.tag {
+  padding: 5px 10px 5px 10px;
+  background-color: #f2f2f2;
+  border-radius: 3px;
+  margin-right: 7px;
+  color: #636363;
+  font-weight: 100;
+  font-size: 14px;
+}

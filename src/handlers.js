@@ -92,9 +92,9 @@ const allowAuthorized = (req, res, next) => {
 };
 
 const publish = (req, res) => {
-  const {id} = req.body;
+  const {id, tags} = req.body;
   req.app.locals.db
-    .publish(req.session.id, id)
+    .publish(req.session.id, id, tags)
     .then((result) => res.json(result))
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
@@ -158,7 +158,7 @@ const hasFields = (fields) => {
     if (fields.every((field) => field in req.body)) {
       return next();
     }
-    res.status(statusCodes.BAD_REQUEST).send('Bad Request');
+    res.status(statusCodes.BAD_REQUEST).json({error: 'Bad Request'});
   };
 };
 

@@ -48,7 +48,7 @@ app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
 app.get('/profile', handlers.serveProfilePage);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
-app.post('/publish', handlers.hasFields(['id']), handlers.publish);
+app.post('/publish', handlers.hasFields(['id', 'tags']), handlers.publish);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.follow);
 app.post('/unFollow', handlers.hasFields(['authorId']), handlers.unFollow);
 app.post(

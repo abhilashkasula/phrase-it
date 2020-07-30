@@ -84,7 +84,16 @@ class Database {
     return this.get(queries.getDraft(authorId, draftId));
   }
 
-  publish(authorId, storyId) {
+  addTags(id, tags) {
+    return new Promise((resolve) => {
+      if (!tags.length) {
+        return resolve();
+      }
+      this.exec(queries.addTags(id, tags)).then(() => resolve());
+    });
+  }
+
+  publish(authorId, storyId, tags = []) {
     return new Promise((resolve, reject) => {
       this.getDraft(storyId, authorId).then((row) => {
         if (!row) {
@@ -95,7 +104,10 @@ class Database {
           return reject({error});
         }
         this.exec(queries.publish(storyId))
-          .then(() => resolve({status: 'Published'}))
+          .then(() => {
+            const status = 'Published';
+            this.addTags(storyId, tags).then(() => resolve({status}));
+          })
           .catch(() => reject({error: 'Already published'}));
       });
     });
@@ -105,6 +117,14 @@ class Database {
     return this.all(queries.getUserPublishedStories(userId));
   }
 
+  async getPublishedStoryActivity(storyId, userId) {
+    const {responsesCount} = await this.get(queries.getResponsesCount(storyId));
+    const {clapsCount} = await this.get(queries.getClapsCount(storyId));
+    const {isClapped} = await this.get(queries.isClapped(storyId, userId));
+    const tags = await this.all(queries.getTags(storyId));
+    return {responsesCount, clapsCount, isClapped, tags};
+  }
+
   async getPublishedStoryDetails(storyId, userId = 'NULL') {
     const storyDetails = await this.get(
       queries.getPublishedStoryDetails(storyId, userId)
@@ -112,12 +132,9 @@ class Database {
     if (!storyDetails) {
       throw {error: 'No story found'};
     }
-    const {responsesCount} = await this.get(queries.getResponsesCount(storyId));
-    const {clapsCount} = await this.get(queries.getClapsCount(storyId));
-    const {isClapped} = await this.get(queries.isClapped(storyId, userId));
-    const isAuthor = storyDetails.authorId === userId;
-    const additionalFields = {responsesCount, clapsCount, isClapped, isAuthor};
-    Object.assign(storyDetails, additionalFields);
+    const additional = await this.getPublishedStoryActivity(storyId, userId);
+    additional.isAuthor = storyDetails.authorId === userId;
+    Object.assign(storyDetails, additional);
     return storyDetails;
   }
 
