@@ -163,6 +163,7 @@ body {
 .clap-icon {
   height: 40px;
   width: auto;
+  cursor: pointer;
 }
 
 .response-count,
