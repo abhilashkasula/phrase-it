@@ -1,44 +1,95 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .profile-container {
   display: flex;
+  flex-direction: column;
   height: 80%;
-  width: 80%;
-  margin-top: 10%;
-  justify-content: space-evenly;
+  width: 50%;
+  margin: 3%;
   align-self: center;
 }
 
 .user-info {
-  width: 28%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 35px 0 20px 0;
+  justify-content: space-evenly;
+  padding: 15px 0 10px 0;
 }
 
-.user-info,
-.followers-container {
-  border: solid 2px black;
+.user-info {
+  border: 2px solid #eee;
   border-radius: 5px;
 }
 
 .profile-image {
-  width: 200px;
+  width: 150px;
   height: auto;
   border-radius: 50%;
   align-self: center;
 }
 
-.username {
+.name {
   align-self: center;
-  font-size: 25px;
+  font-size: 30px;
 }
 
 .followers-container {
-  width: 50%;
+  margin-top: 30px;
+}
+
+.selected-tab {
+  border-bottom: 1px solid;
+}
+
+.tab-name {
+  padding: 3px;
+  font-weight: 600;
+  color: #292929;
+  cursor: pointer;
+}
+
+.tabs {
+  list-style-type: none;
+  margin: 15px 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.hidden {
+  display: none;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20%;
+}
+
+.list li {
+  color: black;
+  font-size: 17px;
+  max-width: 90%;
+}
+
+.user-card {
+  border: 1.7px solid #eee;
+  border-radius: 4px;
+  display: flex;
+  padding: 10px;
+  margin: 4px 0;
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 25px;
+}
+
+.username {
+  font-size: 18px;
+  align-self: center;
 }

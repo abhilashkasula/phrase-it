@@ -4,12 +4,24 @@ html
     link(rel="stylesheet", href="css/navbar.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
     link(rel="stylesheet", href="css/profile.css")
+    script(src="js/profile.js")
   body
     include navbar
     div(id="profile-container" class="profile-container")
       div(class="user-info")
         img(src=`${avatar_url}` class="profile-image")
-        h1(class="username")=username
+        h1(class="name")=username
       div(class="followers-container")
-        div(class="followers")
-        div(class="following")
+        ul(class="tabs")
+          li(id="tab-followers" class="tab-name selected-tab")=`Followers [ ${followers.length || 0} ]`
+          li(id="tab-following" class="tab-name")=`Following [ ${following.length || 0} ]`
+        div(id="followers" class="tab")
+          each user in followers
+            div(class="user-card")
+              img(src=user.avatar_url class="user-avatar")
+              p(class="username")=user.username
+        div(id="following" class="tab hidden")
+          each user in following
+             div(class="user-card")
+                img(src=user.avatar_url class="user-avatar")
+                p(class="username")=user.username

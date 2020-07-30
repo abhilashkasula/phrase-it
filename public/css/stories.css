@@ -44,7 +44,8 @@ ul {
   margin-bottom: 0;
 }
 
-.story-summary, .story-last-edited {
+.story-summary,
+.story-last-edited {
   margin: 0;
   font-weight: 100;
   color: #757575;

@@ -131,13 +131,13 @@ const removeFollower = (authorId, followerId) =>
     WHERE user_id = ${authorId} AND follower_id = ${followerId}`;
 
 const getFollowers = (userId) =>
-  `SELECT t2.username, t2.id 
+  `SELECT t2.username, t2.id, t2.avatar_url
   FROM followers t1
   JOIN users t2 ON t1.follower_id = t2.id
   AND t1.user_id = ${userId}`;
 
 const getFollowing = (userId) =>
-  `SELECT t2.username, t2.id 
+  `SELECT t2.username, t2.id, t2.avatar_url 
   FROM followers t1
   JOIN users t2 ON t1.user_id = t2.id
   AND t1.follower_id = ${userId}`;
