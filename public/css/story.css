@@ -146,12 +146,15 @@ body {
   align-self: start;
   text-decoration: none;
   color: black;
-  cursor: pointer;
   width: 180px;
 }
 
+.response-block {
+  cursor: pointer;
+}
+
 .response-icon {
-  margin-top: 12px;
+  margin-top: 10px;
   margin-right: 5px;
   height: 30px;
   width: auto;
@@ -164,10 +167,16 @@ body {
 
 .response-count,
 .clap-count {
-  font-weight: 600;
+  font-weight: 400;
   margin-left: 5px;
+  font-size: 14px;
 }
 
 .hide-btn {
   display: none;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

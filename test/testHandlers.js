@@ -396,7 +396,7 @@ describe('Integration tests', () => {
             .send({id: 2})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'added', clapCount: 1}, done);
+            .expect({status: 'added', clapsCount: 1}, done);
         });
         it('should remove clap if the user clapped already', (done) => {
           request(app)
@@ -404,7 +404,7 @@ describe('Integration tests', () => {
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'removed', clapCount: 0}, done);
+            .expect({status: 'removed', clapsCount: 0}, done);
         });
         it('should give bad request for unknown id', (done) => {
           request(app)

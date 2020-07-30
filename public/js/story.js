@@ -58,8 +58,8 @@ const clap = (storyId) => {
   };
   fetch('/clap', options)
     .then((res) => res.json())
-    .then(({status, clapCount}) => {
-      status && updateClapsCount(status, clapCount);
+    .then(({status, clapsCount}) => {
+      status && updateClapsCount(status, clapsCount);
     });
 };
 

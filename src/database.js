@@ -113,12 +113,12 @@ class Database {
     if (!storyDetails) {
       throw {error: 'No story found'};
     }
-    const responsesCount = await this.get(queries.getResponsesCount(storyId));
-    storyDetails.responsesCount = responsesCount.count;
-    const clapCount = await this.get(queries.getClapsCount(storyId));
-    storyDetails.clapsCount = clapCount.count;
-    const userClap = await this.get(queries.getClapDetails(storyId, userId));
-    storyDetails.isClapped = Boolean(userClap);
+    const {responsesCount} = await this.get(queries.getResponsesCount(storyId));
+    const {clapsCount} = await this.get(queries.getClapsCount(storyId));
+    const {isClapped} = await this.get(queries.isClapped(storyId, userId));
+    const isAuthor = storyDetails.authorId === userId;
+    const additionalFields = {responsesCount, clapsCount, isClapped, isAuthor};
+    Object.assign(storyDetails, additionalFields);
     return storyDetails;
   }
 
@@ -188,14 +188,14 @@ class Database {
     if (!story) {
       throw {error: 'unknown id'};
     }
-    const row = await this.get(queries.getClapDetails(storyId, userId));
-    let {count} = await this.get(queries.getClapsCount(storyId));
-    if (row) {
+    const {isClapped} = await this.get(queries.isClapped(storyId, userId));
+    let {clapsCount} = await this.get(queries.getClapsCount(storyId));
+    if (isClapped) {
       await this.exec(queries.removeClap(storyId, userId));
-      return {status: 'removed', clapCount: --count};
+      return {status: 'removed', clapsCount: --clapsCount};
     }
     await this.exec(queries.addClap(storyId, userId));
-    return {status: 'added', clapCount: ++count};
+    return {status: 'added', clapsCount: ++clapsCount};
   }
 }
 

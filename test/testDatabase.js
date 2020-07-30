@@ -404,14 +404,16 @@ describe('Unit Test', () => {
       it('should add clap if the user is not already clapped', (done) => {
         const db = {
           get: (query, cb) =>
-            query.includes('clapped_by') ? cb(null) : cb(null, {count: 2}),
+            query.includes('clapped_by')
+              ? cb(null, {isClapped: 0})
+              : cb(null, {clapsCount: 2}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
         database
           .clap(2, 58025419)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'added', clapCount: 3});
+            assert.deepStrictEqual(res, {status: 'added', clapsCount: 3});
             done();
           })
           .catch((err) => done(err));
@@ -421,15 +423,15 @@ describe('Unit Test', () => {
         const db = {
           get: (query, cb) =>
             query.includes('clapped_by')
-              ? cb(null, {id: 2})
-              : cb(null, {count: 2}),
+              ? cb(null, {isClapped: 1})
+              : cb(null, {clapsCount: 2}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
         database
           .clap(2, 58025419)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'removed', clapCount: 1});
+            assert.deepStrictEqual(res, {status: 'removed', clapsCount: 1});
             done();
           })
           .catch((err) => done(err));

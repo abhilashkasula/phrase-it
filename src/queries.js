@@ -82,10 +82,14 @@ const getResponses = (storyId) =>
   WHERE response_on = ${storyId}`;
 
 const getClapsCount = (storyId) =>
-  `SELECT COUNT(*) AS count FROM claps WHERE story_id = ${storyId}`;
+  `SELECT COUNT(*) AS clapsCount FROM claps WHERE story_id = ${storyId}`;
 
-const getClapDetails = (storyId, userId) =>
-  `SELECT * FROM claps WHERE story_id = ${storyId} AND clapped_by = ${userId}`;
+const isClapped = (storyId, userId) =>
+  `SELECT EXISTS (
+    SELECT 1 FROM claps
+    WHERE story_id = ${storyId} 
+    AND clapped_by = ${userId}) 
+    as isClapped`;
 
 const addClap = (storyId, userId) =>
   `INSERT INTO claps (story_id, clapped_by) VALUES(${storyId}, ${userId})`;
@@ -94,7 +98,8 @@ const removeClap = (storyId, userId) =>
   `DELETE FROM claps WHERE story_id = ${storyId} AND clapped_by = ${userId}`;
 
 const getResponsesCount = (storyId) =>
-  `SELECT COUNT(*) AS count FROM responses WHERE response_on = ${storyId}`;
+  `SELECT COUNT(*) AS responsesCount 
+  FROM responses WHERE response_on = ${storyId}`;
 
 const addResponse = (storyId, userId, response) =>
   `INSERT INTO responses 
@@ -148,7 +153,7 @@ module.exports = {
   getResponses,
   getResponsesCount,
   getClapsCount,
-  getClapDetails,
+  isClapped,
   addClap,
   removeClap,
   getPublishedStory,
