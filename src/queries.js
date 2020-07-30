@@ -1,25 +1,20 @@
-const insertNewStory = (id, author, title, content) => {
-  return `INSERT INTO stories (id, title, created_by, content, last_modified)
-  VALUES
+const insertNewStory = (id, author, title, content) =>
+  `INSERT INTO stories (id, title, created_by, content, last_modified) VALUES
   (${id}, '${title}', '${author}', '${content}', DATETIME('now', 'localtime'))`;
-};
 
-const saveStory = (id, title, content) => {
-  return `UPDATE stories
-    SET title = '${title}',
-      content = '${content}',
-      last_modified = DATETIME('now', 'localtime')
-      WHERE id = ${id};`;
-};
+const saveStory = (id, title, content) =>
+  `UPDATE stories
+  SET title = '${title}',
+    content = '${content}',
+    last_modified = DATETIME('now', 'localtime')
+  WHERE id = ${id};`;
 
-const insertUser = (id, name, avatar_url) => {
-  return `insert into users (id,username,avatar_url) 
-                 values (${id},"${name}","${avatar_url}")`;
-};
+const insertUser = (id, name, avatar_url) =>
+  `INSERT INTO users (id,username,avatar_url) 
+  VALUES (${id},'${name}','${avatar_url}')`;
 
-const getUserDetails = (id) => {
-  return `select username,avatar_url from users where id=${id}`;
-};
+const getUserDetails = (id) =>
+  `SELECT username, avatar_url FROM users WHERE id=${id}`;
 
 const getDrafts = (userId) =>
   `SELECT * FROM stories
@@ -38,11 +33,9 @@ const publish = (id) => {
     END;`;
 };
 
-const getPublishedStoryDetails = (storyId, userId) => {
-  return `
-  WITH user_following as (
-      SELECT * from followers where follower_id = ${userId}
-    )
+const getPublishedStoryDetails = (storyId, userId) =>
+  `WITH user_following as 
+    (SELECT * from followers where follower_id = ${userId})
   SELECT t1.id,
       t1.title,
       t3.username as author,
@@ -60,7 +53,6 @@ const getPublishedStoryDetails = (storyId, userId) => {
       JOIN users t3 on t1.created_by = t3.id 
       LEFT JOIN user_following t4 on t4.user_id = t3.id
       WHERE t1.id = ${storyId};`;
-};
 
 const getUserPublishedStories = (userId) =>
   `SELECT t1.id,
@@ -118,9 +110,8 @@ const addFollower = (authorId, followerId) =>
     VALUES (${authorId}, ${followerId})`;
 
 const followingStories = (userId) =>
-  `WITH user_following as (
-     SELECT * from followers where follower_id = ${userId}
-   )
+  `WITH user_following as 
+    (SELECT * from followers where follower_id = ${userId})
   SELECT t1.id,
     t1.title,
     t1.content,
