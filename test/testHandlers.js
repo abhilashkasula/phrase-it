@@ -7,11 +7,12 @@ const {resetTables} = require('./dbScripts');
 describe('Integration tests', () => {
   describe('Handlers', () => {
     describe('unauthorized user', () => {
-      before(() => {
+      beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: true};
           next();
         });
+        await resetTables(app.locals.db);
       });
       it('should redirect to / for /newStory', (done) => {
         request(app).get('/newStory').expect(302).expect('location', '/', done);
