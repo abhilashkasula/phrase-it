@@ -2,6 +2,7 @@ const request = require('supertest');
 const https = require('https');
 const sinon = require('sinon');
 const {app} = require('../src/app');
+const {resetTables} = require('./dbScripts');
 
 describe('Integration tests', () => {
   describe('Handlers', () => {
@@ -60,11 +61,12 @@ describe('Integration tests', () => {
 
     describe('authorized user', () => {
       describe('newStory', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
 
         it('should get the newStory page for authenticated user', (done) => {
@@ -77,11 +79,27 @@ describe('Integration tests', () => {
       });
 
       describe('updateStory', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
+        });
+
+        it('should create story & give back id if id not present', (done) => {
+          const block = {
+            type: 'paragraph',
+            data: {
+              text: 'A small paragraph',
+            },
+          };
+          request(app)
+            .post('/updateStory')
+            .send({title: 'New blog', blocks: [block]})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({id: 6}, done);
         });
 
         it('should update story title, content for given story id', (done) => {
@@ -99,7 +117,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'Story updated'}, done);
         });
-
+        
         it('should give 404 for updating story with unknown id', (done) => {
           request(app)
             .post('/updateStory')
@@ -108,35 +126,15 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
         });
-
-        it('should create story & give back id if id not present', (done) => {
-          const block = {
-            type: 'paragraph',
-            data: {
-              text: 'A small paragraph',
-            },
-          };
-          request(app)
-            .post('/updateStory')
-            .send({title: 'New blog', blocks: [block]})
-            .expect(200)
-            .expect('Content-Type', /json/, done);
-        });
       });
+
       describe('stories', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
-        });
-
-        it('should give story page with available drafts of user', (done) => {
-          request(app)
-            .get('/stories')
-            .expect(200)
-            .expect('Content-Type', /html/)
-            .expect(/your stories/i, done);
+          await resetTables(app.locals.db);
         });
 
         it('should give unknown user id for user not found', (done) => {
@@ -150,31 +148,33 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'No user found'}, done);
         });
+
+        it('should give story page with available drafts of user', (done) => {
+          request(app)
+            .get('/stories')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/your stories/i, done);
+        });
       });
 
       describe('publish', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
-        });
-        it('should publish a story present', (done) => {
-          request(app)
-            .post('/publish')
-            .send({id: 2})
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect({status: 'Published'}, done);
+          await resetTables(app.locals.db);
         });
         it('should give No draft found for no draft', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 2})
+            .send({id: 1})
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
         });
+
         it('should not publish a story with no content and title', (done) => {
           request(app)
             .post('/publish')
@@ -186,9 +186,21 @@ describe('Integration tests', () => {
               done
             );
         });
+
+        it('should publish a story present', (done) => {
+          request(app)
+            .post('/publish')
+            .send({id: 2})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'Published'}, done);
+        });
       });
 
       describe('/story', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
         it('should give story page if the story id is present', (done) => {
           request(app)
             .get('/story/1')
@@ -213,15 +225,16 @@ describe('Integration tests', () => {
       });
 
       describe('/edit', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58028408};
+            req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should give draft editor page for /edit', (done) => {
           request(app)
-            .get('/edit/6')
+            .get('/edit/2')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/publish/, done);
@@ -235,28 +248,20 @@ describe('Integration tests', () => {
       });
 
       describe('/draft', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58028408};
+            req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should give the draft for given draft id present', (done) => {
-          const expected = {
-            draft: {
-              id: 6,
-              title: 'Title',
-              created_by: 58028408,
-              content: '[{"type":"paragraph","data":{"text":"Content1"}}]',
-              is_published: 0,
-              last_modified: '2020-07-24 15:22:33',
-            },
-          };
           request(app)
-            .get('/draft/6')
+            .get('/draft/2')
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect(expected, done);
+            .expect(/8 Ways to Build Virality into your Product/)
+            .expect(/58025056/, done);
         });
 
         it('should give not found if given draft id not present', (done) => {
@@ -268,16 +273,19 @@ describe('Integration tests', () => {
       });
 
       describe('/responses', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
         it('should give responses page for proper id', (done) => {
           request(app)
-            .get('/responses?id=2')
+            .get('/responses?id=1')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/response/, done);
         });
         it('should give badRequest for unknown id', (done) => {
           request(app)
-            .get('/responses?id=100')
+            .get('/responses?id=2')
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
@@ -285,16 +293,17 @@ describe('Integration tests', () => {
       });
 
       describe('/addResponse', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58028408};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should add response for a published story id', (done) => {
           request(app)
             .post('/addResponse')
-            .send({id: 2, response: 'some response'})
+            .send({id: 1, response: 'some response'})
             .expect(200)
             .expect('Content-Type', /json/)
             .expect({status: 'added'}, done);
@@ -310,11 +319,12 @@ describe('Integration tests', () => {
       });
 
       describe('/follow', () => {
-        before(() => {
+        beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should follow the author for a valid authorId', (done) => {
           request(app)
@@ -351,27 +361,29 @@ describe('Integration tests', () => {
       });
 
       describe('/dashboardStories', () => {
-        before(() => {
+        before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should give the following and my stories', (done) => {
           request(app)
             .get('/dashboardStories')
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect(/A new app/, done);
+            .expect(/9 Ways to Build Virality into your Product/, done);
         });
       });
 
       describe('/unFollow', () => {
-        before(() => {
+        before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should unfollow for given already following authorId', (done) => {
           request(app)
@@ -392,28 +404,22 @@ describe('Integration tests', () => {
       });
 
       describe('/clap', () => {
-        before(() => {
+        before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
+            req.session = {isNew: false, id: 58028408};
             next();
           });
+          await resetTables(app.locals.db);
         });
         it('should clap if the user have not clapped already', (done) => {
-          request(app)
-            .post('/clap')
-            .send({id: 2})
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect({status: 'added', clapsCount: 1}, done);
-        });
-        it('should remove clap if the user clapped already', (done) => {
           request(app)
             .post('/clap')
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'removed', clapsCount: 0}, done);
+            .expect({status: 'added', clapsCount: 2}, done);
         });
+
         it('should give bad request for unknown id', (done) => {
           request(app)
             .post('/clap')
@@ -422,9 +428,25 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
         });
+        
+        it('should remove clap if the user clapped already', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58028408};
+            next();
+          });
+          request(app)
+            .post('/clap')
+            .send({id: 3})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'removed', clapsCount: 1}, done);
+        });
       });
 
       describe('/profile', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
         it('should give profile for existing user id', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -469,6 +491,9 @@ describe('Integration tests', () => {
 });
 
 describe('serveHomePage', () => {
+  beforeEach(async () => {
+    await resetTables(app.locals.db);
+  });
   it('should get index page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {isNew: true};
@@ -507,6 +532,9 @@ describe('serveHomePage', () => {
 });
 
 describe('getUserDetails', () => {
+  beforeEach(async () => {
+    await resetTables(app.locals.db);
+  });
   afterEach(() => {
     sinon.restore();
   });
@@ -536,7 +564,7 @@ describe('getUserDetails', () => {
   it('should redirect to / if query not exists', (done) => {
     const details = {
       access_token: 1234,
-      id: 123,
+      id: 58025056,
       name: 'name',
       login: 'login',
       avatar_url: 'avatar',
