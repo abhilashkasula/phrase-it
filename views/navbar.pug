@@ -16,13 +16,16 @@ div(class="navbar")
           //- li
           //-   a(href="#", class="search-container")
           //-     img(src="https://img.icons8.com/ios-glyphs/30/000000/search.png", alt="")
-          li(class="avathar-nav")
-            img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+          li(class="avatar-nav")
+            img(src=`${avatar_url}`, alt="" class="navbar-avatar")
             div(class="dropdown-links")
               div(class="links") 
-                a(href="/profile") Profile
-                a(href="/stories") Your stories
-                div(id="Logout" onclick="logout()") Logout
+                a(href="/profile")
+                  div(class="profile-link")
+                    img(src=`${avatar_url}`, class="navbar-avatar")
+                    p(class="user-link")=username
+                a(href="/stories" class="link") Your stories
+                div(id="Logout" class="link" onclick="logout()") Logout
         
         else 
             li

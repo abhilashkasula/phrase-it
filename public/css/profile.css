@@ -15,7 +15,7 @@ body {
 .user-info {
   display: flex;
   justify-content: space-evenly;
-  padding: 15px 0 10px 0;
+  padding: 20px 0;
 }
 
 .user-info {
@@ -33,6 +33,8 @@ body {
 .name {
   align-self: center;
   font-size: 30px;
+  text-decoration: none;
+  color: #444;
 }
 
 .followers-container {

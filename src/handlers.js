@@ -79,8 +79,8 @@ const storiesPage = async (req, res) => {
 };
 
 const newStory = (req, res) => {
-  req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-    res.render('editor', {avatar_url});
+  req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
+    res.render('editor', userDetails);
   });
 };
 
@@ -108,8 +108,9 @@ const serveStoryPage = (req, res) => {
       if (!req.session.id) {
         return res.render('story', {story, isUserAuth: false});
       }
-      req.app.locals.db.getUserDetails(req.session.id).then(({avatar_url}) => {
-        const options = {story, isUserAuth: req.session.id, avatar_url};
+      req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
+        const options = {story, isUserAuth: req.session.id};
+        Object.assign(options, userDetails);
         res.render('story', options);
       });
     })
@@ -127,12 +128,10 @@ const getResponses = (req, res) => {
           options.isUserAuth = false;
           return res.render('responses', options);
         }
-        req.app.locals.db
-          .getUserDetails(req.session.id)
-          .then(({avatar_url}) => {
-            options.avatar_url = avatar_url;
-            res.render('responses', options);
-          });
+        req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
+          Object.assign(options, userDetails);
+          res.render('responses', options);
+        });
       });
     })
     .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
@@ -174,7 +173,7 @@ const serveEditDraftPage = (req, res) => {
     }
     req.app.locals.db
       .getUserDetails(req.session.id)
-      .then((user) => res.render('editDraft', {avatar_url: user.avatar_url}));
+      .then((userDetails) => res.render('editDraft', userDetails));
   });
 };
 

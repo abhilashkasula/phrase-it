@@ -1,5 +1,4 @@
 nav {
-  
   padding: 0.2%;
   display: flex;
   justify-content: space-between;
@@ -54,7 +53,7 @@ body {
   align-items: center;
   box-shadow: 1px 1px 4px #ccc;
 }
-.navbar-avathar {
+.navbar-avatar {
   width: 36px;
   border-radius: 50%;
 }
@@ -67,24 +66,24 @@ body {
   width: 27px;
 }
 
-.logo{
+.logo {
   height: 52px;
 }
 
 .dropdown-links {
   display: none;
   position: relative;
-	background: white;
+  background: white;
   border: 1px solid #d6d6d6;
   border-radius: 3px;
 }
 
-.avathar-nav {
+.avatar-nav {
   cursor: pointer;
 }
 
 .dropdown-links {
-  width: 160px;
+  width: 250px;
 }
 
 .links {
@@ -93,52 +92,73 @@ body {
   padding: 10px;
 }
 
-.links * {
+.link {
   padding: 0 10px 0 10px;
 }
 
-.dropdown-links:hover, .avathar-nav:hover .dropdown-links {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    top: 56px;
-    right: 46px;
-    flex-direction: column;
-    box-shadow: -1px 1px 4px 0.08px rgba(0, 0, 0, 0.2);
- }
+.dropdown-links:hover,
+.avatar-nav:hover .dropdown-links {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  top: 56px;
+  right: 46px;
+  flex-direction: column;
+  box-shadow: -1px 1px 4px 0.08px rgba(0, 0, 0, 0.2);
+}
 
 .dropdown-links * {
   margin: 4px;
   color: #00000099;
 }
 
-.links div:hover, .links a:hover {
+.links div:hover,
+.links a:hover {
   color: #242424;
 }
 
-.dropdown-links:after, 
+.dropdown-links:after,
 .dropdown-links:before {
-	bottom: 100%;
-	right: 69px;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
+  bottom: 100%;
+  right: 69px;
+  border: solid transparent;
+  content: ' ';
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
 }
 
 .dropdown-links:after {
-	border-color: rgba(255, 255, 255, 0);
-	border-bottom-color: #ffffff;
-	border-width: 5px;
+  border-color: rgba(255, 255, 255, 0);
+  border-bottom-color: #ffffff;
+  border-width: 5px;
   right: 70px;
   background-clip: padding-box;
 }
 
 .dropdown-links:before {
-	border-color: rgba(184, 184, 184, 0);
-	border-bottom-color: #b8b8b8;
-	border-width: 6px;
+  border-color: rgba(184, 184, 184, 0);
+  border-bottom-color: #b8b8b8;
+  border-width: 6px;
   background-clip: padding-box;
+}
+
+.profile-link {
+  display: flex;
+  padding: 0;
+  width: 98%;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-link {
+  overflow-wrap: break-word;
+  text-align: left;
+  width: 85%;
+  align-self: center;
+}
+
+.user-link:hover {
+  text-decoration: underline;
 }

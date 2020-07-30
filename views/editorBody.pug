@@ -10,10 +10,14 @@ div(class="navbar")
               div(id="status" class="status-hide") status
             div
               button(class="disabled publish-button" id="publish") Publish
-          li(class="avathar-nav")
-            img(src=`${avatar_url}`, alt="" class="navbar-avathar")
+          li(class="avatar-nav")
+            img(src=`${avatar_url}`, alt="" class="navbar-avatar")
             div(class="dropdown-links")
               div(class="links") 
+                a(href="/profile")
+                  div(class="profile-link")
+                    img(src=`${avatar_url}`, class="navbar-avatar")
+                    p(class="user-link")=username
                 a(href="/stories") Your stories
                 div(id="Logout" onclick="logout()") Logout
 div(id="error" class="err-hide") error
