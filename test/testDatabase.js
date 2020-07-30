@@ -502,5 +502,19 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('getPublishedStoryDetails', () => {
+      it('should reject unknown id for invalid story id', (done) => {
+        const db = {get: (query, cb) => cb(null, undefined)};
+        const database = new Database(db);
+        database
+          .getPublishedStoryDetails(1000, 10)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'No story found'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });

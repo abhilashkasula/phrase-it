@@ -111,7 +111,7 @@ class Database {
       queries.getPublishedStoryDetails(storyId, userId)
     );
     if (!storyDetails) {
-      throw {error: 'unknown id'};
+      throw {error: 'No story found'};
     }
     const responsesCount = await this.get(queries.getResponsesCount(storyId));
     storyDetails.responsesCount = responsesCount.count;
