@@ -211,6 +211,32 @@ describe('Unit Test', () => {
       });
     });
 
+    describe('addTags', () => {
+      it('should resolve with status for tags found', (done) => {
+        const db = {exec: (query, cb) => cb(null)};
+        const database = new Database(db);
+        database
+          .addTags(1, ['tag1'])
+          .then((res) => {
+            assert.deepStrictEqual(res, {status: 'Added tags'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should resolve with error for no tags specified', (done) => {
+        const db = {exec: (query, cb) => cb(null)};
+        const database = new Database(db);
+        database
+          .addTags(1, [])
+          .then((res) => {
+            assert.deepStrictEqual(res, {error: 'No tags to add'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
+
     describe('publish', () => {
       const content = '[{type: "paragraph"}]';
       it('should resolve with status published for story found', (done) => {
@@ -227,6 +253,7 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+
       it('should reject if the story already published', (done) => {
         const db = {
           get: (query, cb) => cb(null, {id: 5, title: 'Title', content}),
@@ -507,6 +534,20 @@ describe('Unit Test', () => {
             assert.deepStrictEqual(err, {
               error: 'You are not a follower of this author',
             });
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
+
+    describe('getUserPublishedStories', () => {
+      it('should get published stories of a user', (done) => {
+        const db = {all: (query, cb) => cb(null, [{id: 1, title: 'Title'}])};
+        const database = new Database(db);
+        database
+          .getUserPublishedStories(1)
+          .then((res) => {
+            assert.deepStrictEqual(res, [{id: 1, title: 'Title'}]);
             done();
           })
           .catch((err) => done(err));
