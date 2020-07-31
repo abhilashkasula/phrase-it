@@ -215,24 +215,24 @@ const logout = (req, res) => {
   res.json({status: 'Logged out'});
 };
 
-const serveProfilePage = (req, res, next) => {
+const serveProfilePage = (req, res) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
       userDetails.isUserAuth = true;
       res.render('profile', userDetails);
     })
-    .catch(() => next());
+    .catch(() => notFound(req, res));
 };
 
-const serveSearchPage = (req, res, next) => {
+const serveSearchPage = (req, res) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
       userDetails.isUserAuth = true;
       res.render('searchPage', userDetails);
     })
-    .catch(() => next());
+    .catch(() => notFound(req, res));
 };
 
 module.exports = {
