@@ -43,7 +43,6 @@ body {
   flex-direction: column;
   width: 30%;
   text-align: center;
-  border: solid thin;
 }
 
 .sub-head {
@@ -51,9 +50,67 @@ body {
 }
 
 .cards {
+  display: flex;
+  flex-direction: column;
   align-self: center;
-  border: solid thin;
   width: 90%;
   height: 85%;
+  padding: 4px 0;
   overflow: scroll;
+}
+
+.card {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  text-align: left;
+  border: solid 2px #ccc;
+  border-radius: 6px;
+  margin: 4px;
+  padding-left: 10px;
+}
+
+.title {
+  margin: 15px 0;
+  font-size: 18px;
+}
+
+.author {
+  margin: 0 0 3px 0;
+  font-size: 15px;
+}
+
+.published-time {
+  margin: 0 0 15px 0;
+  font-size: 12px;
+  color: #808080;
+}
+
+.vertical-line {
+  margin: 6.5% 0 2% 0;
+  width: 0px;
+  border: solid 1.5px #ccc;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-self: center;
+  margin-top: 15%;
+  font-size: 25px;
+  color: #808080;
+}
+
+.search-icon {
+  width: 80px;
+  height: auto;
+  opacity: 0.4;
+  align-self: center;
+}
+
+.hidden {
+  display: none;
 }
