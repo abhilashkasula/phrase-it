@@ -525,6 +525,32 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+
+      it('should give all the details of a published story', (done) => {
+        const resForGet = {
+          responsesCount: 4,
+          clapsCount: 3,
+          isClapped: 1,
+          id: 1,
+          title: 'Title',
+          Content: '[]',
+          authorId: 111,
+        };
+        const resForAll = [{tag: 'tech'}, {tag: 'popular'}];
+        const db = {
+          get: (query, cb) => cb(null, resForGet),
+          all: (query, cb) => cb(null, resForAll),
+        };
+        const expected = Object.assign(resForGet, {tags: resForAll});
+        const database = new Database(db);
+        database
+          .getPublishedStoryDetails(1, 123)
+          .then((result) => {
+            assert.deepStrictEqual(result, expected);
+            done();
+          })
+          .catch((err) => done(err));
+      });
     });
   });
 });
