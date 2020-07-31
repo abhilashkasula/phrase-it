@@ -207,7 +207,12 @@ describe('Integration tests', () => {
             .get('/story/1')
             .expect(200)
             .expect('Content-Type', /html/)
-            .expect(/story/i, done);
+            .expect(/story/i)
+            .expect(/technology/) //expecting for tags
+            .expect(/maths/)
+            .expect(/science/)
+            .expect(/thriller/)
+            .expect(/sci-fi/, done);
         });
         it('should give available options if the user is auth', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
