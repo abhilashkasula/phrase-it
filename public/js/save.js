@@ -7,7 +7,12 @@ const addPublishListeners = (id) => {
   publishButton.addEventListener('click', () => {
     const tagContainer = Array.from(document.querySelectorAll('.tag'));
     const tags = tagContainer.map(tag => tag.innerText.trim());
-    publish(`story-${id}`, tags, (error) => error && showErr(error));
+    publish(`story-${id}`, tags, (error) => {
+      if(error) {
+        document.querySelector('#popup-close').click();
+        showErr(error);
+      }
+    });
   });
 };
 
