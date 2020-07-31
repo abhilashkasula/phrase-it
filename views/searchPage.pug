@@ -8,8 +8,14 @@ html
     include navbar
     div(class="main-container")
       div(class="search-bar-container")
-        input(type="search" placeholder="search here..." id="search-bar")
+        input(type="search" placeholder="search here..." id="search-bar" class="search-bar")
       div(class="search-result-container" id="search-result")
         div(id="author-search-result" class="search-sub-container")
-        div(id="content-search-result" class="search-sub-container")
+          h2(class="sub-head") author
+          div(id="author-based-cards" class="cards")
         div(id="tag-search-result" class="search-sub-container")
+          h2(class="sub-head") tags
+          div(id="tags-based-cards" class="cards")
+        div(id="content-search-result" class="search-sub-container")
+          h2(class="sub-head") content
+          div(id="content-based-cards" class="cards")
