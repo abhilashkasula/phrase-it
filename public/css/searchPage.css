@@ -67,10 +67,14 @@ body {
   flex-direction: column;
   width: 90%;
   text-align: left;
-  border: solid 2px #ccc;
+  border: solid 1px #ccc;
   border-radius: 6px;
   margin: 4px;
   padding-left: 10px;
+}
+
+.card:hover {
+  box-shadow: 0px 0px 4px #ccc;
 }
 
 .title {
@@ -80,7 +84,8 @@ body {
 
 .author {
   margin: 0 0 3px 0;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 200;
 }
 
 .published-time {
