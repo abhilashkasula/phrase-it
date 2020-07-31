@@ -60,6 +60,8 @@ body {
 }
 
 .card {
+  text-decoration: none;
+  color: black;
   align-self: center;
   display: flex;
   flex-direction: column;
