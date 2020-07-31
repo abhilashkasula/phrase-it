@@ -167,14 +167,17 @@ const notFound = (req, res) => {
 };
 
 const serveEditDraftPage = (req, res) => {
-  req.app.locals.db.getDraft(req.params.id, req.session.id).then((draft) => {
-    if (!draft) {
-      return notFound(req, res);
-    }
-    req.app.locals.db
-      .getUserDetails(req.session.id)
-      .then((userDetails) => res.render('editDraft', userDetails));
-  });
+  req.app.locals.db
+    .getDraft(req.params.id, req.session.id)
+    .then((draft) => {
+      if (!draft) {
+        return notFound(req, res);
+      }
+      req.app.locals.db
+        .getUserDetails(req.session.id)
+        .then((userDetails) => res.render('editDraft', userDetails));
+    })
+    .catch(() => notFound(req, res));
 };
 
 const serveDraft = (req, res) => {

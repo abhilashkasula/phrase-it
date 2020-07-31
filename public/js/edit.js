@@ -15,18 +15,18 @@ const renderContent = (editor, draft) => {
 };
 
 const main = () => {
-  editor = createEditor('editor');
+  document.querySelector('#title').placeholder = 'Loading...';
+  editor = createEditor('editor', 'write your story here...');
   const [id] = document.URL.split('/').slice(-1);
-  id &&
-    fetch(`/draft/${id}`)
-      .then((res) => res.json())
-      .then(({draft, error}) => {
-        if (error) {
-          return;
-        }
-        draft.content = JSON.parse(draft.content);
-        editor.isReady.then(() => renderContent(editor, draft));
-      });
+  fetch(`/draft/${+id}`)
+    .then((res) => res.json())
+    .then(({draft, error}) => {
+      if (error) {
+        return;
+      }
+      draft.content = JSON.parse(draft.content);
+      editor.isReady.then(() => renderContent(editor, draft));
+    });
 };
 
 window.onload = main;
