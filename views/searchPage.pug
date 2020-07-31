@@ -1,0 +1,15 @@
+html
+  head
+    title searchPage
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
+    link(rel="stylesheet", href="/css/navbar.css")
+    link(rel="stylesheet", href="/css/searchPage.css")
+  body
+    include navbar
+    div(class="main-container")
+      div(class="search-bar-container")
+        input(type="search" placeholder="search here..." id="search-bar")
+      div(class="search-result-container" id="search-result")
+        div(id="author-search-result" class="search-sub-container")
+        div(id="content-search-result" class="search-sub-container")
+        div(id="tag-search-result" class="search-sub-container")

@@ -221,6 +221,16 @@ const serveProfilePage = (req, res) => {
     .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
 };
 
+const serveSearchPage = (req, res) => {
+  req.app.locals.db
+    .getUserDetails(req.session.id)
+    .then((userDetails) => {
+      userDetails.isUserAuth = true;
+      res.render('searchPage', userDetails);
+    })
+    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -242,4 +252,5 @@ module.exports = {
   clap,
   logout,
   serveProfilePage,
+  serveSearchPage,
 };
