@@ -222,6 +222,13 @@ class Database {
     }
     return await this.toggleClap(storyId, userId);
   }
+
+  async search(keyword) {
+    const authorBased = await this.all(queries.authorBasedSearch(keyword));
+    const contentBased = await this.all(queries.contentBasedSearch(keyword));
+    const tagBased = await this.all(queries.tagBasedSearch(keyword));
+    return {authorBased, tagBased, contentBased};
+  }
 }
 
 module.exports = Database;

@@ -150,8 +150,49 @@ const addTags = (id, tags) =>
   `INSERT INTO tags (story_id, tag)
     VALUES ${tags.map((tag) => generateValues(id, tag)).join(',')}`;
 
-const getTags = (id) => 
-  `SELECT tag from tags where story_id = ${id}`;
+const getTags = (id) => `SELECT tag from tags where story_id = ${id}`;
+
+const authorBasedSearch = (keyword) =>
+  `SELECT t1.id story_id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t3.username author,
+    t3.id author_id
+  FROM stories t1 
+  JOIN published_stories t2 ON t1.id = t2.story_id 
+  JOIN users t3 ON t1.created_by = t3.id
+  WHERE t3.username LIKE "%${keyword}%"
+  ORDER BY published_at DESC`;
+
+const tagBasedSearch = (keyword) =>
+  `SELECT t1.id story_id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t3.username author,
+    t3.id author_id
+  FROM stories t1 
+  JOIN published_stories t2 ON t1.id = t2.story_id 
+  JOIN users t3 ON t1.created_by = t3.id
+  JOIN tags t4 ON t1.id = t4.story_id
+  WHERE t4.tag LIKE "%${keyword}%"
+  GROUP BY t1.id
+  ORDER BY published_at DESC`;
+
+const contentBasedSearch = (keyword) =>
+  `SELECT t1.id story_id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t3.username author,
+    t3.id author_id
+  FROM stories t1 
+  JOIN published_stories t2 ON t1.id = t2.story_id 
+  JOIN users t3 ON t1.created_by = t3.id
+  WHERE t1.content LIKE "%${keyword}%"
+  OR t1.title LIKE "%${keyword}%"
+  ORDER BY published_at DESC`;
 
 module.exports = {
   insertNewStory,
@@ -179,4 +220,7 @@ module.exports = {
   getFollowing,
   addTags,
   getTags,
+  authorBasedSearch,
+  tagBasedSearch,
+  contentBasedSearch,
 };

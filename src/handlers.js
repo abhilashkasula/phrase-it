@@ -235,6 +235,13 @@ const serveSearchPage = (req, res) => {
     .catch(() => notFound(req, res));
 };
 
+const search = (req, res) => {
+  req.app.locals.db
+    .search(req.query.keyword)
+    .then((searchedContent) => res.json(searchedContent))
+    .catch(() => res.status(statusCodes.NOT_FOUND));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -257,4 +264,5 @@ module.exports = {
   logout,
   serveProfilePage,
   serveSearchPage,
+  search,
 };
