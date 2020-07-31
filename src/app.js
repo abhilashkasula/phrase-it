@@ -38,6 +38,7 @@ const privateRoutes = [
   '/profile',
   '/logout',
   '/searchPage',
+  '/search',
 ];
 const updateField = ['title', 'blocks'];
 

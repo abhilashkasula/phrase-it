@@ -61,6 +61,9 @@ describe('Integration tests', () => {
       it('should redirect to / for /searchPage', (done) => {
         request(app).get('/searchPage').expect('location', '/', done);
       });
+      it('should redirect to / for /search', (done) => {
+        request(app).get('/search').expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -531,6 +534,30 @@ describe('Integration tests', () => {
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);
+        });
+      });
+
+      describe('/search', () => {
+        beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+          await resetTables(app.locals.db);
+        });
+        it('should give matching stories based on the keyword', (done) => {
+          request(app)
+            .get('/search?keyword=anil')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(/anil/, done);
+        });
+        it('should give bad request if the keyword is not proper', (done) => {
+          request(app)
+            .get('/search')
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .expect({error: 'invalid keyword'}, done);
         });
       });
     });

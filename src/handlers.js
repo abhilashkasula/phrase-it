@@ -239,7 +239,7 @@ const search = (req, res) => {
   req.app.locals.db
     .search(req.query.keyword)
     .then((searchedContent) => res.json(searchedContent))
-    .catch(() => res.status(statusCodes.NOT_FOUND));
+    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
 module.exports = {

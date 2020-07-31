@@ -3,6 +3,9 @@ const search = () => {
     return;
   }
   const searchedKey = document.querySelector('#search-bar').value;
+  if (searchedKey.trim() === '') {
+    return;
+  }
   fetch(`/search?keyword=${searchedKey}`, {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
