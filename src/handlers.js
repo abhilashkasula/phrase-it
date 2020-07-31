@@ -114,7 +114,7 @@ const serveStoryPage = (req, res) => {
         res.render('story', options);
       });
     })
-    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
+    .catch(() => notFound(req, res));
 };
 
 const getResponses = (req, res) => {
@@ -169,7 +169,7 @@ const notFound = (req, res) => {
 const serveEditDraftPage = (req, res) => {
   req.app.locals.db.getDraft(req.params.id, req.session.id).then((draft) => {
     if (!draft) {
-      return res.status(statusCodes.NOT_FOUND).render('notFound');
+      return notFound(req, res);
     }
     req.app.locals.db
       .getUserDetails(req.session.id)
