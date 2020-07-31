@@ -9,7 +9,7 @@ div(class="navbar")
             div
               div(id="status" class="status-hide") status
             div
-              a(class="disabled publish-button" id="popup-publish" onclick="hideEditor()") Publish
+              a(class="disabled publish-button" id="popup-publish") Publish
           li(class="avatar-nav")
             img(src=`${avatar_url}`, alt="" class="navbar-avatar")
             div(class="dropdown-links")
@@ -18,8 +18,15 @@ div(class="navbar")
                   div(class="profile-link")
                     img(src=`${avatar_url}`, class="navbar-avatar")
                     p(class="user-link")=username
-                a(href="/stories") Your stories
-                div(id="Logout" onclick="logout()") Logout
+                a(href="/stories" class="link") Your stories
+                a(class="link" href="#logout-popup") Logout
+
+          div(id="logout-popup" class="overlay")
+            div(class="popup")
+              h2 Are you sure, you want to logout? 
+              div(class="logout-options")
+                a(href="#") Cancel
+                button(id="logout" onclick="logout()") Logout
 div(id="error" class="err-hide") error
 div(class="container")
   div(id="new-blog")
@@ -30,7 +37,7 @@ div(class="container")
   div(id="tag-popup" class="overlay")
     div(class="popup")
       h2 Add tags
-      a(href="#" class="close" id="popup-close" onclick="showEditor()") &times
+      a(href="#" class="close" id="popup-close") &times
       div(class="content") 
         div(id="tags")
         div(class="options")

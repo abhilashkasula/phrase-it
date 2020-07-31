@@ -1,5 +1,7 @@
 script
   include ../public/js/navbar.js
+style
+  include ../public/css/popup.css
 
 div(class="navbar")
   nav
@@ -25,8 +27,14 @@ div(class="navbar")
                     img(src=`${avatar_url}`, class="navbar-avatar")
                     p(class="user-link")=username
                 a(href="/stories" class="link") Your stories
-                div(id="Logout" class="link" onclick="logout()") Logout
-        
+                a(class="link" href="#logout-popup") Logout
+
+          div(id="logout-popup" class="overlay")
+            div(class="popup")
+              h2 Are you sure, you want to logout? 
+              div(class="logout-options")
+                a(href="#") Cancel
+                button(id="logout" onclick="logout()") Logout
         else 
             li
               a(href="/")

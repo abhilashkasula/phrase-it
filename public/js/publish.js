@@ -16,14 +16,6 @@ const removeTag = () => {
   document.querySelector('#tags').removeChild(event.target.parentElement);
 };
 
-const hideEditor = () => {
-  document.querySelector('#editor').style['z-index'] = -1;
-};
-
-const showEditor = () => {
-  document.querySelector('#editor').style['z-index'] = 1;
-};
-
 const publish = (id, tags, cb) => {
   const storyId = id.split('-')[1];
   const options = {
