@@ -100,7 +100,7 @@ body {
   border: solid 1.5px #ccc;
 }
 
-.placeholder {
+.main-placeholder {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -120,4 +120,10 @@ body {
 
 .hidden {
   display: none;
+}
+
+.sub-placeholder {
+  margin: 50px auto;
+  font-size: 20px;
+  color: #808080;
 }

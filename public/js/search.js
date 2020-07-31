@@ -31,9 +31,16 @@ const createStoryCard = (story) => {
   return card;
 };
 
-const createStoryCards = (containerId, stories) => {
-  const container = document.querySelector(`#${containerId}`);
-  stories.forEach((story) => container.appendChild(createStoryCard(story)));
+const createStoryCards = (type, stories) => {
+  const container = document.querySelector(`#${type}-based-cards`);
+  if (stories.length > 0) {
+    container.classList.remove('hidden');
+    document.querySelector(`#${type}-placeholder`).classList.add('hidden');
+    stories.forEach((story) => container.appendChild(createStoryCard(story)));
+  } else {
+    container.classList.add('hidden');
+    document.querySelector(`#${type}-placeholder`).classList.remove('hidden');
+  }
 };
 
 const clearContainers = () => {
@@ -69,9 +76,9 @@ const search = () => {
     .then(({authorBased, tagBased, contentBased}) => {
       searchBar.value = '';
       clearContainers();
-      createStoryCards('author-based-cards', authorBased);
-      createStoryCards('tag-based-cards', tagBased);
-      createStoryCards('content-based-cards', contentBased);
+      createStoryCards('author', authorBased);
+      createStoryCards('tag', tagBased);
+      createStoryCards('content', contentBased);
       displayContainer();
     });
 };

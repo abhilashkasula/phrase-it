@@ -11,18 +11,24 @@ html
     div(class="main-container")
       div(class="search-bar-container")
         input(type="search" placeholder="search here..." id="search-bar" class="search-bar" onKeypress="search()")
-      div(class="placeholder" id="search-placeholder")
+      div(class="main-placeholder" id="search-placeholder")
         img(src="/images/search-icon.png", alt="" class="search-icon")
         p No active search results....
       div(class="search-result-container hidden" id="search-result")
         div(id="author-search-result" class="search-sub-container")
           h2(class="sub-head") author
-          div(id="author-based-cards" class="cards")
+          div(class="sub-placeholder" id="author-placeholder")
+            p No matching Result
+          div(id="author-based-cards" class="cards hidden")
         div(class="vertical-line")
         div(id="tag-search-result" class="search-sub-container")
           h2(class="sub-head") tags
-          div(id="tag-based-cards" class="cards")
+          div(class="sub-placeholder" id="tag-placeholder")
+            p No matching Result
+          div(id="tag-based-cards" class="cards hidden")
         div(class="vertical-line")
         div(id="content-search-result" class="search-sub-container")
           h2(class="sub-head") content
-          div(id="content-based-cards" class="cards")
+          div(class="sub-placeholder" id="content-placeholder")
+            p No matching Result
+          div(id="content-based-cards" class="cards hidden")
