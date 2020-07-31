@@ -64,6 +64,19 @@ describe('Integration tests', () => {
       it('should redirect to / for /search', (done) => {
         request(app).get('/search').expect('location', '/', done);
       });
+      it('should give story page with updated views', (done) => {
+        request(app)
+          .get('/story/1')
+          .expect(200)
+          .expect('Content-Type', /html/)
+          .expect(/story/i)
+          .expect(/technology/) //expecting for tags
+          .expect(/maths/)
+          .expect(/science/)
+          .expect(/thriller/)
+          .expect(/sci-fi/)
+          .expect(/1 Views/, done); //expecting views
+      });
     });
 
     describe('authorized user', () => {
@@ -210,7 +223,7 @@ describe('Integration tests', () => {
         });
         it('should give story with tags and views for given id', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: true};
+            req.session = {isNew: false, id: 58025419};
             next();
           });
           request(app)
