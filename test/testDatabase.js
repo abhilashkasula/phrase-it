@@ -475,6 +475,20 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
 
+      it('should reject if story written and user clap are same', (done) => {
+        const db = {get: (query, cb) => cb(null, {id: 1, created_by: 111})};
+        const database = new Database(db);
+        database
+          .clap(1, 111)
+          .catch((res) => {
+            assert.deepStrictEqual(res, {
+              error: 'You cannot clap or unclap on your own story',
+            });
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
       it('should reject if the given story id is unknown', (done) => {
         const db = {
           get: (query, cb) => cb(null, undefined),
