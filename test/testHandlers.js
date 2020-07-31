@@ -254,6 +254,12 @@ describe('Integration tests', () => {
             .expect(404)
             .expect('Content-Type', /html/, done);
         });
+        it('should give not found for /edit if draftId is a text', (done) => {
+          request(app)
+            .get('/edit/hello')
+            .expect(404)
+            .expect('Content-Type', /html/, done);
+        });
       });
 
       describe('/draft', () => {
