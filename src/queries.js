@@ -194,6 +194,12 @@ const contentBasedSearch = (keyword) =>
   OR t1.title LIKE "%${keyword}%"
   ORDER BY published_at DESC`;
 
+const updateViews = (storyId) =>
+  `UPDATE published_stories SET views = views + 1 where story_id = ${storyId}`;
+
+const getStoryViews = (storyId) =>
+  `SELECT views FROM published_stories WHERE story_id = ${storyId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -223,4 +229,6 @@ module.exports = {
   authorBasedSearch,
   tagBasedSearch,
   contentBasedSearch,
+  updateViews,
+  getStoryViews,
 };

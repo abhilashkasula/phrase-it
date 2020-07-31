@@ -103,7 +103,7 @@ const serveStoryPage = (req, res) => {
   const {id} = req.params;
   req.app.locals.db
     .getPublishedStoryDetails(id, req.session.id)
-    .then((story) => {
+    .then(async (story) => {
       story.content = JSON.parse(story.content);
       if (!req.session.id) {
         return res.render('story', {story, isUserAuth: false});

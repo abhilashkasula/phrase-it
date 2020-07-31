@@ -25,6 +25,7 @@
   width: 30%;
   position: relative;
   transition: all 5s ease-in-out;
+  top: 25%;
 }
 
 .popup h2 {

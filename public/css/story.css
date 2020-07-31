@@ -167,7 +167,7 @@ body {
 }
 
 .response-count,
-.clap-count {
+.clap-count, .story-views {
   font-weight: 400;
   margin-left: 5px;
   font-size: 14px;
@@ -196,4 +196,9 @@ body {
   color: #636363;
   font-weight: 100;
   font-size: 14px;
+}
+
+.story-views {
+  display: flex;
+  align-items: center;
 }

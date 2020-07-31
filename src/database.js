@@ -123,8 +123,9 @@ class Database {
     const {responsesCount} = await this.get(queries.getResponsesCount(storyId));
     const {clapsCount} = await this.get(queries.getClapsCount(storyId));
     const {isClapped} = await this.get(queries.isClapped(storyId, userId));
+    const {views} = await this.updateViews(userId, storyId);
     const tags = await this.all(queries.getTags(storyId));
-    return {responsesCount, clapsCount, isClapped, tags};
+    return {responsesCount, clapsCount, isClapped, tags, views};
   }
 
   async getPublishedStoryDetails(storyId, userId = 'NULL') {
@@ -231,6 +232,14 @@ class Database {
     const contentBased = await this.all(queries.contentBasedSearch(keyword));
     const tagBased = await this.all(queries.tagBasedSearch(keyword));
     return {authorBased, tagBased, contentBased};
+  }
+
+  async updateViews(userId, storyId) {
+    const story = await this.get(queries.getPublishedStory(storyId));
+    if (story.created_by !== userId) {
+      await this.exec(queries.updateViews(storyId));
+    }
+    return await this.get(queries.getStoryViews(storyId));
   }
 }
 

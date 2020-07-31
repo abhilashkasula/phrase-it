@@ -598,6 +598,7 @@ describe('Unit Test', () => {
         const db = {
           get: (query, cb) => cb(null, resForGet),
           all: (query, cb) => cb(null, resForAll),
+          exec: (query, cb) => cb(null),
         };
         const expected = Object.assign(resForGet, {tags: resForAll});
         const database = new Database(db);

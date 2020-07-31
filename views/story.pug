@@ -52,5 +52,6 @@ html
           a(id="response" class="response-block" href=`/responses?id=${story.id}`)
             img(src='/images/response.png' class="response-icon")
             p(class="response-count")=`${story.responsesCount} ${story.responsesCount == 1 ? 'Response' : 'Responses'}`
+          div(class="story-views")=`${story.views} Views`
 
 
