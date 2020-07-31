@@ -448,7 +448,7 @@ describe('Unit Test', () => {
         database
           .clap(2, 58025419)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'added', clapsCount: 3});
+            assert.deepStrictEqual(res, {status: 'clapped', clapsCount: 3});
             done();
           })
           .catch((err) => done(err));
@@ -466,7 +466,10 @@ describe('Unit Test', () => {
         database
           .clap(2, 58025419)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'removed', clapsCount: 1});
+            assert.deepStrictEqual(res, {
+              status: 'clap removed',
+              clapsCount: 1,
+            });
             done();
           })
           .catch((err) => done(err));
@@ -480,7 +483,7 @@ describe('Unit Test', () => {
         database
           .clap(100, 58025419)
           .catch((err) => {
-            assert.deepStrictEqual(err, {error: 'unknown id'});
+            assert.deepStrictEqual(err, {error: 'No story found'});
             done();
           })
           .catch((err) => done(err));

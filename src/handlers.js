@@ -158,7 +158,8 @@ const hasFields = (fields) => {
     if (fields.every((field) => field in req.body)) {
       return next();
     }
-    res.status(statusCodes.BAD_REQUEST).json({error: 'Bad Request'});
+    const error = 'Required fields not present';
+    res.status(statusCodes.BAD_REQUEST).json({error});
   };
 };
 

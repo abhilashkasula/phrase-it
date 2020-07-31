@@ -201,19 +201,26 @@ class Database {
     });
   }
 
-  async clap(storyId, userId) {
-    const story = await this.get(queries.getPublishedStory(storyId));
-    if (!story) {
-      throw {error: 'unknown id'};
-    }
+  async toggleClap(storyId, userId) {
     const {isClapped} = await this.get(queries.isClapped(storyId, userId));
     let {clapsCount} = await this.get(queries.getClapsCount(storyId));
     if (isClapped) {
       await this.exec(queries.removeClap(storyId, userId));
-      return {status: 'removed', clapsCount: --clapsCount};
+      return {status: 'clap removed', clapsCount: --clapsCount};
     }
     await this.exec(queries.addClap(storyId, userId));
-    return {status: 'added', clapsCount: ++clapsCount};
+    return {status: 'clapped', clapsCount: ++clapsCount};
+  }
+
+  async clap(storyId, userId) {
+    const story = await this.get(queries.getPublishedStory(storyId));
+    if (!story) {
+      throw {error: 'No story found'};
+    }
+    if(story.created_by === userId) {
+      throw {error: 'You cannot clap or unclap on your own story'};
+    }
+    return await this.toggleClap(storyId, userId);
   }
 }
 

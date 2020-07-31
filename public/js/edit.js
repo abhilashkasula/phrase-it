@@ -9,9 +9,11 @@ const addListeners = (id) => {
 };
 
 const renderContent = (editor, draft) => {
-  document.querySelector('#title').value = draft.title;
+  const title = document.querySelector('#title');
+  title.value = draft.title;
   editor.render({blocks: draft.content});
   addListeners(draft.id);
+  title.placeholder = 'Title';
 };
 
 const main = () => {

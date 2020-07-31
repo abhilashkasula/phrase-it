@@ -99,7 +99,7 @@ const addResponse = (storyId, userId, response) =>
   VALUES(${storyId}, ${userId},DATETIME('now', 'localtime'),'${response}');`;
 
 const getPublishedStory = (storyId) =>
-  `SELECT * FROM published_stories WHERE story_id = ${storyId}`;
+  `SELECT * FROM stories WHERE id = ${storyId} AND is_published = 1`;
 
 const getFollower = (authorId, followerId) =>
   `SELECT * FROM followers

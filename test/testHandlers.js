@@ -432,7 +432,7 @@ describe('Integration tests', () => {
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'added', clapsCount: 2}, done);
+            .expect({status: 'clapped', clapsCount: 2}, done);
         });
 
         it('should give bad request for unknown id', (done) => {
@@ -441,7 +441,7 @@ describe('Integration tests', () => {
             .send({id: 4})
             .expect(400)
             .expect('Content-Type', /json/)
-            .expect({error: 'unknown id'}, done);
+            .expect({error: 'No story found'}, done);
         });
 
         it('should remove clap if the user clapped already', (done) => {
@@ -454,7 +454,7 @@ describe('Integration tests', () => {
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'removed', clapsCount: 1}, done);
+            .expect({status: 'clap removed', clapsCount: 1}, done);
         });
       });
 
@@ -697,7 +697,7 @@ describe('hasFields', () => {
     request(app)
       .post('/publish')
       .expect(400)
-      .expect({error: 'Bad Request'}, done);
+      .expect({error: 'Required fields not present'}, done);
   });
 });
 
