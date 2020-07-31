@@ -610,5 +610,24 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('search', () => {
+      it('should give matching stories based on the keyword', (done) => {
+        const db = {all: (query, cb) => cb(null, [{id: 1, title: 'title'}])};
+        const database = new Database(db);
+        const expected = {
+          authorBased: [{id: 1, title: 'title'}],
+          tagBased: [{id: 1, title: 'title'}],
+          contentBased: [{id: 1, title: 'title'}],
+        };
+        database
+          .search('title')
+          .then((result) => {
+            assert.deepStrictEqual(result, expected);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
   });
 });
