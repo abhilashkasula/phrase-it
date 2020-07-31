@@ -432,7 +432,7 @@ describe('Integration tests', () => {
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'clapped', clapsCount: 2}, done);
+            .expect({isClapped: true, clapsCount: 2}, done);
         });
 
         it('should give bad request for unknown id', (done) => {
@@ -454,7 +454,7 @@ describe('Integration tests', () => {
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
-            .expect({status: 'clap removed', clapsCount: 1}, done);
+            .expect({isClapped: false, clapsCount: 1}, done);
         });
       });
 

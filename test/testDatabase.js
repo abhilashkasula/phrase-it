@@ -448,7 +448,7 @@ describe('Unit Test', () => {
         database
           .clap(2, 58025419)
           .then((res) => {
-            assert.deepStrictEqual(res, {status: 'clapped', clapsCount: 3});
+            assert.deepStrictEqual(res, {isClapped: true, clapsCount: 3});
             done();
           })
           .catch((err) => done(err));
@@ -467,7 +467,7 @@ describe('Unit Test', () => {
           .clap(2, 58025419)
           .then((res) => {
             assert.deepStrictEqual(res, {
-              status: 'clap removed',
+              isClapped: false,
               clapsCount: 1,
             });
             done();

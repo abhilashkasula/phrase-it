@@ -206,10 +206,10 @@ class Database {
     let {clapsCount} = await this.get(queries.getClapsCount(storyId));
     if (isClapped) {
       await this.exec(queries.removeClap(storyId, userId));
-      return {status: 'clap removed', clapsCount: --clapsCount};
+      return {isClapped: false, clapsCount: --clapsCount};
     }
     await this.exec(queries.addClap(storyId, userId));
-    return {status: 'clapped', clapsCount: ++clapsCount};
+    return {isClapped: true, clapsCount: ++clapsCount};
   }
 
   async clap(storyId, userId) {
@@ -217,7 +217,7 @@ class Database {
     if (!story) {
       throw {error: 'No story found'};
     }
-    if(story.created_by === userId) {
+    if (story.created_by === userId) {
       throw {error: 'You cannot clap or unclap on your own story'};
     }
     return await this.toggleClap(storyId, userId);
