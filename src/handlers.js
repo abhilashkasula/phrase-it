@@ -211,24 +211,24 @@ const logout = (req, res) => {
   res.json({status: 'Logged out'});
 };
 
-const serveProfilePage = (req, res) => {
+const serveProfilePage = (req, res, next) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
       userDetails.isUserAuth = true;
       res.render('profile', userDetails);
     })
-    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
+    .catch(() => next());
 };
 
-const serveSearchPage = (req, res) => {
+const serveSearchPage = (req, res, next) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
       userDetails.isUserAuth = true;
       res.render('searchPage', userDetails);
     })
-    .catch(() => res.status(statusCodes.NOT_FOUND).render('notFound'));
+    .catch(() => next());
 };
 
 module.exports = {

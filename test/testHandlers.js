@@ -58,6 +58,9 @@ describe('Integration tests', () => {
       it('should redirect to / for /profile', (done) => {
         request(app).get('/profile').expect('location', '/', done);
       });
+      it('should redirect to / for /searchPage', (done) => {
+        request(app).get('/searchPage').expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -490,6 +493,38 @@ describe('Integration tests', () => {
             .expect(200)
             .expect('Content-Type', /json/)
             .expect({status: 'Logged out'}, done);
+        });
+      });
+
+      describe('/searchPage', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
+
+        it('should render search page', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+
+          request(app)
+            .get('/searchPage')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/searchPage/, done);
+        });
+
+        it('should give not found for unknown user', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 1};
+            next();
+          });
+
+          request(app)
+            .get('/searchPage')
+            .expect(404)
+            .expect('Content-Type', /html/)
+            .expect(/Not Found/, done);
         });
       });
     });
