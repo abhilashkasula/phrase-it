@@ -630,5 +630,20 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
     });
+
+    describe('updateViews', () => {
+      it('should resolve with updated views for other user story', (done) => {
+        const db = {
+          get: (query, cb) =>
+            cb(null, {id: 1, title: 'title', created_by: 123, views: 1}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database.updateViews(111, 1).then((res) => {
+          assert.deepStrictEqual(res.views, 1);
+          done();
+        }).catch(err => done(err));
+      });
+    });
   });
 });

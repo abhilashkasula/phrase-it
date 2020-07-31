@@ -208,7 +208,11 @@ describe('Integration tests', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
-        it('should give story page if the story id is present', (done) => {
+        it('should give story with tags and views for given id', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: true};
+            next();
+          });
           request(app)
             .get('/story/1')
             .expect(200)
@@ -218,7 +222,8 @@ describe('Integration tests', () => {
             .expect(/maths/)
             .expect(/science/)
             .expect(/thriller/)
-            .expect(/sci-fi/, done);
+            .expect(/sci-fi/)
+            .expect(/1 Views/, done); //expecting views
         });
         it('should give available options if the user is auth', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -230,6 +235,20 @@ describe('Integration tests', () => {
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/\/newStory/, done);
+        });
+
+        it('should give story with not updated views for my story', (done) => {
+          request(app)
+            .get('/story/1')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/story/i)
+            .expect(/technology/) //expecting for tags
+            .expect(/maths/)
+            .expect(/science/)
+            .expect(/thriller/)
+            .expect(/sci-fi/)
+            .expect(/0 Views/, done); //expecting views
         });
         it('should give not found if the story id is absent', (done) => {
           request(app).get('/story/10').expect(404, done);
