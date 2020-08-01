@@ -614,12 +614,19 @@ describe('Unit Test', () => {
 
     describe('search', () => {
       it('should give matching stories based on the keyword', (done) => {
-        const db = {all: (query, cb) => cb(null, [{id: 1, title: 'title'}])};
+        const db = {
+          all: (query, cb) => {
+            if (query.includes('LIKE')) {
+              return cb(null, [{id: 1, title: 'title'}]);
+            }
+            return cb(null, [{tag: 'tag1'}, {tag: 'tag2'}]);
+          },
+        };
         const database = new Database(db);
         const expected = {
-          authorBased: [{id: 1, title: 'title'}],
-          tagBased: [{id: 1, title: 'title'}],
-          contentBased: [{id: 1, title: 'title'}],
+          authorBased: [{id: 1, title: 'title', tags: ['tag1', 'tag2']}],
+          tagBased: [{id: 1, title: 'title', tags: ['tag1', 'tag2']}],
+          contentBased: [{id: 1, title: 'title', tags: ['tag1', 'tag2']}],
         };
         database
           .search('title')

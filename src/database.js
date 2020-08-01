@@ -223,6 +223,11 @@ class Database {
     return await this.toggleClap(storyId, userId);
   }
 
+  async getTags(storyId) {
+    const tags = await this.all(queries.getTags(storyId));
+    return tags.map(({tag}) => tag);
+  }
+
   async search(keyword) {
     if (keyword === undefined) {
       throw {error: 'invalid keyword'};
@@ -230,7 +235,13 @@ class Database {
     const authorBased = await this.all(queries.authorBasedSearch(keyword));
     const contentBased = await this.all(queries.contentBasedSearch(keyword));
     const tagBased = await this.all(queries.tagBasedSearch(keyword));
-    return {authorBased, tagBased, contentBased};
+    const results = {authorBased, tagBased, contentBased};
+    for (const type in results) {
+      for (const story of results[type]) {
+        story.tags = await this.getTags(story.id);
+      }
+    }
+    return results;
   }
 
   async updateViews(userId, storyId, authorId) {

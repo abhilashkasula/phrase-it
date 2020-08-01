@@ -23,7 +23,7 @@ const createPublishedTimeElement = (publishedTime) => {
 
 const createStoryCard = (story) => {
   const card = document.createElement('a');
-  card.href = `/story/${story.story_id}`;
+  card.href = `/story/${story.id}`;
   card.className = 'card';
   card.appendChild(createTitleElement(story.title));
   card.appendChild(createAuthorElement(story.author));
