@@ -141,12 +141,12 @@ body {
 }
 
 .response-block,
-.clap-block {
+.clap-block, .story-views-container {
   display: flex;
   align-self: start;
   text-decoration: none;
   color: black;
-  width: 180px;
+  margin-right: 50px;
 }
 
 .response-block {
@@ -201,4 +201,12 @@ body {
 .story-views {
   display: flex;
   align-items: center;
+}
+
+.story-views-container {
+  align-self: center;
+}
+
+.views-icon {
+  width: 30px;
 }
