@@ -99,17 +99,23 @@ const publish = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
+const getViews = async (req, userId, {id, authorId}) => {
+  const {views} = await req.app.locals.db.updateViews(userId, id, authorId);
+  return views;
+};
+
 const serveStoryPage = (req, res) => {
-  const {id} = req.params;
+  const {id} = req.session;
   req.app.locals.db
-    .getPublishedStoryDetails(id, req.session.id)
+    .getPublishedStoryDetails(req.params.id, id)
     .then(async (story) => {
       story.content = JSON.parse(story.content);
-      if (!req.session.id) {
+      story.views = await getViews(req, id, story);
+      if (!id) {
         return res.render('story', {story, isUserAuth: false});
       }
-      req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
-        const options = {story, isUserAuth: req.session.id};
+      req.app.locals.db.getUserDetails(id).then((userDetails) => {
+        const options = {story, isUserAuth: id};
         Object.assign(options, userDetails);
         res.render('story', options);
       });
@@ -122,17 +128,21 @@ const getResponses = (req, res) => {
   req.app.locals.db
     .getResponses(id)
     .then((responses) => {
-      req.app.locals.db.getPublishedStoryDetails(id).then((story) => {
-        const options = {story, responses, isUserAuth: true};
-        if (!req.session.id) {
-          options.isUserAuth = false;
-          return res.render('responses', options);
-        }
-        req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
-          Object.assign(options, userDetails);
-          res.render('responses', options);
+      req.app.locals.db
+        .getPublishedStoryDetails(id, req.session.id)
+        .then((story) => {
+          const options = {story, responses, isUserAuth: true};
+          if (!req.session.id) {
+            options.isUserAuth = false;
+            return res.render('responses', options);
+          }
+          req.app.locals.db
+            .getUserDetails(req.session.id)
+            .then((userDetails) => {
+              Object.assign(options, userDetails);
+              res.render('responses', options);
+            });
         });
-      });
     })
     .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
 };

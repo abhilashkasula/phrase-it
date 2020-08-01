@@ -41,6 +41,7 @@ const privateRoutes = [
   '/search',
 ];
 const updateField = ['title', 'blocks'];
+const addResField = ['id', 'response'];
 
 app.use(privateRoutes, handlers.allowAuthorized);
 app.get('/newStory', handlers.newStory);
@@ -55,11 +56,7 @@ app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.post('/publish', handlers.hasFields(['id', 'tags']), handlers.publish);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.follow);
 app.post('/unFollow', handlers.hasFields(['authorId']), handlers.unFollow);
-app.post(
-  '/addResponse',
-  handlers.hasFields(['id', 'response']),
-  handlers.addResponse
-);
+app.post('/addResponse', handlers.hasFields(addResField), handlers.addResponse);
 app.post('/clap', handlers.hasFields(['id']), handlers.clap);
 app.post('/logout', handlers.logout);
 app.use(handlers.notFound);
