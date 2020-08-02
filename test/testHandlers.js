@@ -592,6 +592,33 @@ describe('Integration tests', () => {
             .expect({error: 'invalid keyword'}, done);
         });
       });
+
+      describe('/deleteDraft', () => {
+        beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+          await resetTables(app.locals.db);
+        });
+        it('should delete the draft if draft is present', (done) => {
+          request(app)
+            .post('/deleteDraft')
+            .send({draftId: 2})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'deleted'}, done);
+        });
+
+        it('should give not found if draft is absent', (done) => {
+          request(app)
+            .post('/deleteDraft')
+            .send({draftId: 1})
+            .expect(404)
+            .expect('Content-Type', /json/)
+            .expect({error: 'No draft found'}, done);
+        });
+      });
     });
   });
 });

@@ -251,7 +251,7 @@ const deleteDraft = function (req, res) {
   req.app.locals.db
     .deleteDraft(req.body.draftId, req.session.id)
     .then((status) => res.json(status))
-    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+    .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
 module.exports = {
