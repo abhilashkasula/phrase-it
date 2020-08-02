@@ -338,6 +338,18 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+
+      it('should reject with no draft found for unknown id', (done) => {
+        const db = {get: (query, cb) => cb(null, undefined)};
+        const database = new Database(db);
+        database
+          .getDraft(1, 1)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'No draft found'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
     });
 
     describe('followAuthor', () => {
@@ -649,6 +661,39 @@ describe('Unit Test', () => {
           .updateViews(111, 1)
           .then((res) => {
             assert.deepStrictEqual(res.views, 1);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+    });
+
+    describe('deleteDraft', () => {
+      it('should resolve with status deleted if draft is present ', (done) => {
+        const draft = {id: 1, title: 'abc', content: '[]'};
+        const db = {
+          get: (query, cb) => cb(null, {draft}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .deleteDraft(1, 111)
+          .then((status) => {
+            assert.deepStrictEqual(status, {status: 'deleted'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject with error for no draft to delete', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, undefined),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .deleteDraft(1, 111)
+          .catch((error) => {
+            assert.deepStrictEqual(error, {error: 'No draft found'});
             done();
           })
           .catch((err) => done(err));
