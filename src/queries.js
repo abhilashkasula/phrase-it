@@ -124,6 +124,7 @@ const followingStories = (userId) =>
   LEFT JOIN user_following t4
     ON t1.created_by = t4.user_id OR t1.created_by = ${userId}
     WHERE t3.id = ${userId} OR t4.user_id IS NOT NULL
+    GROUP BY t1.id
     ORDER BY published_at DESC;`;
 
 const removeFollower = (authorId, followerId) =>
@@ -200,6 +201,8 @@ const updateViews = (storyId) =>
 const getStoryViews = (storyId) =>
   `SELECT views FROM published_stories WHERE story_id = ${storyId}`;
 
+const deleteDraft = (draftId) => `DELETE FROM stories WHERE id = ${draftId}`;
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -231,4 +234,5 @@ module.exports = {
   contentBasedSearch,
   updateViews,
   getStoryViews,
+  deleteDraft,
 };

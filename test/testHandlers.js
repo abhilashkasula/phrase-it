@@ -318,7 +318,7 @@ describe('Integration tests', () => {
           request(app)
             .get('/draft/117')
             .expect('Content-Type', /json/)
-            .expect({error: 'Draft not found'}, done);
+            .expect({error: 'No draft found'}, done);
         });
       });
 

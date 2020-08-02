@@ -53,13 +53,14 @@ class Database {
   }
 
   async updateStory(storyId, title, authorId, content) {
-    const query = queries.saveStory(storyId, title, content);
-    const row = await this.getDraft(storyId, authorId);
-    if (!row) {
-      throw {error: 'No draft found'};
-    }
-    await this.exec(query);
-    return {status: 'Story updated'};
+    return new Promise((resolve, reject) => {
+      const query = queries.saveStory(storyId, title, content);
+      this.getDraft(storyId, authorId)
+        .then(() => {
+          this.exec(query).then(() => resolve({status: 'Story updated'}));
+        })
+        .catch((err) => reject(err));
+    });
   }
 
   getDrafts(userId) {
@@ -81,7 +82,14 @@ class Database {
   }
 
   getDraft(draftId, authorId) {
-    return this.get(queries.getDraft(authorId, draftId));
+    return new Promise((resolve, reject) => {
+      this.get(queries.getDraft(authorId, +draftId || -ONE)).then((draft) => {
+        if (!draft) {
+          return reject({error: 'No draft found'});
+        }
+        resolve(draft);
+      });
+    });
   }
 
   addTags(id, tags) {
@@ -97,21 +105,20 @@ class Database {
 
   publish(authorId, storyId, tags = []) {
     return new Promise((resolve, reject) => {
-      this.getDraft(storyId, authorId).then((row) => {
-        if (!row) {
-          return reject({error: 'No draft found'});
-        }
-        if (!row.title.trim() && !JSON.parse(row.content).length) {
-          const error = 'Cannot publish a story with empty title and content';
-          return reject({error});
-        }
-        this.exec(queries.publish(storyId))
-          .then(() => {
-            const status = 'Published';
-            this.addTags(storyId, tags).then(() => resolve({status}));
-          })
-          .catch(() => reject({error: 'Already published'}));
-      });
+      this.getDraft(storyId, authorId)
+        .then((draft) => {
+          if (!draft.title.trim() && !JSON.parse(draft.content).length) {
+            const error = 'Cannot publish a story with empty title and content';
+            return reject({error});
+          }
+          this.exec(queries.publish(storyId))
+            .then(() => {
+              const status = 'Published';
+              this.addTags(storyId, tags).then(() => resolve({status}));
+            })
+            .catch(() => reject({error: 'Already published'}));
+        })
+        .catch((err) => reject(err));
     });
   }
 
@@ -249,6 +256,17 @@ class Database {
       await this.exec(queries.updateViews(storyId));
     }
     return await this.get(queries.getStoryViews(storyId));
+  }
+
+  deleteDraft(draftId, userId) {
+    return new Promise((resolve, reject) => {
+      const status = {status: 'deleted'};
+      this.getDraft(draftId, userId)
+        .then(() =>
+          this.exec(queries.deleteDraft(draftId)).then(() => resolve(status))
+        )
+        .catch((err) => reject(err));
+    });
   }
 }
 

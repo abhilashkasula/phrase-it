@@ -180,10 +180,7 @@ const notFound = (req, res) => {
 const serveEditDraftPage = (req, res) => {
   req.app.locals.db
     .getDraft(req.params.id, req.session.id)
-    .then((draft) => {
-      if (!draft) {
-        return notFound(req, res);
-      }
+    .then(() => {
       req.app.locals.db
         .getUserDetails(req.session.id)
         .then((userDetails) => res.render('editDraft', userDetails));
@@ -192,12 +189,10 @@ const serveEditDraftPage = (req, res) => {
 };
 
 const serveDraft = (req, res) => {
-  req.app.locals.db.getDraft(req.params.id, req.session.id).then((draft) => {
-    if (!draft) {
-      return res.status(statusCodes.NOT_FOUND).json({error: 'Draft not found'});
-    }
-    res.json({draft});
-  });
+  req.app.locals.db
+    .getDraft(req.params.id, req.session.id)
+    .then((draft) => res.json({draft}))
+    .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
 const follow = (req, res) => {
@@ -252,6 +247,13 @@ const search = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
+const deleteDraft = function (req, res) {
+  req.app.locals.db
+    .deleteDraft(req.body.draftId, req.session.id)
+    .then((status) => res.json(status))
+    .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -275,4 +277,5 @@ module.exports = {
   serveProfilePage,
   serveSearchPage,
   search,
+  deleteDraft,
 };

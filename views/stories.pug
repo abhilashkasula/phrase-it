@@ -20,14 +20,16 @@ html
             li(id="tab-published" class="tab-name")=`Published ${published.length || ''}`
         div(id="drafts" class="tab")
           each draft in drafts
-            a(href=`/edit/${draft.id}`)
-              div(class="story")
+            div(class="story")
+              a(href=`/edit/${draft.id}`)
                 div
                   div(class="story-title-container")
                     h1(class="story-title")=draft.title || 'Untitled story'
                   if draft.content.length
                     p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
                   p(class="story-last-edited draft-last-edited" published_at=draft.last_modified)
+              div
+                button(class="delete-button" onclick=`deleteDraft(${draft.id})`) Delete
         div(id="published" class="hidden tab")
           each publishedStory in published
             a(href=`/story/${publishedStory.id}`)

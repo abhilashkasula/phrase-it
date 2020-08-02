@@ -11,10 +11,21 @@ const showTab = (tab) => {
 };
 
 const setTime = (stories, text) => {
-  stories.forEach(story => {
+  stories.forEach((story) => {
     const time = story.getAttribute('published_at');
     story.innerText = `${text} ${moment(time).startOf('min').fromNow()}`;
   });
+};
+
+const deleteDraft = (draftId) => {
+  const options = {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({draftId}),
+  };
+  fetch('/deleteDraft', options)
+    .then((res) => res.json())
+    .then(({status, error}) => status && document.location.reload());
 };
 
 const main = () => {

@@ -34,13 +34,15 @@ ul {
 .story {
   padding: 1.4% 0 1.4% 0;
   border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
 }
 
-.story > div p {
+.story div p {
   margin: 7px 0 7px 0;
 }
 
-.story > div p:last-child {
+.story div p:last-child {
   margin-bottom: 0;
 }
 
@@ -69,12 +71,17 @@ ul {
   justify-content: space-between;
 }
 
-.story-title-container button {
+.delete-button {
   background: white;
-  border: 1px solid;
-  padding: 0 1.2%;
+  border: 1px solid #ccc;
+  padding: 4px 10px;
   border-radius: 3px;
   cursor: pointer;
+  color: #292929;
+}
+
+.delete-button:hover{
+  box-shadow: 0px 0px 4px #ccc;
 }
 
 .tab-name:last-child {
@@ -104,3 +111,4 @@ a {
 .err-hide {
   visibility: hidden;
 }
+

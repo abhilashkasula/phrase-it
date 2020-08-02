@@ -22,6 +22,7 @@ app.get('/', handlers.serveHomePage);
 app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.serveStoryPage);
 app.get('/responses', handlers.getResponses);
+app.post('/deleteDraft', handlers.deleteDraft);
 
 const privateRoutes = [
   '/newStory',
