@@ -29,7 +29,13 @@ html
                     p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
                   p(class="story-last-edited draft-last-edited" published_at=draft.last_modified)
               div
-                button(class="delete-button" onclick=`deleteDraft(${draft.id})`) Delete
+                a(class="delete-button" href="#delete-popup"  onclick=`assignDraftId(${draft.id})`) Delete
+          div(id="delete-popup" class="overlay")
+            div(class="popup")
+              h2 Are you sure, you want to delete? 
+              div(class="delete-options")
+                a(href="#") Cancel
+                button(id="delete" onclick="deleteDraft()") Delete
         div(id="published" class="hidden tab")
           each publishedStory in published
             a(href=`/story/${publishedStory.id}`)

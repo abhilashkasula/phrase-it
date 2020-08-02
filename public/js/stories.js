@@ -17,7 +17,8 @@ const setTime = (stories, text) => {
   });
 };
 
-const deleteDraft = (draftId) => {
+const deleteDraft = () => {
+  const draftId = document.querySelector('#delete').getAttribute('draftId');
   const options = {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -25,7 +26,12 @@ const deleteDraft = (draftId) => {
   };
   fetch('/deleteDraft', options)
     .then((res) => res.json())
-    .then(({status, error}) => status && document.location.reload());
+    .then(({status, error}) => status && document.location.replace('/stories'));
+};
+
+const assignDraftId = (draftId) => {
+  const deleteButton = document.querySelector('#delete');
+  deleteButton.setAttribute('draftId', draftId);
 };
 
 const main = () => {
