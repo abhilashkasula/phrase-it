@@ -34,8 +34,13 @@ body {
   color: #757575;
 }
 
-#story-author-name {
+.author-name {
   color: #292929;
+  text-decoration: none;
+}
+
+.author-name:hover {
+  text-decoration: underline;
 }
 
 .story-details {
@@ -141,7 +146,8 @@ body {
 }
 
 .response-block,
-.clap-block, .story-views-container {
+.clap-block,
+.story-views-container {
   display: flex;
   align-self: start;
   text-decoration: none;
@@ -167,7 +173,8 @@ body {
 }
 
 .response-count,
-.clap-count, .story-views {
+.clap-count,
+.story-views {
   font-weight: 400;
   margin-left: 5px;
   font-size: 14px;
