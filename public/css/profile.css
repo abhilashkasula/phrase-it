@@ -41,15 +41,20 @@ body {
   margin-top: 30px;
 }
 
-.selected-tab {
-  border-bottom: 1px solid;
-}
-
 .tab-name {
   padding: 3px;
   font-weight: 600;
-  color: #292929;
+  color: #808080;
   cursor: pointer;
+}
+
+.tab-name:hover {
+  color: #606060;
+}
+
+.selected-tab {
+  border-bottom: 2px solid;
+  color: black;
 }
 
 .tabs {

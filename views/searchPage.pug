@@ -4,6 +4,7 @@ html
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
     link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/searchPage.css")
+    link(rel="stylesheet", href="/css/profile.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
     script(src="/js/search.js")
   body
@@ -14,21 +15,23 @@ html
       div(class="main-placeholder" id="search-placeholder")
         img(src="/images/search-icon.png", alt="" class="search-icon")
         p No active search results....
-      div(class="search-result-container hidden" id="search-result")
-        div(id="author-search-result" class="search-sub-container")
-          h2(class="sub-head") author
+      div(class="sub-container hidden" id="search-result")
+        ul(class="tabs")
+          li(id="tab-author" class="tab-name selected-tab") Author Based&nbsp;
+            span(id="author-based-count")
+          li(id="tab-tag" class="tab-name") Tag Based&nbsp;
+            span(id="tag-based-count")
+          li(id="tab-content" class="tab-name") Content Based&nbsp;
+            span(id="content-based-count")
+        div(id="author-search-result" class="tab")
           div(class="sub-placeholder" id="author-placeholder")
             p No matching Result
           div(id="author-based-cards" class="cards hidden")
-        div(class="vertical-line")
-        div(id="tag-search-result" class="search-sub-container")
-          h2(class="sub-head") tags
+        div(id="tag-search-result" class="tab")
           div(class="sub-placeholder" id="tag-placeholder")
             p No matching Result
           div(id="tag-based-cards" class="cards hidden")
-        div(class="vertical-line")
-        div(id="content-search-result" class="search-sub-container")
-          h2(class="sub-head") content
+        div(id="content-search-result" class="tab")
           div(class="sub-placeholder" id="content-placeholder")
             p No matching Result
           div(id="content-based-cards" class="cards hidden")

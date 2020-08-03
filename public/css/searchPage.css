@@ -4,7 +4,7 @@ body {
 }
 
 .main-container {
-  width: 95%;
+  width: 50%;
   display: flex;
   align-self: center;
   flex-direction: column;
@@ -15,7 +15,7 @@ body {
   display: flex;
   align-self: center;
   justify-content: center;
-  width: 25%;
+  width: 50%;
   padding: 25px 0;
 }
 
@@ -30,30 +30,10 @@ body {
   outline: none;
 }
 
-.search-result-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-self: center;
-  width: 95%;
-  height: 75vh;
-}
-
-.search-sub-container {
-  display: flex;
-  flex-direction: column;
-  width: 30%;
-  text-align: center;
-}
-
-.sub-head {
-  margin: 15px 0;
-}
-
 .cards {
   display: flex;
   flex-direction: column;
   align-self: center;
-  width: 90%;
   height: 85%;
   padding: 4px 0;
   overflow: scroll;
@@ -70,7 +50,7 @@ body {
   border: solid 1px #ccc;
   border-radius: 6px;
   margin: 4px;
-  padding-left: 10px;
+  padding-left: 25px;
 }
 
 .card:hover {
@@ -100,11 +80,11 @@ body {
   color: #808080;
 }
 
-.vertical-line {
+/* .vertical-line {
   margin: 6.5% 0 2% 0;
   width: 0px;
   border: solid 1.5px #ccc;
-}
+} */
 
 .main-placeholder {
   display: flex;
