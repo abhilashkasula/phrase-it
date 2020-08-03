@@ -6,8 +6,9 @@ const createTitleElement = (title) => {
   return titleElement;
 };
 
-const createAuthorElement = (author) => {
-  const authorElement = document.createElement('p');
+const createAuthorElement = (author, authorId) => {
+  const authorElement = document.createElement('a');
+  authorElement.href = `/userProfile?userId=${authorId}`;
   authorElement.className = 'author';
   authorElement.innerText = author;
   return authorElement;
@@ -26,7 +27,7 @@ const createStoryCard = (story) => {
   card.href = `/story/${story.id}`;
   card.className = 'card';
   card.appendChild(createTitleElement(story.title));
-  card.appendChild(createAuthorElement(story.author));
+  card.appendChild(createAuthorElement(story.author, story.author_id));
   card.appendChild(createPublishedTimeElement(story.published_at));
   return card;
 };
