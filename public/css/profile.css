@@ -95,6 +95,12 @@ body {
 .username {
   font-size: 18px;
   align-self: center;
+  text-decoration: none;
+  color: black;
+}
+
+.username:hover {
+  text-decoration: underline;
 }
 
 .story-card {

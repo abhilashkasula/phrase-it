@@ -29,9 +29,9 @@ html
           each user in userDetails.followers
             div(class="user-card")
               img(src=user.avatar_url class="user-avatar")
-              p(class="username")=user.username
+              a(class="username" href=`/userProfile?userId=${user.id}`)=user.username
         div(id="following" class="tab hidden")
           each user in userDetails.following
-             div(class="user-card")
-                img(src=user.avatar_url class="user-avatar")
-                p(class="username")=user.username
+            div(class="user-card")
+              img(src=user.avatar_url class="user-avatar")
+              a(class="username" href=`/userProfile?userId=${user.id}`)=user.username
