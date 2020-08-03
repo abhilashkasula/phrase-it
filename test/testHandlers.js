@@ -77,6 +77,11 @@ describe('Integration tests', () => {
           .expect(/sci-fi/)
           .expect(/1 Views/, done); //expecting views
       });
+      it('should redirect to / for /userProfile', (done) => {
+        request(app)
+          .get('/userProfile?userId=58025056')
+          .expect('location', '/', done);
+      });
     });
 
     describe('authorized user', () => {
@@ -617,6 +622,49 @@ describe('Integration tests', () => {
             .expect(404)
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
+        });
+      });
+
+      describe('/userProfile', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
+
+        it('should give profile for existing user id', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+
+          request(app)
+            .get('/userProfile?userId=58026402')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/Profile/, done);
+        });
+
+        it('should give not found for unknown userId', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
+          request(app)
+            .get('/userProfile?userId=1')
+            .expect(404)
+            .expect('Content-Type', /html/)
+            .expect(/Not Found/, done);
+        });
+
+        it('should give not found for unknown user', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 1};
+            next();
+          });
+          request(app)
+            .get('/userProfile?userId=58025056')
+            .expect(404)
+            .expect('Content-Type', /html/)
+            .expect(/Not Found/, done);
         });
       });
     });

@@ -260,10 +260,13 @@ const serveUserProfile = (req, res) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then(({username, avatar_url}) => {
-      req.app.locals.db.getUserDetails(userId).then((userDetails) => {
-        const details = {username, avatar_url, isUserAuth: true, userDetails};
-        res.render('profile', details);
-      });
+      req.app.locals.db
+        .getUserDetails(userId)
+        .then((userDetails) => {
+          const details = {username, avatar_url, isUserAuth: true, userDetails};
+          res.render('profile', details);
+        })
+        .catch(() => notFound(req, res));
     })
     .catch(() => notFound(req, res));
 };

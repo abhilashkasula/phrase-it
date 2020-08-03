@@ -40,7 +40,7 @@ const privateRoutes = [
   '/logout',
   '/searchPage',
   '/search',
-  'userProfile',
+  '/userProfile',
 ];
 const updateField = ['title', 'blocks'];
 const addResField = ['id', 'response'];
