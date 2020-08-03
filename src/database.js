@@ -78,6 +78,7 @@ class Database {
     }
     userDetails.followers = await this.all(queries.getFollowers(id));
     userDetails.following = await this.all(queries.getFollowing(id));
+    userDetails.stories = await this.getUserPublishedStories(id);
     return userDetails;
   }
 

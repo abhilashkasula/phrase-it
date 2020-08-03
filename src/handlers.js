@@ -225,6 +225,7 @@ const serveMyProfilePage = (req, res) => {
     .getUserDetails(req.session.id)
     .then((userDetails) => {
       const {username, avatar_url} = userDetails;
+      userDetails.stories = parseContent(userDetails.stories);
       const details = {username, avatar_url, isUserAuth: true, userDetails};
       res.render('profile', details);
     })
@@ -263,6 +264,7 @@ const serveUserProfile = (req, res) => {
       req.app.locals.db
         .getUserDetails(userId)
         .then((userDetails) => {
+          userDetails.stories = parseContent(userDetails.stories);
           const details = {username, avatar_url, isUserAuth: true, userDetails};
           res.render('profile', details);
         })

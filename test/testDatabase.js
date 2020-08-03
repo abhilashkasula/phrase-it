@@ -186,7 +186,12 @@ describe('Unit Test', () => {
         const userDetails = {username: 'some one', avatar_url: 'avatar'};
         const db = {
           get: (query, cb) => cb(null, userDetails),
-          all: (query, cb) => cb(null, [{id: 1, username: 'some one'}]),
+          all: (query, cb) => {
+            if (query.includes('followers')) {
+              return cb(null, [{id: 1, username: 'some one'}]);
+            }
+            cb(null, [{title: 'title', content: 'content'}]);
+          },
         };
         const database = new Database(db);
         database.getUserDetails(1).then((details) => {
@@ -195,6 +200,7 @@ describe('Unit Test', () => {
             avatar_url: 'avatar',
             followers: [{id: 1, username: 'some one'}],
             following: [{id: 1, username: 'some one'}],
+            stories: [{title: 'title', content: 'content'}],
           };
           assert.deepStrictEqual(details, expected);
           done();

@@ -4,6 +4,7 @@ html
     link(rel="stylesheet", href="css/navbar.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
     link(rel="stylesheet", href="css/profile.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
     script(src="js/profile.js")
   body
     include navbar
@@ -11,11 +12,20 @@ html
       div(class="user-info")
         img(src=`${userDetails.avatar_url}` class="profile-image")
         h1(class="name")=userDetails.username
-      div(class="followers-container")
+      div(class="sub-container")
         ul(class="tabs")
-          li(id="tab-followers" class="tab-name selected-tab")=`Followers [ ${userDetails.followers.length || 0} ]`
+          li(id="tab-stories" class="tab-name selected-tab")=`Stories [ ${userDetails.stories.length || 0} ]`
+          li(id="tab-followers" class="tab-name")=`Followers [ ${userDetails.followers.length || 0} ]`
           li(id="tab-following" class="tab-name")=`Following [ ${userDetails.following.length || 0} ]`
-        div(id="followers" class="tab")
+        div(id="stories" class="tab")
+          each story in userDetails.stories
+            a(href=`/story/${story.id}` class="story-link")
+              div(class="story-card")
+                h1(class="story-title")=story.title || 'Untitled story'
+                if story.content.length
+                  p(class="story-content")=`${story.content[0].data.text.slice(0, 50)}...`
+                p(class="story-time" published_at=story.published_at)
+        div(id="followers" class="tab hidden")
           each user in userDetails.followers
             div(class="user-card")
               img(src=user.avatar_url class="user-avatar")
