@@ -11,19 +11,18 @@ body {
   height: calc(100% - 10%);
 }
 
-
-.message-box{
+.message-box {
   text-align: center;
-  opacity: .6;
+  opacity: 0.6;
   position: relative;
-  top:210px;
+  top: 210px;
   display: inline-block;
-  height:300px;
-  width:85vw;
-  display:none
+  height: 300px;
+  width: 85vw;
+  display: none;
 }
 
-.message-box>p{
+.message-box > p {
   font-style: italic;
 }
 
@@ -88,12 +87,17 @@ body {
 .story-author-name {
   color: #232323;
   font-size: 14px;
+  text-decoration: none;
+}
+
+.story-author-name:hover {
+  text-decoration: underline;
 }
 
 .story-content {
   margin: 0;
-  margin-top: 18px;
-  margin-bottom: 18px;
+  margin-top: 3px;
+  margin-bottom: 10px;
   font-weight: 100;
   font-size: 15px;
   color: #757575;

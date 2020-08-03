@@ -11,22 +11,45 @@ const showStory = function (story_id) {
   location.replace(`/story/${story_id}`);
 };
 
+const createTitleElement = (title) => {
+  const titleElement = document.createElement('h1');
+  titleElement.className = 'title';
+  titleElement.innerText = title;
+  return titleElement;
+};
+
+const createStoryContentElement = (content) => {
+  const contentElement = document.createElement('div');
+  contentElement.className = 'story-content';
+  contentElement.innerText = `${content}....`;
+  return contentElement;
+};
+
+const createTimeElement = (publishedAt) => {
+  const timeElement = document.createElement('div');
+  timeElement.className = 'story-time';
+  timeElement.innerText = publishedAt;
+  return timeElement;
+};
+
+const createAuthorNameElement = (authorName, authorId) => {
+  const authorNameElement = document.createElement('a');
+  authorNameElement.className = 'story-author-name';
+  authorNameElement.href = `/userProfile?userId=${authorId}`;
+  authorNameElement.innerText = authorName;
+  return authorNameElement;
+};
+
 const addStoryDetail = function (story, storyBox) {
-  const totalContent = JSON.parse(story.content);
-  const contentLength = totalContent.length;
-  const content = contentLength ? totalContent[0].data.text.slice(0, 70) : '';
-  const publishedAt = moment(story.published_at).startOf('min').fromNow();
-  const storyDetail = `
-  <h1 class="title">${story.title}</h1>
-  <div class="story-content">${content} ...</div>
-  <div class="story-author-container">
-    <div>
-      <div class="story-author-name">${story.author}</div>
-      <div class="story-time">${publishedAt}</div>
-    </div>
-  </div>
-  `;
-  storyBox.innerHTML = storyDetail;
+  const {title, content, author, authorId, published_at} = story;
+  const totalContent = JSON.parse(content);
+  const length = totalContent.length;
+  const contentToShow = length ? totalContent[0].data.text.slice(0, 70) : '';
+  const publishedTime = moment(published_at).startOf('min').fromNow();
+  storyBox.appendChild(createTitleElement(title));
+  storyBox.appendChild(createStoryContentElement(contentToShow));
+  storyBox.appendChild(createAuthorNameElement(author, authorId));
+  storyBox.appendChild(createTimeElement(publishedTime));
 };
 
 const getPublishedStories = () => {
