@@ -36,7 +36,7 @@ const privateRoutes = [
   '/addResponse',
   '/unFollow',
   '/clap',
-  '/profile',
+  '/myProfile',
   '/logout',
   '/searchPage',
   '/search',
@@ -50,7 +50,7 @@ app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.get('/stories', handlers.storiesPage);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
-app.get('/profile', handlers.serveProfilePage);
+app.get('/myProfile', handlers.serveMyProfilePage);
 app.get('/searchPage', handlers.serveSearchPage);
 app.get('/search', handlers.search);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);

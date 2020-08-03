@@ -55,8 +55,8 @@ describe('Integration tests', () => {
       it('should redirect to / for /clap', (done) => {
         request(app).get('/clap').expect('location', '/', done);
       });
-      it('should redirect to / for /profile', (done) => {
-        request(app).get('/profile').expect('location', '/', done);
+      it('should redirect to / for /myProfile', (done) => {
+        request(app).get('/myProfile').expect('location', '/', done);
       });
       it('should redirect to / for /searchPage', (done) => {
         request(app).get('/searchPage').expect('location', '/', done);
@@ -493,7 +493,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/profile', () => {
+      describe('/myProfile', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
@@ -503,7 +503,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/profile')
+            .get('/myProfile')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/Profile/, done);
@@ -514,7 +514,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/profile')
+            .get('/myProfile')
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);

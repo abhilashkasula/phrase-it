@@ -220,7 +220,7 @@ const logout = (req, res) => {
   res.json({status: 'Logged out'});
 };
 
-const serveProfilePage = (req, res) => {
+const serveMyProfilePage = (req, res) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
@@ -274,7 +274,7 @@ module.exports = {
   unFollow,
   clap,
   logout,
-  serveProfilePage,
+  serveMyProfilePage,
   serveSearchPage,
   search,
   deleteDraft,
