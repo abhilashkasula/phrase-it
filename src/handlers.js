@@ -224,8 +224,9 @@ const serveMyProfilePage = (req, res) => {
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then((userDetails) => {
-      userDetails.isUserAuth = true;
-      res.render('profile', userDetails);
+      const {username, avatar_url} = userDetails;
+      const details = {username, avatar_url, isUserAuth: true, userDetails};
+      res.render('profile', details);
     })
     .catch(() => notFound(req, res));
 };
@@ -254,6 +255,19 @@ const deleteDraft = function (req, res) {
     .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
+const serveUserProfile = (req, res) => {
+  const {userId} = req.query;
+  req.app.locals.db
+    .getUserDetails(req.session.id)
+    .then(({username, avatar_url}) => {
+      req.app.locals.db.getUserDetails(userId).then((userDetails) => {
+        const details = {username, avatar_url, isUserAuth: true, userDetails};
+        res.render('profile', details);
+      });
+    })
+    .catch(() => notFound(req, res));
+};
+
 module.exports = {
   updateStory,
   getUserDetails,
@@ -278,4 +292,5 @@ module.exports = {
   serveSearchPage,
   search,
   deleteDraft,
+  serveUserProfile,
 };

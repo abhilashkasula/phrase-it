@@ -9,19 +9,19 @@ html
     include navbar
     div(id="profile-container" class="profile-container")
       div(class="user-info")
-        img(src=`${avatar_url}` class="profile-image")
-        h1(class="name")=username
+        img(src=`${userDetails.avatar_url}` class="profile-image")
+        h1(class="name")=userDetails.username
       div(class="followers-container")
         ul(class="tabs")
-          li(id="tab-followers" class="tab-name selected-tab")=`Followers [ ${followers.length || 0} ]`
-          li(id="tab-following" class="tab-name")=`Following [ ${following.length || 0} ]`
+          li(id="tab-followers" class="tab-name selected-tab")=`Followers [ ${userDetails.followers.length || 0} ]`
+          li(id="tab-following" class="tab-name")=`Following [ ${userDetails.following.length || 0} ]`
         div(id="followers" class="tab")
-          each user in followers
+          each user in userDetails.followers
             div(class="user-card")
               img(src=user.avatar_url class="user-avatar")
               p(class="username")=user.username
         div(id="following" class="tab hidden")
-          each user in following
+          each user in userDetails.following
              div(class="user-card")
                 img(src=user.avatar_url class="user-avatar")
                 p(class="username")=user.username

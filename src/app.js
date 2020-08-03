@@ -40,6 +40,7 @@ const privateRoutes = [
   '/logout',
   '/searchPage',
   '/search',
+  'userProfile',
 ];
 const updateField = ['title', 'blocks'];
 const addResField = ['id', 'response'];
@@ -53,6 +54,7 @@ app.get('/draft/:id', handlers.serveDraft);
 app.get('/myProfile', handlers.serveMyProfilePage);
 app.get('/searchPage', handlers.serveSearchPage);
 app.get('/search', handlers.search);
+app.get('/userProfile', handlers.serveUserProfile);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.post('/publish', handlers.hasFields(['id', 'tags']), handlers.publish);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.follow);
