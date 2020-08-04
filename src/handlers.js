@@ -181,7 +181,7 @@ const follow = (req, res) => {
 const serveDashBoardStories = (req, res) => {
   req.app.locals.db
     .getFollowingStories(req.session.id)
-    .then((stories) => res.json(stories));
+    .then((stories) => res.json(parseContent(stories)));
 };
 
 const unFollow = (req, res) => {

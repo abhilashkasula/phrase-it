@@ -42,9 +42,7 @@ const createAuthorNameElement = (authorName, authorId) => {
 
 const addStoryDetail = function (story, storyBox) {
   const {title, content, author, authorId, published_at} = story;
-  const totalContent = JSON.parse(content);
-  const length = totalContent.length;
-  const contentToShow = length ? totalContent[0].data.text.slice(0, 70) : '';
+  const contentToShow = content.length ? content[0].data.text.slice(0, 70) : '';
   const publishedTime = moment(published_at).startOf('min').fromNow();
   storyBox.appendChild(createTitleElement(title));
   storyBox.appendChild(createStoryContentElement(contentToShow));
