@@ -25,6 +25,14 @@ const getDraft = (authorId, storyId) =>
   `SELECT * FROM stories
     WHERE id = ${storyId} AND created_by = ${authorId} AND is_published = 0`;
 
+const isDraftExists = (authorId, draftId) =>
+  `SELECT EXISTS (
+    SELECT 1 FROM stories
+    WHERE id = ${draftId} 
+    AND created_by = ${authorId}
+    AND is_published = 0) 
+    as isExists`;
+
 const publish = (id, imagePath) => {
   return `BEGIN;
     UPDATE stories set is_published = 1 where id = ${id};
@@ -215,6 +223,7 @@ module.exports = {
   insertUser,
   getUserDetails,
   getDraft,
+  isDraftExists,
   publish,
   getPublishedStoryDetails,
   getUserPublishedStories,

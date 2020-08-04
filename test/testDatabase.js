@@ -105,7 +105,7 @@ describe('Unit Test', () => {
     describe('updateStory', () => {
       it('should update the story with given title and content', (done) => {
         const db = {
-          get: (query, cb) => cb(null, {id: 1}),
+          get: (query, cb) => cb(null, {isExists: true}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
@@ -119,7 +119,7 @@ describe('Unit Test', () => {
       });
       it('should not update story and give error if id not found', (done) => {
         const db = {
-          get: (query, cb) => cb(null, undefined),
+          get: (query, cb) => cb(null, {isExists: false}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
@@ -251,20 +251,6 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
 
-      it('should reject if the story already published', (done) => {
-        const db = {
-          get: (query, cb) => cb(null, {id: 5, title: 'Title', content}),
-          exec: (query, cb) => cb({err: 'not published'}),
-        };
-        const database = new Database(db);
-        database
-          .publish(1, 1)
-          .catch((err) => {
-            assert.deepStrictEqual(err, {error: 'Already published'});
-            done();
-          })
-          .catch((err) => done(err));
-      });
       it('should reject if the draft not found to publish', (done) => {
         const db = {get: (query, cb) => cb(null, undefined)};
         const database = new Database(db);
@@ -276,6 +262,7 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+
       it('should reject if the title and content is empty', (done) => {
         const db = {
           get: (query, cb) => cb(null, {id: 5, title: '', content: '[]'}),
@@ -319,33 +306,6 @@ describe('Unit Test', () => {
         const db = {get: (query, cb) => cb({err: 'unknown id'})};
         const database = new Database(db);
         await assert.rejects(() => database.getResponses(100));
-      });
-    });
-
-    describe('getDraft', () => {
-      it('should resolve with draft for given draft id', (done) => {
-        const draft = {id: 5, title: 'Title', content: '[]'};
-        const db = {get: (query, cb) => cb(null, draft)};
-        const database = new Database(db);
-        database
-          .getDraft(1, 1)
-          .then((res) => {
-            assert.deepStrictEqual(res, draft);
-            done();
-          })
-          .catch((err) => done(err));
-      });
-
-      it('should reject with no draft found for unknown id', (done) => {
-        const db = {get: (query, cb) => cb(null, undefined)};
-        const database = new Database(db);
-        database
-          .getDraft(1, 1)
-          .catch((err) => {
-            assert.deepStrictEqual(err, {error: 'No draft found'});
-            done();
-          })
-          .catch((err) => done(err));
       });
     });
 
@@ -666,9 +626,8 @@ describe('Unit Test', () => {
 
     describe('deleteDraft', () => {
       it('should resolve with status deleted if draft is present ', (done) => {
-        const draft = {id: 1, title: 'abc', content: '[]'};
         const db = {
-          get: (query, cb) => cb(null, {draft}),
+          get: (query, cb) => cb(null, {isExists: true}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);
@@ -683,7 +642,7 @@ describe('Unit Test', () => {
 
       it('should reject with error for no draft to delete', (done) => {
         const db = {
-          get: (query, cb) => cb(null, undefined),
+          get: (query, cb) => cb(null, {isExists: false}),
           exec: (query, cb) => cb(null),
         };
         const database = new Database(db);

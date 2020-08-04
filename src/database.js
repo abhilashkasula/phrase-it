@@ -50,15 +50,13 @@ class Database {
     });
   }
 
-  updateStory(storyId, title, authorId, content) {
-    return new Promise((resolve, reject) => {
-      const query = queries.saveStory(storyId, title, content);
-      this.getDraft(storyId, authorId)
-        .then(() => {
-          this.exec(query).then(() => resolve({status: 'Story updated'}));
-        })
-        .catch((err) => reject(err));
-    });
+  async updateStory(storyId, title, authorId, content) {
+    const {isExists} = await this.get(queries.isDraftExists(authorId, storyId));
+    if (!isExists) {
+      throw {error: 'No draft found'};
+    }
+    await this.exec(queries.saveStory(storyId, title, content));
+    return {status: 'Story updated'};
   }
 
   getDrafts(userId) {
@@ -110,12 +108,10 @@ class Database {
             const error = 'Cannot publish a story with empty title and content';
             return reject({error});
           }
-          this.exec(queries.publish(storyId, imagePath))
-            .then(() => {
-              const status = 'Published';
-              this.addTags(storyId, tags).then(() => resolve({status}));
-            })
-            .catch(() => reject({error: 'Already published'}));
+          this.exec(queries.publish(storyId, imagePath)).then(() => {
+            const status = 'Published';
+            this.addTags(storyId, tags).then(() => resolve({status}));
+          });
         })
         .catch((err) => reject(err));
     });
@@ -257,15 +253,13 @@ class Database {
     return await this.get(queries.getStoryViews(storyId));
   }
 
-  deleteDraft(draftId, userId) {
-    return new Promise((resolve, reject) => {
-      const status = {status: 'deleted'};
-      this.getDraft(draftId, userId)
-        .then(() =>
-          this.exec(queries.deleteDraft(draftId)).then(() => resolve(status))
-        )
-        .catch((err) => reject(err));
-    });
+  async deleteDraft(draftId, userId) {
+    const {isExists} = await this.get(queries.isDraftExists(userId, draftId));
+    if (!isExists) {
+      throw {error: 'No draft found'};
+    }
+    await this.exec(queries.deleteDraft(draftId));
+    return {status: 'deleted'};
   }
 }
 
