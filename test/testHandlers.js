@@ -816,7 +816,7 @@ describe('hasFields', () => {
   });
 });
 
-describe('notFound', () => {
+describe('serveNotFound', () => {
   it('should respond with not found for invalid url', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {isNew: false};

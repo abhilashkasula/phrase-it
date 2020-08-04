@@ -8,7 +8,7 @@ const requestUserDetails = (req, res, token) => {
   request(detailsOptions)
     .then(({id, login, name, avatar_url}) => {
       req.session.id = id;
-      req.session.userName = name || login;
+      req.session.username = name || login;
       req.session.avatar_url = avatar_url;
       req.app.locals.db
         .addUser({id, name: name || login, avatar_url})
@@ -105,7 +105,7 @@ const serveStoryPage = (req, res) => {
       }
       res.render('story', {isUserAuth: id, username, avatar_url, story});
     })
-    .catch(() => notFound(req, res));
+    .catch(() => serveNotFound(req, res));
 };
 
 const getResponses = (req, res) => {
@@ -152,7 +152,7 @@ const hasFields = (fields) => {
   };
 };
 
-const notFound = (req, res) => {
+const serveNotFound = (req, res) => {
   res.status(statusCodes.NOT_FOUND).render('notFound');
 };
 
@@ -164,7 +164,7 @@ const serveEditDraftPage = (req, res) => {
         .getUserDetails(req.session.id)
         .then((userDetails) => res.render('editDraft', userDetails));
     })
-    .catch(() => notFound(req, res));
+    .catch(() => serveNotFound(req, res));
 };
 
 const serveDraft = (req, res) => {
@@ -208,7 +208,7 @@ const serveMyProfilePage = (req, res) => {
       const details = {username, avatar_url, isUserAuth: true, userDetails};
       res.render('profile', details);
     })
-    .catch(() => notFound(req, res));
+    .catch(() => serveNotFound(req, res));
 };
 
 const serveSearchPage = (req, res) => {
@@ -218,7 +218,7 @@ const serveSearchPage = (req, res) => {
       userDetails.isUserAuth = true;
       res.render('searchPage', userDetails);
     })
-    .catch(() => notFound(req, res));
+    .catch(() => serveNotFound(req, res));
 };
 
 const search = (req, res) => {
@@ -246,9 +246,9 @@ const serveUserProfile = (req, res) => {
           const details = {username, avatar_url, isUserAuth: true, userDetails};
           res.render('profile', details);
         })
-        .catch(() => notFound(req, res));
+        .catch(() => serveNotFound(req, res));
     })
-    .catch(() => notFound(req, res));
+    .catch(() => serveNotFound(req, res));
 };
 
 module.exports = {
@@ -261,7 +261,7 @@ module.exports = {
   publish,
   serveStoryPage,
   hasFields,
-  notFound,
+  serveNotFound,
   getResponses,
   addResponse,
   serveEditDraftPage,

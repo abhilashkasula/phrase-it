@@ -45,6 +45,6 @@ app.post('/addResponse', handlers.hasFields(addResField), handlers.addResponse);
 app.post('/clap', handlers.hasFields(['id']), handlers.clap);
 app.post('/deleteDraft', handlers.hasFields(['draftId']), handlers.deleteDraft);
 app.post('/logout', handlers.logout);
-app.use(handlers.notFound);
+app.use(handlers.serveNotFound);
 
 module.exports = {app};
