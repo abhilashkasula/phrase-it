@@ -25,11 +25,11 @@ const getDraft = (authorId, storyId) =>
   `SELECT * FROM stories
     WHERE id = ${storyId} AND created_by = ${authorId} AND is_published = 0`;
 
-const publish = (id) => {
+const publish = (id, imagePath) => {
   return `BEGIN;
     UPDATE stories set is_published = 1 where id = ${id};
-    INSERT INTO published_stories (story_id, published_at)
-      VALUES (${id}, DATETIME('now', 'localtime'));
+    INSERT INTO published_stories (story_id, published_at, cover_image_path)
+      VALUES (${id}, DATETIME('now', 'localtime'), '${imagePath}');
     END;`;
 };
 

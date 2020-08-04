@@ -82,8 +82,12 @@ const allowAuthorized = (req, res, next) => {
 
 const publish = (req, res) => {
   const {id, tags} = req.body;
+  const {coverImage} = req.files || {coverImage: {}};
+  const storeLocation = `${__dirname}/../database/images/${coverImage.md5}`;
+  coverImage.mv && coverImage.mv(storeLocation);
+  const parsedTags = tags ? tags.split(',') : [];
   req.app.locals.db
-    .publish(req.session.id, id, tags)
+    .publish(req.session.id, +id, parsedTags, coverImage.md5)
     .then((result) => res.json(result))
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };

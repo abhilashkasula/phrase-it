@@ -16,14 +16,10 @@ const removeTag = () => {
   document.querySelector('#tags').removeChild(event.target.parentElement);
 };
 
-const publish = (id, tags, cb) => {
-  const storyId = id.split('-')[1];
+const publish = (storyId, formData, cb) => {
   const options = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({id: storyId, tags}),
+    body: formData,
   };
   fetch('/publish', options)
     .then((res) => res.json())

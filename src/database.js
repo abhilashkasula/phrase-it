@@ -104,7 +104,7 @@ class Database {
     });
   }
 
-  publish(authorId, storyId, tags = []) {
+  publish(authorId, storyId, tags = [], imagePath = 'NULL') {
     return new Promise((resolve, reject) => {
       this.getDraft(storyId, authorId)
         .then((draft) => {
@@ -112,7 +112,7 @@ class Database {
             const error = 'Cannot publish a story with empty title and content';
             return reject({error});
           }
-          this.exec(queries.publish(storyId))
+          this.exec(queries.publish(storyId, imagePath))
             .then(() => {
               const status = 'Published';
               this.addTags(storyId, tags).then(() => resolve({status}));

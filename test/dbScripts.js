@@ -138,6 +138,7 @@ const getCreateTablesQuery = () => {
       CREATE TABLE published_stories (
         story_id INTEGER PRIMARY KEY,
         published_at TIMESTAMP NOT NULL,
+        cover_image_path TEXT,
         views INTEGER DEFAULT 0
       );
       DROP TABLE IF EXISTS claps;

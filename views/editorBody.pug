@@ -39,6 +39,11 @@ div(class="container")
       h2 Add tags
       a(href="#" class="close" id="popup-close") &times
       div(class="content") 
+        input(type="file" id="coverImage-fetcher" accept="images/*" style="visibility: hidden;" onchange="showCoverImage()")
+        div(class="coverImage-adder")
+          label(for="coverImage-fetcher")
+            div(class="coverImage-container")
+              <img src="https://img.icons8.com/android/24/000000/upload.png" class="coverImage-before" id="coverImage"/>
         div(id="tags")
         div(class="options")
           input(type="text" onkeydown="addTags()" id="tag-field" placeholder="Add tag here")

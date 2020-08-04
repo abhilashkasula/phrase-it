@@ -175,6 +175,7 @@ describe('Integration tests', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
+            req.files = {coverImage: {mv: () => {}, md5: 'hash'}};
             next();
           });
           await resetTables(app.locals.db);
@@ -182,7 +183,7 @@ describe('Integration tests', () => {
         it('should give No draft found for no draft', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 1, tags: ['tech']})
+            .send({id: 1, tags: 'tech'})
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
@@ -191,7 +192,7 @@ describe('Integration tests', () => {
         it('should not publish a story with no content and title', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 5, tags: ['tech']})
+            .send({id: 5, tags: 'tech'})
             .expect(400)
             .expect('Content-Type', /json/)
             .expect(
@@ -203,7 +204,7 @@ describe('Integration tests', () => {
         it('should publish a story present', (done) => {
           request(app)
             .post('/publish')
-            .send({id: 2, tags: []})
+            .send({id: 2, tags: ''})
             .expect(200)
             .expect('Content-Type', /json/)
             .expect({status: 'Published'}, done);

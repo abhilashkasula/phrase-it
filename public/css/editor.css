@@ -149,3 +149,32 @@ body {
   align-items: center;
   margin-top: 18px;
 }
+
+.coverImage-label {
+  font-size: 15px;
+  font-weight: 100;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+.coverImage-container {
+  border: 1px solid #ccc;
+  width: 99.5%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.coverImage-before {
+  align-self: center;
+}
+
+.coverImage-after {
+  overflow: hidden;
+  width: inherit;
+}

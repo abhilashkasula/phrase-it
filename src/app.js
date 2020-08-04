@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const sqlite = require('sqlite3');
 const session = require('cookie-session');
+const fileUpload = require('express-fileupload');
 const handlers = require('./handlers');
 const Database = require('./database');
 const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
@@ -15,6 +16,8 @@ app.use(logger('common'));
 app.set('view engine', 'pug');
 app.use(express.static('public', {index: false}));
 app.use(express.json());
+app.use(express.urlencoded({extended: true, limit: '50mb'}));
+app.use(fileUpload());
 app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));
