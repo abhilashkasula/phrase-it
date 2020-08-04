@@ -157,13 +157,10 @@ const serveNotFound = (req, res) => {
 };
 
 const serveEditDraftPage = (req, res) => {
+  const {id, username, avatar_url} = req.session;
   req.app.locals.db
-    .getDraft(req.params.id, req.session.id)
-    .then(() => {
-      req.app.locals.db
-        .getUserDetails(req.session.id)
-        .then((userDetails) => res.render('editDraft', userDetails));
-    })
+    .getDraft(req.params.id, id)
+    .then(() => res.render('editDraft', {username, avatar_url}))
     .catch(() => serveNotFound(req, res));
 };
 
