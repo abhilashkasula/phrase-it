@@ -44,16 +44,15 @@ const updateStory = (req, res) => {
 
 const serveHomePage = (req, res) => {
   if (req.session.isNew) {
-    res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
-  } else {
-    const {id} = req.session;
-    req.app.locals.db
-      .getUserDetails(id)
-      .then(({username, avatar_url}) => {
-        res.render('home', {username, avatar_url, isUserAuth: true});
-      })
-      .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
+    return res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   }
+  const {id} = req.session;
+  req.app.locals.db
+    .getUserDetails(id)
+    .then(({username, avatar_url}) => {
+      res.render('home', {username, avatar_url, isUserAuth: true});
+    })
+    .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
 };
 
 const parseContent = (stories) => {
