@@ -85,7 +85,7 @@ describe('Integration tests', () => {
     });
 
     describe('authorized user', () => {
-      describe('newStory', () => {
+      describe('/newStory', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -103,7 +103,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('updateStory', () => {
+      describe('/updateStory', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -153,25 +153,13 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('stories', () => {
+      describe('/stories', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
           await resetTables(app.locals.db);
-        });
-
-        it('should give unknown user id for user not found', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 10000};
-            next();
-          });
-          request(app)
-            .get('/stories')
-            .expect(401)
-            .expect('Content-Type', /json/)
-            .expect({error: 'No user found'}, done);
         });
 
         it('should give story page with available drafts of user', (done) => {
@@ -183,7 +171,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('publish', () => {
+      describe('/publish', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -671,7 +659,7 @@ describe('Integration tests', () => {
   });
 });
 
-describe('serveHomePage', () => {
+describe('/', () => {
   beforeEach(async () => {
     await resetTables(app.locals.db);
   });
@@ -705,7 +693,7 @@ describe('serveHomePage', () => {
   });
 });
 
-describe('getUserDetails', () => {
+describe('/user', () => {
   beforeEach(async () => {
     await resetTables(app.locals.db);
   });

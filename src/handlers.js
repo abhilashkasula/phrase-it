@@ -58,19 +58,14 @@ const parseContent = (stories) => {
   });
 };
 
-const storiesPage = async (req, res) => {
-  const {id} = req.session;
+const serveStoriesPage = async (req, res) => {
+  const {id, username, avatar_url} = req.session;
   let drafts = await req.app.locals.db.getDrafts(id);
   let published = await req.app.locals.db.getUserPublishedStories(id);
   drafts = parseContent(drafts);
   published = parseContent(published);
-  req.app.locals.db
-    .getUserDetails(id)
-    .then(({username, avatar_url}) => {
-      const options = {username, avatar_url, drafts, published, isUserAuth: id};
-      res.render('stories', options);
-    })
-    .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
+  const options = {username, avatar_url, drafts, published, isUserAuth: id};
+  res.render('stories', options);
 };
 
 const newStory = (req, res) => {
@@ -271,7 +266,7 @@ module.exports = {
   updateStory,
   getUserDetails,
   serveHomePage,
-  storiesPage,
+  serveStoriesPage,
   newStory,
   allowAuthorized,
   publish,
