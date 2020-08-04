@@ -40,11 +40,22 @@ const createAuthorNameElement = (authorName, authorId) => {
   return authorNameElement;
 };
 
+const createStoryCover = (coverImageName) => {
+  const container = document.createElement('div');
+  const coverImage = document.createElement('img');
+  container.className = 'coverImage-container';
+  coverImage.src = `/coverImage/${coverImageName}`;
+  coverImage.className = 'coverImage';
+  container.appendChild(coverImage);
+  return container;
+};
+
 const addStoryDetail = function (story, storyBox) {
   const {title, content, author, authorId, published_at} = story;
   const contentToShow = content.length ? content[0].data.text.slice(0, 70) : '';
   const publishedTime = moment(published_at).startOf('min').fromNow();
   storyBox.appendChild(createTitleElement(title));
+  storyBox.appendChild(createStoryCover(story.coverImageName));
   storyBox.appendChild(createStoryContentElement(contentToShow));
   storyBox.appendChild(createAuthorNameElement(author, authorId));
   storyBox.appendChild(createTimeElement(publishedTime));

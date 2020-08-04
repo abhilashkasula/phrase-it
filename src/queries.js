@@ -118,6 +118,7 @@ const followingStories = (userId) =>
     t1.title,
     t1.content,
     t2.published_at,
+    t2.cover_image_path as coverImageName,
     t3.username author,
     t3.id authorId
   FROM stories t1 

@@ -3,7 +3,7 @@ body {
 }
 
 .story-container {
-  margin-top: 2%;
+  margin-top: 1%;
   display: flex;
   justify-content: center;
 }
@@ -221,6 +221,8 @@ body {
 .coverImage-container {
   width: 680px;
   margin-top: 4.5%;
+  max-height: 400px;
+  overflow: hidden;
 }
 
 .coverImage {
