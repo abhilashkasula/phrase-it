@@ -8,7 +8,8 @@ const requestUserDetails = (req, res, token) => {
   request(detailsOptions)
     .then(({id, login, name, avatar_url}) => {
       req.session.id = id;
-      req.session.userName = login;
+      req.session.userName = name || login;
+      req.session.avatar_url = avatar_url;
       req.app.locals.db
         .addUser({id, name: name || login, avatar_url})
         .then(() => res.redirect('/'))
@@ -46,13 +47,8 @@ const serveHomePage = (req, res) => {
   if (req.session.isNew) {
     return res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   }
-  const {id} = req.session;
-  req.app.locals.db
-    .getUserDetails(id)
-    .then(({username, avatar_url}) => {
-      res.render('home', {username, avatar_url, isUserAuth: true});
-    })
-    .catch((err) => res.status(statusCodes.NOT_AUTH).json(err));
+  const {username, avatar_url} = req.session;
+  res.render('home', {username, avatar_url, isUserAuth: true});
 };
 
 const parseContent = (stories) => {

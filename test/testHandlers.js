@@ -687,28 +687,21 @@ describe('serveHomePage', () => {
       .expect(/Login Using Github/, done);
   });
 
-  it('should get welcome page if session not exists', (done) => {
+  it('should get home page if session exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {isNew: false, id: 56071561};
+      req.session = {
+        isNew: false,
+        id: 56071561,
+        username: 'name',
+        avatar_url: 'url',
+      };
       next();
     });
     request(app)
       .get('/')
       .expect(200)
       .expect('Content-Type', /html/)
-      .expect(/56071561/, done);
-  });
-
-  it('should give unknown user id for user not found', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {isNew: false, id: 10};
-      next();
-    });
-    request(app)
-      .get('/')
-      .expect(401)
-      .expect('Content-Type', /json/)
-      .expect({error: 'No user found'}, done);
+      .expect(/Phrase-it/, done);
   });
 });
 
