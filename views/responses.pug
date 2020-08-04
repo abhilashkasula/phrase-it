@@ -31,6 +31,6 @@ html
               div(class="response-author-container")
                 img(src=response.avatar_url class="response-avatar")
                 div(class="response-author")
-                  p(class="response-author-name")=response.username
+                  a(class="response-author-name" href=`/profile/${response.id}`)=response.username
                   p(class="response-time" responded_at=response.responded_at)
             p(class="response")=response.response

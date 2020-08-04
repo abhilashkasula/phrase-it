@@ -16,7 +16,7 @@ html
             div(id="story-author-avathar")
               img(src=story.avatar_url)
             div(class="story-author")
-              a(id="story-author-name" class="author-name" href=`/userProfile/${story.authorId}`)=story.author
+              a(id="story-author-name" class="author-name" href=`/profile/${story.authorId}`)=story.author
               div(id="story-time" published_at=`${story.published_at}`)
             if isUserAuth && isUserAuth != story.authorId
               button(id="unfollow" onclick=`unFollow(${story.authorId})` class=`${story.is_following ? '' : 'hide-btn'}`) Unfollow

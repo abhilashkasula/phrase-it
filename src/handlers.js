@@ -47,8 +47,8 @@ const serveHomePage = (req, res) => {
   if (req.session.isNew) {
     return res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   }
-  const {username, avatar_url} = req.session;
-  res.render('home', {username, avatar_url, isUserAuth: true});
+  const {id, username, avatar_url} = req.session;
+  res.render('home', {id, username, avatar_url, isUserAuth: true});
 };
 
 const parseContent = (stories) => {
@@ -60,11 +60,11 @@ const parseContent = (stories) => {
 
 const serveStoriesPage = async (req, res) => {
   const {id, username, avatar_url} = req.session;
-  let drafts = await req.app.locals.db.getDrafts(id);
-  let published = await req.app.locals.db.getUserPublishedStories(id);
-  drafts = parseContent(drafts);
-  published = parseContent(published);
-  const options = {username, avatar_url, drafts, published, isUserAuth: id};
+  const drafts = await req.app.locals.db.getDrafts(id);
+  const published = await req.app.locals.db.getUserPublishedStories(id);
+  const options = {id, username, avatar_url, isUserAuth: true};
+  options.drafts = parseContent(drafts);
+  options.published = parseContent(published);
   res.render('stories', options);
 };
 
@@ -107,7 +107,7 @@ const serveStoryPage = (req, res) => {
       if (!id) {
         return res.render('story', {story, isUserAuth: false});
       }
-      res.render('story', {isUserAuth: id, username, avatar_url, story});
+      res.render('story', {isUserAuth: true, id, username, avatar_url, story});
     })
     .catch(() => serveNotFound(req, res));
 };
@@ -119,12 +119,12 @@ const getResponses = (req, res) => {
   db.getResponses(storyId)
     .then(async (responses) => {
       const story = await db.getPublishedStoryDetails(storyId, id);
-      const options = {story, responses, isUserAuth: true};
+      const options = {story, responses, isUserAuth: false};
       if (!id) {
-        options.isUserAuth = false;
         return res.render('responses', options);
       }
-      Object.assign(options, {username, avatar_url});
+      options.isUserAuth = true;
+      Object.assign(options, {id, username, avatar_url});
       res.render('responses', options);
     })
     .catch((error) => res.status(statusCodes.NOT_FOUND).json(error));
@@ -164,7 +164,7 @@ const serveEditDraftPage = (req, res) => {
   const {id, username, avatar_url} = req.session;
   req.app.locals.db
     .getDraft(req.params.id, id)
-    .then(() => res.render('editDraft', {username, avatar_url}))
+    .then(() => res.render('editDraft', {id, username, avatar_url}))
     .catch(() => serveNotFound(req, res));
 };
 
@@ -200,21 +200,9 @@ const logout = (req, res) => {
   res.json({status: 'Logged out'});
 };
 
-const serveMyProfilePage = (req, res) => {
-  req.app.locals.db
-    .getUserDetails(req.session.id)
-    .then((userDetails) => {
-      const {username, avatar_url} = userDetails;
-      userDetails.stories = parseContent(userDetails.stories);
-      const details = {username, avatar_url, isUserAuth: true, userDetails};
-      res.render('profile', details);
-    })
-    .catch(() => serveNotFound(req, res));
-};
-
 const serveSearchPage = (req, res) => {
-  const {username, avatar_url} = req.session;
-  res.render('searchPage', {username, avatar_url, isUserAuth: true});
+  const {id, username, avatar_url} = req.session;
+  res.render('searchPage', {id, username, avatar_url, isUserAuth: true});
 };
 
 const search = (req, res) => {
@@ -231,18 +219,14 @@ const deleteDraft = function (req, res) {
     .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
-const serveUserProfile = (req, res) => {
+const serveProfile = (req, res) => {
+  const {id, username, avatar_url} = req.session;
   req.app.locals.db
-    .getUserDetails(req.session.id)
-    .then(({username, avatar_url}) => {
-      req.app.locals.db
-        .getUserDetails(req.params.userId)
-        .then((userDetails) => {
-          userDetails.stories = parseContent(userDetails.stories);
-          const details = {username, avatar_url, isUserAuth: true, userDetails};
-          res.render('profile', details);
-        })
-        .catch(() => serveNotFound(req, res));
+    .getUserDetails(req.params.userId)
+    .then((userDetails) => {
+      userDetails.stories = parseContent(userDetails.stories);
+      const details = {id, isUserAuth: true, username, avatar_url, userDetails};
+      res.render('profile', details);
     })
     .catch(() => serveNotFound(req, res));
 };
@@ -267,9 +251,8 @@ module.exports = {
   unFollow,
   clap,
   logout,
-  serveMyProfilePage,
   serveSearchPage,
   search,
   deleteDraft,
-  serveUserProfile,
+  serveProfile,
 };

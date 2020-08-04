@@ -160,6 +160,15 @@
   opacity: 0.7;
 }
 
+.response-author-name {
+  color: black;
+  text-decoration: none;
+}
+
+.response-author-name:hover {
+  text-decoration: underline;
+}
+
 .published-time,
 .response-time {
   font-size: 12px;

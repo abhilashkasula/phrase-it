@@ -64,10 +64,11 @@ const getUserPublishedStories = (userId) =>
   ORDER BY t2.published_at DESC`;
 
 const getResponses = (storyId) =>
-  `SELECT t1.response,
-  t1.responded_at,
-  t2.username,
-  t2.avatar_url
+  `SELECT t2.id,
+    t1.response,
+    t1.responded_at,
+    t2.username,
+    t2.avatar_url
   FROM responses t1
   LEFT JOIN
   users t2 on t1.responded_by = t2.id

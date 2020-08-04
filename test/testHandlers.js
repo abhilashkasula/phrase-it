@@ -14,21 +14,26 @@ describe('Integration tests', () => {
         });
         await resetTables(app.locals.db);
       });
+
       it('should redirect to / for /newStory', (done) => {
         request(app).get('/newStory').expect(302).expect('location', '/', done);
       });
+
       it('should redirect to / for /updateStory', (done) => {
         request(app)
           .post('/updateStory')
           .expect(302)
           .expect('location', '/', done);
       });
+
       it('should redirect to / for /stories', (done) => {
         request(app).get('/stories').expect(302).expect('location', '/', done);
       });
+
       it('should redirect to / for /publish', (done) => {
         request(app).post('/publish').expect(302).expect('location', '/', done);
       });
+
       it('should give story page with login option', (done) => {
         request(app)
           .get('/story/1')
@@ -36,6 +41,7 @@ describe('Integration tests', () => {
           .expect('Content-Type', /html/)
           .expect(/Login/, done);
       });
+
       it('should give responses page for /responses', (done) => {
         request(app)
           .get('/responses/1')
@@ -43,27 +49,31 @@ describe('Integration tests', () => {
           .expect('Content-Type', /html/)
           .expect(/response/, done);
       });
+
       it('should redirect to / for /edit', (done) => {
         request(app).get('/edit/1').expect(302).expect('location', '/', done);
       });
+
       it('should redirect to / for /dashboardStories', (done) => {
         request(app).get('/dashboardStories').expect('location', '/', done);
       });
+
       it('should redirect to / for /follow', (done) => {
         request(app).get('/follow').expect('location', '/', done);
       });
+
       it('should redirect to / for /clap', (done) => {
         request(app).get('/clap').expect('location', '/', done);
       });
-      it('should redirect to / for /myProfile', (done) => {
-        request(app).get('/myProfile').expect('location', '/', done);
-      });
+
       it('should redirect to / for /searchPage', (done) => {
         request(app).get('/searchPage').expect('location', '/', done);
       });
+
       it('should redirect to / for /search', (done) => {
         request(app).get('/search').expect('location', '/', done);
       });
+
       it('should give story page with updated views', (done) => {
         request(app)
           .get('/story/1')
@@ -77,10 +87,9 @@ describe('Integration tests', () => {
           .expect(/sci-fi/)
           .expect(/1 Views/, done); //expecting views
       });
-      it('should redirect to / for /userProfile', (done) => {
-        request(app)
-          .get('/userProfile?userId=58025056')
-          .expect('location', '/', done);
+
+      it('should redirect to / for /profile', (done) => {
+        request(app).get('/profile/58025056').expect('location', '/', done);
       });
     });
 
@@ -180,6 +189,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should give No draft found for no draft', (done) => {
           request(app)
             .post('/publish')
@@ -215,6 +225,7 @@ describe('Integration tests', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
+
         it('should give story with tags and views for given id', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025419};
@@ -232,6 +243,7 @@ describe('Integration tests', () => {
             .expect(/sci-fi/)
             .expect(/1 Views/, done); //expecting views
         });
+
         it('should give available options if the user is auth', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -257,6 +269,7 @@ describe('Integration tests', () => {
             .expect(/sci-fi/)
             .expect(/0 Views/, done); //expecting views
         });
+
         it('should give not found if the story id is absent', (done) => {
           request(app).get('/story/10').expect(404, done);
         });
@@ -270,6 +283,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should give draft editor page for /edit', (done) => {
           request(app)
             .get('/edit/2')
@@ -277,12 +291,14 @@ describe('Integration tests', () => {
             .expect('Content-Type', /html/)
             .expect(/publish/, done);
         });
+
         it('should give not found for /edit if draft is absent', (done) => {
           request(app)
             .get('/edit/1')
             .expect(404)
             .expect('Content-Type', /html/, done);
         });
+
         it('should give not found for /edit if draftId is a text', (done) => {
           request(app)
             .get('/edit/hello')
@@ -299,6 +315,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should give the draft for given draft id present', (done) => {
           request(app)
             .get('/draft/2')
@@ -320,6 +337,7 @@ describe('Integration tests', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
+
         it('should give responses page for proper id', (done) => {
           request(app)
             .get('/responses/1')
@@ -327,6 +345,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /html/)
             .expect(/response/, done);
         });
+
         it('should give badRequest for unknown id', (done) => {
           request(app)
             .get('/responses/2')
@@ -344,6 +363,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should add response for a published story id', (done) => {
           request(app)
             .post('/addResponse')
@@ -352,6 +372,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'added'}, done);
         });
+
         it('should give bad request for unknown id', (done) => {
           request(app)
             .post('/addResponse')
@@ -370,6 +391,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should follow the author for a valid authorId', (done) => {
           request(app)
             .post('/follow')
@@ -378,6 +400,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'Following'}, done);
         });
+
         it('should give error for following yourself', (done) => {
           request(app)
             .post('/follow')
@@ -386,6 +409,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'You cannot follow yourself'}, done);
         });
+
         it('should give error for following an invalid author', (done) => {
           request(app)
             .post('/follow')
@@ -394,6 +418,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({error: 'No author found'}, done);
         });
+
         it('should give err for following already following author', (done) => {
           request(app)
             .post('/follow')
@@ -412,6 +437,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should give the following and my stories', (done) => {
           request(app)
             .get('/dashboardStories')
@@ -429,6 +455,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should unfollow for given already following authorId', (done) => {
           request(app)
             .post('/unFollow')
@@ -437,6 +464,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'Unfollowed'}, done);
         });
+
         it('should give error for not following authorId given', (done) => {
           request(app)
             .post('/unFollow')
@@ -455,6 +483,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should clap if the user have not clapped already', (done) => {
           request(app)
             .post('/clap')
@@ -487,34 +516,6 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/myProfile', () => {
-        beforeEach(async () => {
-          await resetTables(app.locals.db);
-        });
-        it('should give profile for existing user id', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
-            next();
-          });
-          request(app)
-            .get('/myProfile')
-            .expect(200)
-            .expect('Content-Type', /html/)
-            .expect(/Profile/, done);
-        });
-        it('should give not found for unknown user id', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 1};
-            next();
-          });
-          request(app)
-            .get('/myProfile')
-            .expect(404)
-            .expect('Content-Type', /html/)
-            .expect(/Not Found/, done);
-        });
-      });
-
       describe('/logout', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -522,6 +523,7 @@ describe('Integration tests', () => {
             next();
           });
         });
+
         it('should logout from the session', (done) => {
           request(app)
             .post('/logout')
@@ -558,6 +560,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should give matching stories based on the keyword', (done) => {
           request(app)
             .get('/search?keyword=anil')
@@ -565,6 +568,7 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect(/anil/, done);
         });
+
         it('should give bad request if the keyword is not proper', (done) => {
           request(app)
             .get('/search')
@@ -582,6 +586,7 @@ describe('Integration tests', () => {
           });
           await resetTables(app.locals.db);
         });
+
         it('should delete the draft if draft is present', (done) => {
           request(app)
             .post('/deleteDraft')
@@ -601,7 +606,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/userProfile', () => {
+      describe('/profile', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
@@ -613,7 +618,7 @@ describe('Integration tests', () => {
           });
 
           request(app)
-            .get('/userProfile/58026402')
+            .get('/profile/58026402')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/Profile/, done);
@@ -625,19 +630,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/userProfile/1')
-            .expect(404)
-            .expect('Content-Type', /html/)
-            .expect(/Not Found/, done);
-        });
-
-        it('should give not found for unknown user', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 1};
-            next();
-          });
-          request(app)
-            .get('/userProfile/58025056')
+            .get('/profile/1')
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);
@@ -651,6 +644,7 @@ describe('/', () => {
   beforeEach(async () => {
     await resetTables(app.locals.db);
   });
+
   it('should get index page if session not exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {isNew: true};
@@ -685,9 +679,11 @@ describe('/user', () => {
   beforeEach(async () => {
     await resetTables(app.locals.db);
   });
+
   afterEach(() => {
     sinon.restore();
   });
+
   it('should redirect to / if there is no error', (done) => {
     const details = {
       access_token: 1234,

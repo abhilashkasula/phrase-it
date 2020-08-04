@@ -22,7 +22,7 @@ div(class="navbar")
             img(src=`${avatar_url}`, alt="" class="navbar-avatar")
             div(class="dropdown-links")
               div(class="links") 
-                a(href="/myProfile")
+                a(href=`/profile/${id}`)
                   div(class="profile-link")
                     img(src=`${avatar_url}`, class="navbar-avatar")
                     p(class="user-link")=username

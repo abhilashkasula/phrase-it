@@ -10,10 +10,9 @@ module.exports = [
   '/addResponse',
   '/unFollow',
   '/clap',
-  '/myProfile',
   '/logout',
   '/searchPage',
   '/search',
-  '/userProfile',
+  '/profile',
   '/deleteDraft',
 ];

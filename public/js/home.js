@@ -35,7 +35,7 @@ const createTimeElement = (publishedAt) => {
 const createAuthorNameElement = (authorName, authorId) => {
   const authorNameElement = document.createElement('a');
   authorNameElement.className = 'story-author-name';
-  authorNameElement.href = `/userProfile/${authorId}`;
+  authorNameElement.href = `/profile/${authorId}`;
   authorNameElement.innerText = authorName;
   return authorNameElement;
 };

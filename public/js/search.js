@@ -8,7 +8,7 @@ const createTitleElement = (title) => {
 
 const createAuthorElement = (author, authorId) => {
   const authorElement = document.createElement('a');
-  authorElement.href = `/userProfile/${authorId}`;
+  authorElement.href = `/profile/${authorId}`;
   authorElement.className = 'author';
   authorElement.innerText = author;
   return authorElement;
