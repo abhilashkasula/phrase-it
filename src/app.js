@@ -22,7 +22,7 @@ app.use((...args) => app.get('sessionMiddleware')(...args));
 app.get('/', handlers.serveHomePage);
 app.get('/user', handlers.getUserDetails);
 app.get('/story/:id', handlers.serveStoryPage);
-app.get('/responses', handlers.getResponses);
+app.get('/responses/:storyId', handlers.getResponses);
 
 const updateField = ['title', 'blocks'];
 const addResField = ['id', 'response'];
@@ -36,7 +36,7 @@ app.get('/draft/:id', handlers.serveDraft);
 app.get('/myProfile', handlers.serveMyProfilePage);
 app.get('/searchPage', handlers.serveSearchPage);
 app.get('/search', handlers.search);
-app.get('/userProfile', handlers.serveUserProfile);
+app.get('/userProfile/:userId', handlers.serveUserProfile);
 app.post('/updateStory', handlers.hasFields(updateField), handlers.updateStory);
 app.post('/publish', handlers.hasFields(['id', 'tags']), handlers.publish);
 app.post('/follow', handlers.hasFields(['authorId']), handlers.follow);

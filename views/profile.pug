@@ -1,11 +1,11 @@
 html
   head
     title Profile
-    link(rel="stylesheet", href="css/navbar.css")
+    link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
-    link(rel="stylesheet", href="css/profile.css")
+    link(rel="stylesheet", href="/css/profile.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
-    script(src="js/profile.js")
+    script(src="/js/profile.js")
   body
     include navbar
     div(id="profile-container" class="profile-container")
@@ -29,9 +29,9 @@ html
           each user in userDetails.followers
             div(class="user-card")
               img(src=user.avatar_url class="user-avatar")
-              a(class="username" href=`/userProfile?userId=${user.id}`)=user.username
+              a(class="username" href=`/userProfile/${user.id}`)=user.username
         div(id="following" class="tab hidden")
           each user in userDetails.following
             div(class="user-card")
               img(src=user.avatar_url class="user-avatar")
-              a(class="username" href=`/userProfile?userId=${user.id}`)=user.username
+              a(class="username" href=`/userProfile/${user.id}`)=user.username

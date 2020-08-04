@@ -38,7 +38,7 @@ describe('Integration tests', () => {
       });
       it('should give responses page for /responses', (done) => {
         request(app)
-          .get('/responses?id=1')
+          .get('/responses/1')
           .expect(200)
           .expect('Content-Type', /html/)
           .expect(/response/, done);
@@ -333,14 +333,14 @@ describe('Integration tests', () => {
         });
         it('should give responses page for proper id', (done) => {
           request(app)
-            .get('/responses?id=1')
+            .get('/responses/1')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/response/, done);
         });
         it('should give badRequest for unknown id', (done) => {
           request(app)
-            .get('/responses?id=2')
+            .get('/responses/2')
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
@@ -637,7 +637,7 @@ describe('Integration tests', () => {
           });
 
           request(app)
-            .get('/userProfile?userId=58026402')
+            .get('/userProfile/58026402')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/Profile/, done);
@@ -649,7 +649,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/userProfile?userId=1')
+            .get('/userProfile/1')
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);
@@ -661,7 +661,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/userProfile?userId=58025056')
+            .get('/userProfile/58025056')
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);

@@ -124,12 +124,12 @@ const serveStoryPage = (req, res) => {
 };
 
 const getResponses = (req, res) => {
-  const {id} = req.query;
+  const {storyId} = req.params;
   req.app.locals.db
-    .getResponses(id)
+    .getResponses(storyId)
     .then((responses) => {
       req.app.locals.db
-        .getPublishedStoryDetails(id, req.session.id)
+        .getPublishedStoryDetails(storyId, req.session.id)
         .then((story) => {
           const options = {story, responses, isUserAuth: true};
           if (!req.session.id) {
@@ -257,12 +257,11 @@ const deleteDraft = function (req, res) {
 };
 
 const serveUserProfile = (req, res) => {
-  const {userId} = req.query;
   req.app.locals.db
     .getUserDetails(req.session.id)
     .then(({username, avatar_url}) => {
       req.app.locals.db
-        .getUserDetails(userId)
+        .getUserDetails(req.params.userId)
         .then((userDetails) => {
           userDetails.stories = parseContent(userDetails.stories);
           const details = {username, avatar_url, isUserAuth: true, userDetails};
