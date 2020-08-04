@@ -547,19 +547,6 @@ describe('Integration tests', () => {
             .expect('Content-Type', /html/)
             .expect(/searchPage/, done);
         });
-
-        it('should give not found for unknown user', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 1};
-            next();
-          });
-
-          request(app)
-            .get('/searchPage')
-            .expect(404)
-            .expect('Content-Type', /html/)
-            .expect(/Not Found/, done);
-        });
       });
 
       describe('/search', () => {

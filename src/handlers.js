@@ -209,13 +209,8 @@ const serveMyProfilePage = (req, res) => {
 };
 
 const serveSearchPage = (req, res) => {
-  req.app.locals.db
-    .getUserDetails(req.session.id)
-    .then((userDetails) => {
-      userDetails.isUserAuth = true;
-      res.render('searchPage', userDetails);
-    })
-    .catch(() => serveNotFound(req, res));
+  const {username, avatar_url} = req.session;
+  res.render('searchPage', {username, avatar_url, isUserAuth: true});
 };
 
 const search = (req, res) => {
