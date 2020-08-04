@@ -329,7 +329,7 @@ describe('Integration tests', () => {
         it('should give badRequest for unknown id', (done) => {
           request(app)
             .get('/responses/2')
-            .expect(400)
+            .expect(404)
             .expect('Content-Type', /json/)
             .expect({error: 'unknown id'}, done);
         });

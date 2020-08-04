@@ -110,26 +110,20 @@ const serveStoryPage = (req, res) => {
 
 const getResponses = (req, res) => {
   const {storyId} = req.params;
-  req.app.locals.db
-    .getResponses(storyId)
-    .then((responses) => {
-      req.app.locals.db
-        .getPublishedStoryDetails(storyId, req.session.id)
-        .then((story) => {
-          const options = {story, responses, isUserAuth: true};
-          if (!req.session.id) {
-            options.isUserAuth = false;
-            return res.render('responses', options);
-          }
-          req.app.locals.db
-            .getUserDetails(req.session.id)
-            .then((userDetails) => {
-              Object.assign(options, userDetails);
-              res.render('responses', options);
-            });
-        });
+  const {id, username, avatar_url} = req.session;
+  const {db} = req.app.locals;
+  db.getResponses(storyId)
+    .then(async (responses) => {
+      const story = await db.getPublishedStoryDetails(storyId, id);
+      const options = {story, responses, isUserAuth: true};
+      if (!id) {
+        options.isUserAuth = false;
+        return res.render('responses', options);
+      }
+      Object.assign(options, {username, avatar_url});
+      res.render('responses', options);
     })
-    .catch((error) => res.status(statusCodes.BAD_REQUEST).json(error));
+    .catch((error) => res.status(statusCodes.NOT_FOUND).json(error));
 };
 
 const addResponse = (req, res) => {
