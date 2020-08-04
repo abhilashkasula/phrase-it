@@ -24,6 +24,8 @@ html
           div(class="url-container")
             input(type="text" id="url")
             button(id="story-url") Copy link
+        div(class="coverImage-container")
+          img(src=`/coverImage/${story.coverImageName}` class="coverImage")
         div(id="content")
           each element in story.content
             case element.type

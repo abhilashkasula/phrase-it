@@ -46,7 +46,7 @@ body {
 .story-details {
   display: flex;
   justify-content: space-between;
-  min-width: 700px;
+  min-width: 680px;
 }
 
 #story-url {
@@ -216,4 +216,13 @@ body {
 
 .views-icon {
   width: 30px;
+}
+
+.coverImage-container {
+  width: 680px;
+  margin-top: 4.5%;
+}
+
+.coverImage {
+  width: inherit;
 }

@@ -44,6 +44,7 @@ const getPublishedStoryDetails = (storyId, userId) =>
       t1.content,
       t2.published_at,
       t2.views,
+      t2.cover_image_path as coverImageName,
       CASE WHEN t4.user_id = t3.id
         THEN 1
         ELSE 0
