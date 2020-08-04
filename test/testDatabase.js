@@ -92,15 +92,6 @@ describe('Unit Test', () => {
           .catch((err) => done(err));
       });
 
-      it('should reject when there is an error in getting id', async () => {
-        const db = {
-          get: (query, cb) => cb({err: 'error'}),
-          exec: (query, cb) => cb(null),
-        };
-        const database = new Database(db);
-        await assert.rejects(() => database.createStory('John'));
-      });
-
       it('should reject when there is error in inserting a story', async () => {
         const db = {
           get: (query, cb) => cb(null, {id: 1}),

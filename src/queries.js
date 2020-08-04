@@ -204,6 +204,8 @@ const getStoryViews = (storyId) =>
 
 const deleteDraft = (draftId) => `DELETE FROM stories WHERE id = ${draftId}`;
 
+const getStoryIds = () => 'SELECT id FROM stories ORDER BY id DESC';
+
 module.exports = {
   insertNewStory,
   saveStory,
@@ -236,4 +238,5 @@ module.exports = {
   updateViews,
   getStoryViews,
   deleteDraft,
+  getStoryIds,
 };
