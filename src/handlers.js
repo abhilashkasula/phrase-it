@@ -94,7 +94,7 @@ const getViews = async (req, userId, {id, authorId}) => {
 };
 
 const serveStoryPage = (req, res) => {
-  const {id} = req.session;
+  const {id, username, avatar_url} = req.session;
   req.app.locals.db
     .getPublishedStoryDetails(req.params.id, id)
     .then(async (story) => {
@@ -103,11 +103,7 @@ const serveStoryPage = (req, res) => {
       if (!id) {
         return res.render('story', {story, isUserAuth: false});
       }
-      req.app.locals.db.getUserDetails(id).then((userDetails) => {
-        const options = {story, isUserAuth: id};
-        Object.assign(options, userDetails);
-        res.render('story', options);
-      });
+      res.render('story', {isUserAuth: id, username, avatar_url, story});
     })
     .catch(() => notFound(req, res));
 };
