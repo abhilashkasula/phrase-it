@@ -69,9 +69,8 @@ const serveStoriesPage = async (req, res) => {
 };
 
 const newStory = (req, res) => {
-  req.app.locals.db.getUserDetails(req.session.id).then((userDetails) => {
-    res.render('editor', userDetails);
-  });
+  const {username, avatar_url} = req.session;
+  res.render('editor', {username, avatar_url});
 };
 
 const allowAuthorized = (req, res, next) => {
