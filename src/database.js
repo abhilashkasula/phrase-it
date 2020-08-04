@@ -50,7 +50,7 @@ class Database {
     });
   }
 
-  async updateStory(storyId, title, authorId, content) {
+  updateStory(storyId, title, authorId, content) {
     return new Promise((resolve, reject) => {
       const query = queries.saveStory(storyId, title, content);
       this.getDraft(storyId, authorId)
