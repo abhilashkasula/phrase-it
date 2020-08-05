@@ -142,6 +142,13 @@ class Database {
     return storyDetails;
   }
 
+  async isFollowing(userId, followerId) {
+    const {isFollowing} = await this.get(
+      queries.isFollowing(userId, followerId)
+    );
+    return isFollowing;
+  }
+
   getResponses(storyId) {
     return new Promise((resolve, reject) => {
       this.get(queries.getPublishedStory(storyId))

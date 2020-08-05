@@ -18,9 +18,9 @@ html
             div(class="story-author")
               a(id="story-author-name" class="author-name" href=`/profile/${story.authorId}`)=story.author
               div(id="story-time" published_at=`${story.published_at}`)
-            if isUserAuth && isUserAuth != story.authorId
-              button(id="unfollow" onclick=`unFollow(${story.authorId})` class=`${story.is_following ? '' : 'hide-btn'}`) Unfollow
-              button(id="follow" onclick=`follow(${story.authorId})` class=`${story.is_following ? 'hide-btn': ''}`) Follow
+            if isUserAuth && !story.isAuthor
+              button(id="unfollow" onclick=`unFollow(${story.authorId})` class=`${isFollowing ? '' : 'hide-btn'}`) Unfollow
+              button(id="follow" onclick=`follow(${story.authorId})` class=`${isFollowing ? 'hide-btn': ''}`) Follow
           div(class="url-container")
             input(type="text" id="url")
             button(id="story-url") Copy link

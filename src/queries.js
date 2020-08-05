@@ -169,6 +169,13 @@ const getFollowing = (userId) =>
   JOIN users t2 ON t1.user_id = t2.id
   AND t1.follower_id = ${userId}`;
 
+const isFollowing = (userId, followerId) =>
+  `SELECT EXISTS (
+    SELECT 1 FROM followers
+    WHERE user_id = ${userId} 
+    AND follower_id = ${followerId}) 
+    as isFollowing;`;
+
 const generateValues = (id, tag) => {
   return `(${id}, '${tag}')`;
 };
@@ -257,6 +264,7 @@ module.exports = {
   removeFollower,
   getFollowers,
   getFollowing,
+  isFollowing,
   addTags,
   getTags,
   authorBasedSearch,

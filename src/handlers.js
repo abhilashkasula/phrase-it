@@ -92,21 +92,21 @@ const publish = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
-const getViews = async (req, userId, {id, authorId}) => {
-  return await req.app.locals.db.updateViews(userId, id, authorId);
-};
-
 const serveStoryPage = (req, res) => {
   const {id, username, avatar_url} = req.session;
-  req.app.locals.db
-    .getPublishedStoryDetails(req.params.id, id)
+  const {db} = req.app.locals;
+  db.getPublishedStoryDetails(req.params.id, id)
     .then(async (story) => {
       story.content = JSON.parse(story.content);
-      story.views = await getViews(req, id, story);
+      story.views = await db.updateViews(id, story.id, story.authorId);
+      const options = {story, isUserAuth: false};
       if (!id) {
-        return res.render('story', {story, isUserAuth: false});
+        return res.render('story', options);
       }
-      res.render('story', {isUserAuth: true, id, username, avatar_url, story});
+      options.isUserAuth = true;
+      options.isFollowing = await db.isFollowing(story.authorId, id);
+      Object.assign(options, {id, username, avatar_url});
+      res.render('story', options);
     })
     .catch(() => serveNotFound(req, res));
 };
