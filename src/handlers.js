@@ -93,8 +93,7 @@ const publish = (req, res) => {
 };
 
 const getViews = async (req, userId, {id, authorId}) => {
-  const {views} = await req.app.locals.db.updateViews(userId, id, authorId);
-  return views;
+  return await req.app.locals.db.updateViews(userId, id, authorId);
 };
 
 const serveStoryPage = (req, res) => {

@@ -254,7 +254,8 @@ class Database {
     if (authorId !== userId) {
       await this.exec(queries.updateViews(storyId));
     }
-    return await this.get(queries.getStoryViews(storyId));
+    const {views} = await this.get(queries.getStoryViews(storyId));
+    return views;
   }
 
   async deleteDraft(draftId, userId) {

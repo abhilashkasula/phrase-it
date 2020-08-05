@@ -625,8 +625,8 @@ describe('Unit Test', () => {
         const database = new Database(db);
         database
           .updateViews(111, 1)
-          .then((res) => {
-            assert.deepStrictEqual(res.views, 1);
+          .then((views) => {
+            assert.deepStrictEqual(views, 1);
             done();
           })
           .catch((err) => done(err));
