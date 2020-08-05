@@ -21,7 +21,7 @@ const createTitleElement = (title) => {
 const createStoryContentElement = (content) => {
   const contentElement = document.createElement('div');
   contentElement.className = 'story-content';
-  contentElement.innerText = `${content}....`;
+  contentElement.innerHTML = content;
   return contentElement;
 };
 
@@ -50,15 +50,30 @@ const createStoryCover = (coverImageName) => {
   return container;
 };
 
-const addStoryDetail = function (story, storyBox) {
+const createStoryDetails = (author, authorId, publishedAt) => {
+  const container = document.createElement('div');
+  const publishedTime = moment(publishedAt).startOf('min').fromNow();
+  container.appendChild(createAuthorNameElement(author, authorId));
+  container.appendChild(createTimeElement(publishedTime));
+  return container;
+};
+
+const createStoryContainer = (story) => {
+  const container = document.createElement('div');
   const {title, content, author, authorId, published_at} = story;
-  const contentToShow = content.length ? content[0].data.text.slice(0, 70) : '';
-  const publishedTime = moment(published_at).startOf('min').fromNow();
-  storyBox.appendChild(createTitleElement(title));
+  const contentToShow = content.length
+    ? `${content[0].data.text.slice(0, 100)}...`
+    : '';
+  container.className = 'story-container';
+  container.appendChild(createTitleElement(title));
+  container.appendChild(createStoryContentElement(contentToShow));
+  container.appendChild(createStoryDetails(author, authorId, published_at));
+  return container;
+};
+
+const addStoryDetail = function (story, storyBox) {
+  storyBox.appendChild(createStoryContainer(story));
   storyBox.appendChild(createStoryCover(story.coverImageName));
-  storyBox.appendChild(createStoryContentElement(contentToShow));
-  storyBox.appendChild(createAuthorNameElement(author, authorId));
-  storyBox.appendChild(createTimeElement(publishedTime));
 };
 
 const getPublishedStories = () => {

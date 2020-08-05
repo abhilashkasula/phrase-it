@@ -219,12 +219,18 @@ body {
 }
 
 .coverImage-container {
-  width: 680px;
+  max-width: 680px;
   margin-top: 4.5%;
   max-height: 400px;
   overflow: hidden;
 }
 
 .coverImage {
-  width: inherit;
+  max-width: inherit;
+  margin: 0 auto;
+}
+
+.coverImage-center {
+  display: flex;
+  justify-content: center;
 }

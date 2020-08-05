@@ -22,6 +22,14 @@ const changeOptionToFollow = () => {
   document.querySelector('#follow').classList.remove('hide-btn');
 };
 
+const setImage = () => {
+  const width = document.querySelector('.coverImage').width;
+  const container = document.querySelector('.coverImage-container');
+  if (width < 680) {
+    container.classList.add('coverImage-center');
+  }
+};
+
 const unFollow = (authorId) => {
   fetch('/unFollow', {
     method: 'POST',
@@ -69,6 +77,7 @@ const main = () => {
   const value = time.getAttribute('published_at');
   time.innerText = `Published ${moment(value).startOf('min').fromNow()}`;
   copy.addEventListener('click', () => copyUrl(copy));
+  setImage();
 };
 
 window.onload = main;
