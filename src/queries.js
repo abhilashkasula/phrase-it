@@ -81,7 +81,8 @@ const getResponses = (storyId) =>
   FROM responses t1
   LEFT JOIN
   users t2 on t1.responded_by = t2.id
-  WHERE responded_on = ${storyId}`;
+  WHERE responded_on = ${storyId}
+  ORDER BY t1.responded_at DESC`;
 
 const getClapsCount = (storyId) =>
   `SELECT COUNT(*) AS clapsCount FROM claps WHERE clapped_on = ${storyId}`;

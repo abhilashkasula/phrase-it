@@ -150,7 +150,7 @@ class Database {
             return reject({error: 'unknown id'});
           }
           this.all(queries.getResponses(storyId)).then((responses) =>
-            resolve(responses.reverse())
+            resolve(responses)
           );
         })
         .catch((err) => reject(err));
