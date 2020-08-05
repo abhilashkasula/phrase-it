@@ -126,17 +126,31 @@ const followingStories = (userId) =>
     t1.title,
     t1.content,
     t2.published_at,
-    t2.cover_image_path as coverImageName,
+    t2.cover_image_path coverImageName,
     t3.username author,
     t3.id authorId
   FROM stories t1 
   JOIN published_stories t2 ON t1.id = t2.story_id 
   JOIN users t3 ON t1.created_by = t3.id
   LEFT JOIN user_following t4
-    ON t1.created_by = t4.user_id OR t1.created_by = ${userId}
-    WHERE t3.id = ${userId} OR t4.user_id IS NOT NULL
+    ON t1.created_by = t4.user_id
+    WHERE t4.user_id IS NOT NULL
     GROUP BY t1.id
     ORDER BY published_at DESC;`;
+
+const myStories = (userId) =>
+  `SELECT t1.id,
+    t1.title,
+    t1.content,
+    t2.published_at,
+    t2.cover_image_path coverImageName,
+    t3.username author,
+    t3.id authorId
+  FROM stories t1 
+  JOIN published_stories t2 ON t1.id = t2.story_id 
+  JOIN users t3 ON t1.created_by = t3.id
+    WHERE t1.created_by = ${userId}
+    ORDER BY published_at DESC`;
 
 const removeFollower = (authorId, followerId) =>
   `DELETE FROM followers
@@ -238,6 +252,7 @@ module.exports = {
   getFollower,
   addFollower,
   followingStories,
+  myStories,
   removeFollower,
   getFollowers,
   getFollowing,

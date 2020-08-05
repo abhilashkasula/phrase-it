@@ -173,8 +173,10 @@ class Database {
     return {status: 'Following'};
   }
 
-  getFollowingStories(userId) {
-    return this.all(queries.followingStories(userId));
+  async getDashboardStories(userId) {
+    const followingStories = await this.all(queries.followingStories(userId));
+    const myStories = await this.all(queries.myStories(userId));
+    return followingStories.concat(myStories);
   }
 
   addResponse(storyId, userId, response) {

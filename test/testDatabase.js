@@ -473,7 +473,7 @@ describe('Unit Test', () => {
       });
     });
 
-    describe('getFollowingStories', () => {
+    describe('getDashboardStories', () => {
       it('should resolve with following and my stories', (done) => {
         const stories = [
           {
@@ -486,10 +486,14 @@ describe('Unit Test', () => {
         ];
         const db = {all: (query, cb) => cb(null, stories)};
         const database = new Database(db);
-        database.getFollowingStories(1111).then((res) => {
-          assert.deepStrictEqual(res, stories);
-          done();
-        });
+        database
+          .getDashboardStories(1111)
+          .then((res) => {
+            const expected = stories.concat(stories);
+            assert.deepStrictEqual(res, expected);
+            done();
+          })
+          .catch((err) => done(err));
       });
     });
 

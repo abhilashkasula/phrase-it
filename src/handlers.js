@@ -183,7 +183,7 @@ const follow = (req, res) => {
 
 const serveDashBoardStories = (req, res) => {
   req.app.locals.db
-    .getFollowingStories(req.session.id)
+    .getDashboardStories(req.session.id)
     .then((stories) => res.json(parseContent(stories)));
 };
 
