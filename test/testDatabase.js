@@ -551,11 +551,23 @@ describe('Unit Test', () => {
     });
 
     describe('getPublishedStoryDetails', () => {
-      it('should reject unknown id for invalid story id', (done) => {
+      it('should reject for invalid story id', (done) => {
         const db = {get: (query, cb) => cb(null, undefined)};
         const database = new Database(db);
         database
           .getPublishedStoryDetails(1000, 10)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'No story found'});
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should reject for invalid user id', (done) => {
+        const db = {get: (query, cb) => cb(null, undefined)};
+        const database = new Database(db);
+        database
+          .getPublishedStoryDetails(1000)
           .catch((err) => {
             assert.deepStrictEqual(err, {error: 'No story found'});
             done();
@@ -634,7 +646,22 @@ describe('Unit Test', () => {
         };
         const database = new Database(db);
         database
-          .updateViews(111, 1)
+          .updateViews(111, 1, 123)
+          .then((views) => {
+            assert.deepStrictEqual(views, 1);
+            done();
+          })
+          .catch((err) => done(err));
+      });
+
+      it('should resolve without updating views for author', (done) => {
+        const db = {
+          get: (query, cb) => cb(null, {views: 1}),
+          exec: (query, cb) => cb(null),
+        };
+        const database = new Database(db);
+        database
+          .updateViews(111, 1, 111)
           .then((views) => {
             assert.deepStrictEqual(views, 1);
             done();
@@ -693,6 +720,51 @@ describe('Unit Test', () => {
       };
       const database = new Database(db);
       database.isFollowing(456, 123).then((res) => assert.strictEqual(res, 0));
+    });
+  });
+
+  describe('getDraft', () => {
+    it('should give you draft if the id is proper', (done) => {
+      const sample = {id: 2, title: 'title', content: '[]'};
+      const db = {
+        get: (query, cb) => cb(null, sample),
+      };
+      const database = new Database(db);
+      database
+        .getDraft(2)
+        .then((draft) => {
+          assert.deepStrictEqual(draft, sample);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give you draft if the draft is not available', (done) => {
+      const db = {
+        get: (query, cb) => cb(null, undefined),
+      };
+      const database = new Database(db);
+      database
+        .getDraft(1)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No draft found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give you draft if the id is not proper', (done) => {
+      const db = {
+        get: (query, cb) => cb(null, undefined),
+      };
+      const database = new Database(db);
+      database
+        .getDraft('wrong id')
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No draft found'});
+          done();
+        })
+        .catch((err) => done(err));
     });
   });
 });
