@@ -219,6 +219,20 @@ describe('Integration tests', () => {
             .expect('Content-Type', /json/)
             .expect({status: 'Published'}, done);
         });
+
+        it('should publish a story with no cover image', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            req.files = undefined;
+            next();
+          });
+          request(app)
+            .post('/publish')
+            .send({id: 2, tags: ''})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect({status: 'Published'}, done);
+        });
       });
 
       describe('/story', () => {
