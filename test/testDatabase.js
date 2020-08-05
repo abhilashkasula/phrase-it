@@ -605,6 +605,15 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+
+      it('should give matching stories based on the keyword', (done) => {
+        const db = {};
+        const database = new Database(db);
+        database.search().catch((err) => {
+          assert.deepStrictEqual(err, {error: 'invalid keyword'});
+          done();
+        });
+      });
     });
 
     describe('updateViews', () => {

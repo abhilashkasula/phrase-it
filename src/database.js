@@ -230,14 +230,18 @@ class Database {
     return tags.map(({tag}) => tag);
   }
 
+  async getMatchingStories(keyword) {
+    const authorBased = await this.all(queries.authorBasedSearch(keyword));
+    const contentBased = await this.all(queries.contentBasedSearch(keyword));
+    const tagBased = await this.all(queries.tagBasedSearch(keyword));
+    return {authorBased, tagBased, contentBased};
+  }
+
   async search(keyword) {
     if (keyword === undefined) {
       throw {error: 'invalid keyword'};
     }
-    const authorBased = await this.all(queries.authorBasedSearch(keyword));
-    const contentBased = await this.all(queries.contentBasedSearch(keyword));
-    const tagBased = await this.all(queries.tagBasedSearch(keyword));
-    const results = {authorBased, tagBased, contentBased};
+    const results = await this.getMatchingStories(keyword);
     for (const type in results) {
       for (const story of results[type]) {
         story.tags = await this.getTags(story.id);
