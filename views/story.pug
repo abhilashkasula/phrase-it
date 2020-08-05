@@ -23,7 +23,8 @@ html
               button(id="follow" onclick=`follow(${story.authorId})` class=`${isFollowing ? 'hide-btn': ''}`) Follow
           div(class="url-container")
             input(type="text" id="url")
-            button(id="story-url") Copy link
+            //- button(id="story-url") Copy link
+            img(src="/images/before-copy.png" id="story-url")
         if(story.coverImageName != 'NULL')
           div(class="coverImage-container")
             img(src=`/coverImage/${story.coverImageName}` class="coverImage")

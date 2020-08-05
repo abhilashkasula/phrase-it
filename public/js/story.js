@@ -6,9 +6,9 @@ const copyUrl = (copy) => {
   url.setSelectionRange(0, 99999);
   document.execCommand('copy');
   url.style['visibility'] = 'hidden';
-  copy.innerText = 'Copied';
+  copy.src = '/images/after-copy.png';
   setTimeout(() => {
-    copy.innerText = 'Copy link';
+    copy.src = '/images/before-copy.png';
   }, 1000);
 };
 
