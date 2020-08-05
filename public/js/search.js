@@ -81,6 +81,22 @@ const addCounts = (counts) => {
   document.querySelector('#content-based-count').innerText = `[ ${content} ]`;
 };
 
+const renderSearchResults = ({authorBased, tagBased, contentBased}) => {
+  const searchBar = document.querySelector('#search-bar');
+  searchBar.value = '';
+  clearContainers();
+  createStoryCards('author', authorBased);
+  createStoryCards('tag', tagBased);
+  createStoryCards('content', contentBased);
+  displayContainer();
+  const counts = {
+    author: authorBased.length,
+    tag: tagBased.length,
+    content: contentBased.length,
+  };
+  addCounts(counts);
+};
+
 const search = () => {
   if (event.keyCode !== 13) {
     return;
@@ -95,18 +111,5 @@ const search = () => {
     headers: {'Content-Type': 'application/json'},
   })
     .then((res) => res.json())
-    .then(({authorBased, tagBased, contentBased}) => {
-      searchBar.value = '';
-      clearContainers();
-      createStoryCards('author', authorBased);
-      createStoryCards('tag', tagBased);
-      createStoryCards('content', contentBased);
-      displayContainer();
-      const counts = {
-        author: authorBased.length,
-        tag: tagBased.length,
-        content: contentBased.length,
-      };
-      addCounts(counts);
-    });
+    .then(renderSearchResults);
 };
