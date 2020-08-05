@@ -485,7 +485,7 @@ describe('Integration tests', () => {
             .send({authorId: 56071561})
             .expect(400)
             .expect('Content-Type', /json/)
-            .expect({error: 'You are not a follower of this author'}, done);
+            .expect({error: 'You are not a follower of this user'}, done);
         });
       });
 

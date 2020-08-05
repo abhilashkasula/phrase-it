@@ -528,7 +528,7 @@ describe('Unit Test', () => {
           .unFollowAuthor(111, 222)
           .catch((err) => {
             assert.deepStrictEqual(err, {
-              error: 'You are not a follower of this author',
+              error: 'You are not a follower of this user',
             });
             done();
           })

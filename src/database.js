@@ -201,7 +201,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.get(queries.getFollower(authorId, followerId)).then((follower) => {
         if (!follower) {
-          return reject({error: 'You are not a follower of this author'});
+          return reject({error: 'You are not a follower of this user'});
         }
         this.exec(queries.removeFollower(authorId, followerId)).then(() => {
           resolve({status: 'Unfollowed'});
