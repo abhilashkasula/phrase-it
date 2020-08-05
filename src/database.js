@@ -125,7 +125,7 @@ class Database {
     const {responsesCount} = await this.get(queries.getResponsesCount(storyId));
     const {clapsCount} = await this.get(queries.getClapsCount(storyId));
     const {isClapped} = await this.get(queries.isClapped(storyId, userId));
-    const tags = await this.all(queries.getTags(storyId));
+    const tags = await this.getTags(storyId);
     return {responsesCount, clapsCount, isClapped, tags};
   }
 
