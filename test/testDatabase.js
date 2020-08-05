@@ -302,10 +302,16 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
-      it('should reject for unknown id', async () => {
-        const db = {get: (query, cb) => cb({err: 'unknown id'})};
+      it('should reject for unknown id', (done) => {
+        const db = {get: (query, cb) => cb(null)};
         const database = new Database(db);
-        await assert.rejects(() => database.getResponses(100));
+        database
+          .getResponses(100)
+          .catch((err) => {
+            assert.deepStrictEqual(err, {error: 'No story found'});
+            done();
+          })
+          .catch((err) => done(err));
       });
     });
 
@@ -667,6 +673,26 @@ describe('Unit Test', () => {
           })
           .catch((err) => done(err));
       });
+    });
+
+    describe('isFollowing', () => {
+      it('should give one if given user is following the other', () => {
+        const db = {
+          get: (query, cb) => cb(null, {isFollowing: 1}),
+        };
+        const database = new Database(db);
+        database
+          .isFollowing(123, 456)
+          .then((res) => assert.strictEqual(res, 1));
+      });
+    });
+
+    it('should give zero if given user is not following the other', () => {
+      const db = {
+        get: (query, cb) => cb(null, {isFollowing: 0}),
+      };
+      const database = new Database(db);
+      database.isFollowing(456, 123).then((res) => assert.strictEqual(res, 0));
     });
   });
 });

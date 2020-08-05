@@ -360,12 +360,12 @@ describe('Integration tests', () => {
             .expect(/response/, done);
         });
 
-        it('should give badRequest for unknown id', (done) => {
+        it('should give not found for unknown id', (done) => {
           request(app)
             .get('/responses/2')
             .expect(404)
             .expect('Content-Type', /json/)
-            .expect({error: 'unknown id'}, done);
+            .expect({error: 'No story found'}, done);
         });
       });
 
