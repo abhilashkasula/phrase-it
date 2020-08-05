@@ -92,7 +92,7 @@ class Database {
   addTags(id, tags) {
     return new Promise((resolve) => {
       if (!tags.length) {
-        return resolve({error: 'No tags to add'});
+        return resolve({status: 'Empty tags'});
       }
       this.exec(queries.addTags(id, tags)).then(() =>
         resolve({status: 'Added tags'})

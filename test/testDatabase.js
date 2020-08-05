@@ -227,7 +227,7 @@ describe('Unit Test', () => {
         database
           .addTags(1, [])
           .then((res) => {
-            assert.deepStrictEqual(res, {error: 'No tags to add'});
+            assert.deepStrictEqual(res, {status: 'Empty tags'});
             done();
           })
           .catch((err) => done(err));
