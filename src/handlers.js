@@ -43,12 +43,14 @@ const updateStory = (req, res) => {
     .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
-const serveHomePage = (req, res) => {
+const serveHomePage = async (req, res) => {
   if (req.session.isNew) {
     return res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
   }
   const {id, username, avatar_url} = req.session;
-  res.render('home', {id, username, avatar_url, isUserAuth: true});
+  let stories = await req.app.locals.db.getDashboardStories(id);
+  stories = parseContent(stories);
+  res.render('home', {id, username, avatar_url, isUserAuth: true, stories});
 };
 
 const parseContent = (stories) => {

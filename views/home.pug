@@ -12,7 +12,20 @@ html
   body
     include navbar.pug
     div(class="dashBoard")
-      div(class= "message-box text")
-        h1=`Hello, ${username}`
-        img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
-        p Add your story
+      if !stories.length
+        div(class= "message-box text")
+          h1=`Hello, ${username}`
+          img(src="https://img.icons8.com/metro/26/000000/add-file.png", alt="")
+          p Add your story
+      else
+        each story in stories
+          div(class="story-box" onclick=`showStory(${story.id})`)
+            div(class="story-container")
+              h1(class="title")=story.title
+              div(class="story-content") !{story.content.length ? `${story.content[0].data.text.slice(0, 120)}...` : ''}
+              div
+                a(class="story-author-name" href=`/profile/${story.authorId}`)=story.author
+                div(class="story-time" time=`${story.published_at}`)=story.published_at
+            div(class="coverImage-container")
+              if story.coverImageName !== 'NULL'
+                img(class="coverImage" src=`/coverImage/${story.coverImageName}`)
