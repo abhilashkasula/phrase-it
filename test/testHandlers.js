@@ -443,24 +443,6 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/dashboardStories', () => {
-        before(async () => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
-            next();
-          });
-          await resetTables(app.locals.db);
-        });
-
-        it('should give the following and my stories', (done) => {
-          request(app)
-            .get('/dashboardStories')
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(/9 Ways to Build Virality into your Product/, done);
-        });
-      });
-
       describe('/unFollow', () => {
         before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {

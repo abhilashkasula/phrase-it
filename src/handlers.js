@@ -183,12 +183,6 @@ const follow = (req, res) => {
     .catch((err) => res.status(statusCodes.BAD_REQUEST).json(err));
 };
 
-const serveDashBoardStories = (req, res) => {
-  req.app.locals.db
-    .getDashboardStories(req.session.id)
-    .then((stories) => res.json(parseContent(stories)));
-};
-
 const unFollow = (req, res) => {
   req.app.locals.db
     .unFollowAuthor(req.session.id, +req.body.authorId)
@@ -248,7 +242,6 @@ module.exports = {
   serveEditDraftPage,
   serveDraft,
   follow,
-  serveDashBoardStories,
   unFollow,
   clap,
   logout,

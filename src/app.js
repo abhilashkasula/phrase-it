@@ -32,7 +32,6 @@ const addResField = ['id', 'response'];
 
 app.use(privateRoutes, handlers.allowAuthorized);
 app.get('/newStory', handlers.newStory);
-app.get('/dashboardStories', handlers.serveDashBoardStories);
 app.get('/stories', handlers.serveStoriesPage);
 app.get('/edit/:id', handlers.serveEditDraftPage);
 app.get('/draft/:id', handlers.serveDraft);
