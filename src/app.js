@@ -5,11 +5,27 @@ const session = require('cookie-session');
 const fileUpload = require('express-fileupload');
 const handlers = require('./handlers');
 const Database = require('./database');
-const {DB_NAME, CLIENT_ID, CLIENT_SECRET, SECRET_MSG} = require('../config');
+const {
+  DB_NAME,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  SECRET_MSG,
+  CLOUD_NAME,
+  API_KEY,
+  API_SECRET,
+} = require('../config');
 
 const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
-app.locals = {db, CLIENT_ID, CLIENT_SECRET, SECRET_MSG};
+app.locals = {
+  db,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  SECRET_MSG,
+  CLOUD_NAME,
+  API_KEY,
+  API_SECRET,
+};
 const privateRoutes = require('./privateRoutes');
 
 app.use(logger('common'));
@@ -17,7 +33,7 @@ app.set('view engine', 'pug');
 app.use(express.static('public', {index: false}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true, limit: '50mb'}));
-app.use(fileUpload());
+app.use(fileUpload({useTempFiles: true}));
 app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));

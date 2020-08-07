@@ -3,3 +3,4 @@ package-lock.json
 database
 test/database
 .nyc_output
+tmp

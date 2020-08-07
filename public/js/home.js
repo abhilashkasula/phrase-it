@@ -45,7 +45,7 @@ const createStoryCover = (coverImageName) => {
   const coverImage = document.createElement('img');
   container.className = 'coverImage-container';
   if(coverImageName !== 'NULL') {
-    coverImage.src = `/coverImage/${coverImageName}`;
+    coverImage.src = coverImageName;
     coverImage.className = 'coverImage';
     container.appendChild(coverImage);
   }

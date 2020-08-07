@@ -27,7 +27,7 @@ html
             img(src="/images/before-copy.png" id="story-url")
         if(story.coverImageName != 'NULL')
           div(class="coverImage-container")
-            img(src=`/coverImage/${story.coverImageName}` class="coverImage")
+            img(src=story.coverImageName class="coverImage")
         div(id="content")
           each element in story.content
             case element.type

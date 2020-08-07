@@ -21,6 +21,6 @@ chmod +x .git/hooks/pre-push
 chmod +x bin/resetProductionDB.sh
 chmod +x bin/resetTestDB.sh
 chmod +x bin/populateTestDB.sh
-mkdir -p database/images
+mkdir -p database
 
 npm install
