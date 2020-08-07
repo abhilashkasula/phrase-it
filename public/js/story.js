@@ -31,7 +31,7 @@ const setImage = () => {
 };
 
 const unFollow = (authorId) => {
-  fetch('/unFollow', {
+  fetch('/user/unFollow', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({authorId}),
@@ -41,7 +41,7 @@ const unFollow = (authorId) => {
 };
 
 const follow = (authorId) => {
-  fetch('/follow', {
+  fetch('/user/follow', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({authorId}),
@@ -64,7 +64,7 @@ const clap = (storyId) => {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({id: storyId}),
   };
-  fetch('/clap', options)
+  fetch('/user/clap', options)
     .then((res) => res.json())
     .then(({isClapped, clapsCount, error}) => {
       !error && updateClapsCount(isClapped, clapsCount);

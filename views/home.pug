@@ -24,7 +24,7 @@ html
               h1(class="title")=story.title
               div(class="story-content") !{story.content.length ? `${story.content[0].data.text.slice(0, 120)}...` : ''}
               div
-                a(class="story-author-name" href=`/profile/${story.authorId}`)=story.author
+                a(class="story-author-name" href=`/user/profile/${story.authorId}`)=story.author
                 div(class="story-time" time=`${story.published_at}`)=story.published_at
             div(class="coverImage-container")
               if story.coverImageName !== 'NULL'

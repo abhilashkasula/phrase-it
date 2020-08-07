@@ -54,7 +54,7 @@ const save = (__, storyId) => {
         'Content-Type': 'application/json',
       },
     };
-    fetch('/updateStory', options)
+    fetch('/user/updateStory', options)
       .then((res) => res.json())
       .then(({id, error}) => {
         showStatus();

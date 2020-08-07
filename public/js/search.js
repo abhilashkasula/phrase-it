@@ -8,7 +8,7 @@ const createTitleElement = (title) => {
 
 const createAuthorElement = (author, authorId) => {
   const authorElement = document.createElement('a');
-  authorElement.href = `/profile/${authorId}`;
+  authorElement.href = `/user/profile/${authorId}`;
   authorElement.className = 'author';
   authorElement.innerText = author;
   return authorElement;
@@ -106,7 +106,7 @@ const search = () => {
   if (searchedKey.trim() === '') {
     return;
   }
-  fetch(`/search?keyword=${searchedKey}`, {
+  fetch(`/user/search?keyword=${searchedKey}`, {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
   })

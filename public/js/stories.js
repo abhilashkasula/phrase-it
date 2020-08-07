@@ -24,9 +24,11 @@ const deleteDraft = () => {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({draftId}),
   };
-  fetch('/deleteDraft', options)
+  fetch('/user/deleteDraft', options)
     .then((res) => res.json())
-    .then(({status, error}) => status && document.location.replace('/stories'));
+    .then(
+      ({status, error}) => status && document.location.replace('/user/stories')
+    );
 };
 
 const assignDraftId = (draftId) => {

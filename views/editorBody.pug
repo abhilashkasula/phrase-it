@@ -14,11 +14,11 @@ div(class="navbar")
             img(src=`${avatar_url}`, alt="" class="navbar-avatar")
             div(class="dropdown-links")
               div(class="links") 
-                a(href=`/profile/${id}`)
+                a(href=`/user/profile/${id}`)
                   div(class="profile-link")
                     img(src=`${avatar_url}`, class="navbar-avatar")
                     p(class="user-link")=username
-                a(href="/stories" class="link") Your stories
+                a(href="/user/stories" class="link") Your stories
                 a(class="link" href="#logout-popup") Logout
 
           div(id="logout-popup" class="overlay")

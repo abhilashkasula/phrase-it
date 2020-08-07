@@ -21,7 +21,7 @@ const publish = (storyId, formData, cb) => {
     method: 'POST',
     body: formData,
   };
-  fetch('/publish', options)
+  fetch('/user/publish', options)
     .then((res) => res.json())
     .then(({status, error}) => {
       if (error) {

@@ -16,22 +16,31 @@ describe('Integration tests', () => {
       });
 
       it('should redirect to / for /newStory', (done) => {
-        request(app).get('/newStory').expect(302).expect('location', '/', done);
+        request(app)
+          .get('/user/newStory')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /updateStory', (done) => {
         request(app)
-          .post('/updateStory')
+          .post('/user/updateStory')
           .expect(302)
           .expect('location', '/', done);
       });
 
       it('should redirect to / for /stories', (done) => {
-        request(app).get('/stories').expect(302).expect('location', '/', done);
+        request(app)
+          .get('/user/stories')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /publish', (done) => {
-        request(app).post('/publish').expect(302).expect('location', '/', done);
+        request(app)
+          .post('/user/publish')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should give story page with login option', (done) => {
@@ -51,27 +60,32 @@ describe('Integration tests', () => {
       });
 
       it('should redirect to / for /edit', (done) => {
-        request(app).get('/edit/1').expect(302).expect('location', '/', done);
+        request(app)
+          .get('/user/edit/1')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /dashboardStories', (done) => {
-        request(app).get('/dashboardStories').expect('location', '/', done);
+        request(app)
+          .get('/user/dashboardStories')
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /follow', (done) => {
-        request(app).get('/follow').expect('location', '/', done);
+        request(app).get('/user/follow').expect('location', '/', done);
       });
 
       it('should redirect to / for /clap', (done) => {
-        request(app).get('/clap').expect('location', '/', done);
+        request(app).get('/user/clap').expect('location', '/', done);
       });
 
       it('should redirect to / for /searchPage', (done) => {
-        request(app).get('/searchPage').expect('location', '/', done);
+        request(app).get('/user/searchPage').expect('location', '/', done);
       });
 
       it('should redirect to / for /search', (done) => {
-        request(app).get('/search').expect('location', '/', done);
+        request(app).get('/user/search').expect('location', '/', done);
       });
 
       it('should give story page with updated views', (done) => {
@@ -89,12 +103,14 @@ describe('Integration tests', () => {
       });
 
       it('should redirect to / for /profile', (done) => {
-        request(app).get('/profile/58025056').expect('location', '/', done);
+        request(app)
+          .get('/user/profile/58025056')
+          .expect('location', '/', done);
       });
     });
 
     describe('authorized user', () => {
-      describe('/newStory', () => {
+      describe('/user/newStory', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -105,14 +121,14 @@ describe('Integration tests', () => {
 
         it('should get the newStory page for authenticated user', (done) => {
           request(app)
-            .get('/newStory')
+            .get('/user/newStory')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/editor/, done);
         });
       });
 
-      describe('/updateStory', () => {
+      describe('/user/updateStory', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -129,7 +145,7 @@ describe('Integration tests', () => {
             },
           };
           request(app)
-            .post('/updateStory')
+            .post('/user/updateStory')
             .send({title: 'New blog', blocks: [block]})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -145,7 +161,7 @@ describe('Integration tests', () => {
           };
           const data = {id: 2, title: 'A new app', blocks: [block]};
           request(app)
-            .post('/updateStory')
+            .post('/user/updateStory')
             .send(data)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -154,7 +170,7 @@ describe('Integration tests', () => {
 
         it('should give 404 for updating story with unknown id', (done) => {
           request(app)
-            .post('/updateStory')
+            .post('/user/updateStory')
             .send({id: 100, title: 'Title', blocks: ''})
             .expect(404)
             .expect('Content-Type', /json/)
@@ -162,7 +178,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/stories', () => {
+      describe('/user/stories', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -173,14 +189,14 @@ describe('Integration tests', () => {
 
         it('should give story page with available drafts of user', (done) => {
           request(app)
-            .get('/stories')
+            .get('/user/stories')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/your stories/i, done);
         });
       });
 
-      describe('/publish', () => {
+      describe('/user/publish', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -192,7 +208,7 @@ describe('Integration tests', () => {
 
         it('should give No draft found for no draft', (done) => {
           request(app)
-            .post('/publish')
+            .post('/user/publish')
             .send({id: 1, tags: 'tech'})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -201,7 +217,7 @@ describe('Integration tests', () => {
 
         it('should not publish a story with no content and title', (done) => {
           request(app)
-            .post('/publish')
+            .post('/user/publish')
             .send({id: 5, tags: 'tech'})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -213,7 +229,7 @@ describe('Integration tests', () => {
 
         it('should publish a story present', (done) => {
           request(app)
-            .post('/publish')
+            .post('/user/publish')
             .send({id: 2, tags: ''})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -227,7 +243,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .post('/publish')
+            .post('/user/publish')
             .send({id: 2, tags: ''})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -289,7 +305,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/edit', () => {
+      describe('/user/edit', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -300,7 +316,7 @@ describe('Integration tests', () => {
 
         it('should give draft editor page for /edit', (done) => {
           request(app)
-            .get('/edit/2')
+            .get('/user/edit/2')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/publish/, done);
@@ -308,20 +324,20 @@ describe('Integration tests', () => {
 
         it('should give not found for /edit if draft is absent', (done) => {
           request(app)
-            .get('/edit/1')
+            .get('/user/edit/1')
             .expect(404)
             .expect('Content-Type', /html/, done);
         });
 
         it('should give not found for /edit if draftId is a text', (done) => {
           request(app)
-            .get('/edit/hello')
+            .get('/user/edit/hello')
             .expect(404)
             .expect('Content-Type', /html/, done);
         });
       });
 
-      describe('/draft', () => {
+      describe('/user/draft', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -332,7 +348,7 @@ describe('Integration tests', () => {
 
         it('should give the draft for given draft id present', (done) => {
           request(app)
-            .get('/draft/2')
+            .get('/user/draft/2')
             .expect(200)
             .expect('Content-Type', /json/)
             .expect(/8 Ways to Build Virality into your Product/)
@@ -341,7 +357,7 @@ describe('Integration tests', () => {
 
         it('should give not found if given draft id not present', (done) => {
           request(app)
-            .get('/draft/117')
+            .get('/user/draft/117')
             .expect('Content-Type', /json/)
             .expect({error: 'No draft found'}, done);
         });
@@ -369,7 +385,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/addResponse', () => {
+      describe('/user/addResponse', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58028408};
@@ -380,7 +396,7 @@ describe('Integration tests', () => {
 
         it('should add response for a published story id', (done) => {
           request(app)
-            .post('/addResponse')
+            .post('/user/addResponse')
             .send({id: 1, response: 'some response'})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -389,7 +405,7 @@ describe('Integration tests', () => {
 
         it('should give bad request for unknown id', (done) => {
           request(app)
-            .post('/addResponse')
+            .post('/user/addResponse')
             .send({id: 100, response: 'some response'})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -397,7 +413,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/follow', () => {
+      describe('/user/follow', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -408,7 +424,7 @@ describe('Integration tests', () => {
 
         it('should follow the author for a valid authorId', (done) => {
           request(app)
-            .post('/follow')
+            .post('/user/follow')
             .send({authorId: 58026249})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -417,7 +433,7 @@ describe('Integration tests', () => {
 
         it('should give error for following yourself', (done) => {
           request(app)
-            .post('/follow')
+            .post('/user/follow')
             .send({authorId: 58025056})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -426,7 +442,7 @@ describe('Integration tests', () => {
 
         it('should give error for following an invalid author', (done) => {
           request(app)
-            .post('/follow')
+            .post('/user/follow')
             .send({authorId: 1})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -435,7 +451,7 @@ describe('Integration tests', () => {
 
         it('should give err for following already following author', (done) => {
           request(app)
-            .post('/follow')
+            .post('/user/follow')
             .send({authorId: 58025419})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -443,7 +459,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/unFollow', () => {
+      describe('/user/unFollow', () => {
         before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -454,7 +470,7 @@ describe('Integration tests', () => {
 
         it('should unfollow for given already following authorId', (done) => {
           request(app)
-            .post('/unFollow')
+            .post('/user/unFollow')
             .send({authorId: 58025419})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -463,7 +479,7 @@ describe('Integration tests', () => {
 
         it('should give error for not following authorId given', (done) => {
           request(app)
-            .post('/unFollow')
+            .post('/user/unFollow')
             .send({authorId: 56071561})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -471,7 +487,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/clap', () => {
+      describe('/user/clap', () => {
         before(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58028408};
@@ -482,7 +498,7 @@ describe('Integration tests', () => {
 
         it('should clap if the user have not clapped already', (done) => {
           request(app)
-            .post('/clap')
+            .post('/user/clap')
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -491,7 +507,7 @@ describe('Integration tests', () => {
 
         it('should give bad request for unknown id', (done) => {
           request(app)
-            .post('/clap')
+            .post('/user/clap')
             .send({id: 4})
             .expect(400)
             .expect('Content-Type', /json/)
@@ -504,7 +520,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .post('/clap')
+            .post('/user/clap')
             .send({id: 3})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -512,7 +528,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/logout', () => {
+      describe('/user/logout', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false};
@@ -522,14 +538,14 @@ describe('Integration tests', () => {
 
         it('should logout from the session', (done) => {
           request(app)
-            .post('/logout')
+            .post('/user/logout')
             .expect(200)
             .expect('Content-Type', /json/)
             .expect({status: 'Logged out'}, done);
         });
       });
 
-      describe('/searchPage', () => {
+      describe('/user/searchPage', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
@@ -541,14 +557,14 @@ describe('Integration tests', () => {
           });
 
           request(app)
-            .get('/searchPage')
+            .get('/user/searchPage')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/searchPage/, done);
         });
       });
 
-      describe('/search', () => {
+      describe('/user/search', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -559,7 +575,7 @@ describe('Integration tests', () => {
 
         it('should give matching stories based on the keyword', (done) => {
           request(app)
-            .get('/search?keyword=anil')
+            .get('/user/search?keyword=anil')
             .expect(200)
             .expect('Content-Type', /json/)
             .expect(/anil/, done);
@@ -567,14 +583,14 @@ describe('Integration tests', () => {
 
         it('should give bad request if the keyword is not proper', (done) => {
           request(app)
-            .get('/search')
+            .get('/user/search')
             .expect(400)
             .expect('Content-Type', /json/)
             .expect({error: 'invalid keyword'}, done);
         });
       });
 
-      describe('/deleteDraft', () => {
+      describe('/user/deleteDraft', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
@@ -585,7 +601,7 @@ describe('Integration tests', () => {
 
         it('should delete the draft if draft is present', (done) => {
           request(app)
-            .post('/deleteDraft')
+            .post('/user/deleteDraft')
             .send({draftId: 2})
             .expect(200)
             .expect('Content-Type', /json/)
@@ -594,7 +610,7 @@ describe('Integration tests', () => {
 
         it('should give not found if draft is absent', (done) => {
           request(app)
-            .post('/deleteDraft')
+            .post('/user/deleteDraft')
             .send({draftId: 1})
             .expect(404)
             .expect('Content-Type', /json/)
@@ -602,7 +618,7 @@ describe('Integration tests', () => {
         });
       });
 
-      describe('/profile', () => {
+      describe('/user/profile', () => {
         beforeEach(async () => {
           await resetTables(app.locals.db);
         });
@@ -614,7 +630,7 @@ describe('Integration tests', () => {
           });
 
           request(app)
-            .get('/profile/58026402')
+            .get('/user/profile/58026402')
             .expect(200)
             .expect('Content-Type', /html/)
             .expect(/Profile/, done);
@@ -626,7 +642,7 @@ describe('Integration tests', () => {
             next();
           });
           request(app)
-            .get('/profile/1')
+            .get('/user/profile/1')
             .expect(404)
             .expect('Content-Type', /html/)
             .expect(/Not Found/, done);
@@ -671,7 +687,7 @@ describe('/', () => {
   });
 });
 
-describe('/user', () => {
+describe('/callback', () => {
   beforeEach(async () => {
     await resetTables(app.locals.db);
   });
@@ -698,7 +714,7 @@ describe('/user', () => {
       next();
     });
     request(app)
-      .get('/user?code=somecode')
+      .get('/callback?code=somecode')
       .expect(302)
       .expect('location', '/', done);
   });
@@ -720,7 +736,7 @@ describe('/user', () => {
       next();
     });
     request(app)
-      .get('/user?code=somecode')
+      .get('/callback?code=somecode')
       .expect(302)
       .expect('location', '/', done);
   });
@@ -740,7 +756,7 @@ describe('/user', () => {
     app.set('sessionMiddleware', (req, res, next) => {
       next();
     });
-    request(app).get('/user?code=somecode').expect(404, done);
+    request(app).get('/callback?code=somecode').expect(404, done);
   });
 
   it('should give error if user data is not present', (done) => {
@@ -756,7 +772,7 @@ describe('/user', () => {
       req.session = {};
       next();
     });
-    request(app).get('/user?code=somecode').expect(404, done);
+    request(app).get('/callback?code=somecode').expect(404, done);
   });
 
   it('should redirect to / if user name is absent', (done) => {
@@ -777,7 +793,7 @@ describe('/user', () => {
       next();
     });
     request(app)
-      .get('/user?code=somecode')
+      .get('/callback?code=somecode')
       .expect(302)
       .expect('location', '/', done);
   });
@@ -790,7 +806,7 @@ describe('hasFields', () => {
       next();
     });
     request(app)
-      .post('/publish')
+      .post('/user/publish')
       .expect(400)
       .expect({error: 'Required fields not present'}, done);
   });

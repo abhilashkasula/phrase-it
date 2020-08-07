@@ -20,7 +20,7 @@ const main = () => {
   document.querySelector('#title').placeholder = 'Loading...';
   editor = createEditor('editor', 'write your story here...');
   const [id] = document.URL.split('/').slice(-1);
-  fetch(`/draft/${+id}`)
+  fetch(`/user/draft/${+id}`)
     .then((res) => res.json())
     .then(({draft, error}) => {
       if (error) {

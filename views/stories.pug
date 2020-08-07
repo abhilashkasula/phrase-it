@@ -1,13 +1,13 @@
 html
   head
     title Your Stories
-    link(rel="stylesheet", href="css/stories.css")
-    link(rel="stylesheet", href="css/navbar.css")
+    link(rel="stylesheet", href="/css/stories.css")
+    link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
-    script(src="js/showErr.js")
-    script(src="js/publish.js")
+    script(src="/js/showErr.js")
+    script(src="/js/publish.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
-    script(src="js/stories.js")
+    script(src="/js/stories.js")
   body
     include navbar
     div(id="error" class="err-hide") error
@@ -21,7 +21,7 @@ html
         div(id="drafts" class="tab")
           each draft in drafts
             div(class="story")
-              a(href=`/edit/${draft.id}`)
+              a(href=`/user/edit/${draft.id}`)
                 div
                   div(class="story-title-container")
                     h1(class="story-title")=draft.title || 'Untitled story'
