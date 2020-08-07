@@ -23,7 +23,7 @@ const getDrafts = (userId) =>
 
 const getDraft = (authorId, storyId) =>
   `SELECT * FROM stories
-    WHERE id = ${storyId} AND created_by = ${authorId} AND is_published = 0`;
+    WHERE id = '${storyId}' AND created_by = ${authorId} AND is_published = 0`;
 
 const isDraftExists = (authorId, draftId) =>
   `SELECT EXISTS (

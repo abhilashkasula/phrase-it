@@ -80,7 +80,7 @@ class Database {
 
   getDraft(draftId, authorId) {
     return new Promise((resolve, reject) => {
-      this.get(queries.getDraft(authorId, +draftId || -ONE)).then((draft) => {
+      this.get(queries.getDraft(authorId, draftId)).then((draft) => {
         if (!draft) {
           return reject({error: 'No draft found'});
         }
