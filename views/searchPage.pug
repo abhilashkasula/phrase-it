@@ -1,3 +1,12 @@
+mixin search-result-container(containerName, isHidden)
+  div(id=containerName class=`tab ${isHidden ? 'hidden': ''}`)
+    div(class="sub-placeholder" id=`${containerName}-placeholder`)
+      p No matching Result
+    div(id=`${containerName}-based-cards` class="cards")
+
+mixin tab(tabName, isSelected)
+  li(id=`tab-${tabName}` class=`tab-name ${isSelected ? 'selected-tab' : ''}`) Author Based&nbsp;
+    span(id=`${tabName}-based-count`)
 html
   head
     title searchPage
@@ -18,21 +27,9 @@ html
         p No active search results....
       div(class="sub-container hidden" id="search-result")
         ul(class="tabs")
-          li(id="tab-author" class="tab-name selected-tab") Author Based&nbsp;
-            span(id="author-based-count")
-          li(id="tab-tag" class="tab-name") Tag Based&nbsp;
-            span(id="tag-based-count")
-          li(id="tab-content" class="tab-name") Content Based&nbsp;
-            span(id="content-based-count")
-        div(id="author" class="tab")
-          div(class="sub-placeholder" id="author-placeholder")
-            p No matching Result
-          div(id="author-based-cards" class="cards")
-        div(id="tag" class="tab hidden")
-          div(class="sub-placeholder" id="tag-placeholder")
-            p No matching Result
-          div(id="tag-based-cards" class="cards hidden")
-        div(id="content" class="tab hidden")
-          div(class="sub-placeholder" id="content-placeholder")
-            p No matching Result
-          div(id="content-based-cards" class="cards")
+          +tab('author', true)
+          +tab('tag', false)
+          +tab('content', false)
+        +search-result-container('author', false)
+        +search-result-container('tag', true)
+        +search-result-container('content', true)
