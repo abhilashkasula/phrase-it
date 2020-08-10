@@ -36,23 +36,29 @@
       "title": "9 Ways to Build Virality into your Product",
       "created_by": 58025056,
       "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
-      "is_published": 1
+      "is_published": 1,
+      "last_modified": "2020-08-10 14:50:18"
     },
     {
       "title": "8 Ways to Build Virality into your Product",
       "created_by": 58025056,
-      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]"
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"Computer science student.\"}}]",
+      "is_published": 0,
+      "last_modified": "2020-08-10 14:50:18"
     },
     {
       "title": "9 Ways to Build Virality into your Product",
       "created_by": 56071561,
       "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
-      "is_published": 1
+      "is_published": 1,
+      "last_modified": "2020-08-10 14:50:18"
     },
     {
       "title": "9 Ways to Build Virality into your Product",
       "created_by": 58028408,
-      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]"
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
+      "is_published": 0,
+      "last_modified": "2020-08-10 14:50:18"
     }
   ],
   "published_stories": [{"story_id": 1}, {"story_id": 3}],
