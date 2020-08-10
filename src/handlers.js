@@ -43,10 +43,14 @@ const updateStory = (req, res) => {
     .catch((err) => res.status(statusCodes.NOT_FOUND).json(err));
 };
 
-const serveHomePage = async (req, res) => {
+const serveIndex = (req, res) => {
   if (req.session.isNew) {
-    return res.render('index', {CLIENT_ID: req.app.locals.CLIENT_ID});
+    return res.render('index');
   }
+  res.redirect('/user');
+};
+
+const serveHomePage = async (req, res) => {
   const {id, username, avatar_url} = req.session;
   let stories = await req.app.locals.db.getDashboardStories(id);
   stories = parseContent(stories);
@@ -249,4 +253,5 @@ module.exports = {
   search,
   deleteDraft,
   serveProfile,
+  serveIndex,
 };

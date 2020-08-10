@@ -19,7 +19,6 @@ body {
   display: inline-block;
   height: 300px;
   width: 85vw;
-  display: none;
 }
 
 .message-box > p {

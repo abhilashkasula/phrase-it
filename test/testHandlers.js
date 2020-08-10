@@ -648,6 +648,37 @@ describe('Integration tests', () => {
             .expect(/Not Found/, done);
         });
       });
+
+      describe('/user', () => {
+        beforeEach(async () => {
+          await resetTables(app.locals.db);
+        });
+
+        it('should redirect to index page if session not exists', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: true};
+            next();
+          });
+          request(app).get('/user').expect(302).expect('location', '/', done);
+        });
+
+        it('should give home page if session exists', (done) => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {
+              isNew: false,
+              id: 56071561,
+              username: 'name',
+              avatar_url: 'url',
+            };
+            next();
+          });
+          request(app)
+            .get('/user')
+            .expect(200)
+            .expect('Content-Type', /html/)
+            .expect(/56071561/, done);
+        });
+      });
     });
   });
 });
@@ -669,7 +700,7 @@ describe('/', () => {
       .expect(/Login Using Github/, done);
   });
 
-  it('should get home page if session exists', (done) => {
+  it('should redirect home page if session exists', (done) => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {
         isNew: false,
@@ -679,11 +710,7 @@ describe('/', () => {
       };
       next();
     });
-    request(app)
-      .get('/')
-      .expect(200)
-      .expect('Content-Type', /html/)
-      .expect(/Phrase-it/, done);
+    request(app).get('/').expect(302).expect('location', '/user', done);
   });
 });
 

@@ -22,7 +22,7 @@ app.set('sessionMiddleware', session({secret: SECRET_MSG}));
 
 app.use((...args) => app.get('sessionMiddleware')(...args));
 
-app.get('/', handlers.serveHomePage);
+app.get('/', handlers.serveIndex);
 app.get('/callback', handlers.getUserDetails);
 app.get('/story/:id', handlers.serveStoryPage);
 app.get('/responses/:storyId', handlers.getResponses);
