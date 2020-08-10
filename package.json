@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "(export DB_NAME='test/database/test.db'; mkdir -p test/database; mocha)",
-    "setUpKnex": " touch test/database/testKnex.db;NODE_ENV=test npm run knex migrate:latest;",
+    "setUpKnex": "touch $KNEX_TEST_DB_NAME; NODE_ENV=test npm run knex migrate:latest;",
     "lint": "eslint ./",
     "coverage": "npm run setUpKnex && nyc npm test",
     "allTests": "npm run coverage && npm run lint",
