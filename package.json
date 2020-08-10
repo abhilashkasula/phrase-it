@@ -28,6 +28,7 @@
     "express-fileupload": "^1.1.9",
     "knex": "^0.21.3",
     "morgan": "^1.10.0",
+    "pug": "^3.0.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
@@ -35,7 +36,6 @@
     "eslint": "^7.5.0",
     "mocha": "^8.0.1",
     "nyc": "^15.1.0",
-    "pug": "^3.0.0",
     "sinon": "^9.0.2",
     "supertest": "^4.0.2"
   }
