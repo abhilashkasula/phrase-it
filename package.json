@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "(export DB_NAME='test/database/test.db'; mkdir -p test/database; mocha)",
     "lint": "eslint ./",
     "coverage": "nyc npm test",
