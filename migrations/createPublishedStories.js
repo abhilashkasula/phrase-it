@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.integer('story_id').primary();
     table.timestamp('published_at').defaultTo(knex.fn.now());
     table.text('cover_image_path');
-    table.integer('views').default(0);
+    table.integer('views').defaultTo(0);
   });
 };
 

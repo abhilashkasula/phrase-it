@@ -4,7 +4,7 @@ exports.up = function (knex) {
     table.text('title').notNullable();
     table.integer('created_by').notNullable();
     table.text('content').notNullable();
-    table.integer('is_published').default(0);
+    table.integer('is_published').defaultTo(0);
     table.timestamp('last_modified').defaultTo(knex.fn.now());
   });
 };
