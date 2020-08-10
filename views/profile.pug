@@ -22,9 +22,9 @@ html
         h1(class="name")=userDetails.username
       div(class="sub-container")
         ul(class="tabs")
-          li(id="tab-stories" class="tab-name selected-tab")=`Stories [ ${userDetails.stories.length || 0} ]`
-          li(id="tab-followers" class="tab-name")=`Followers [ ${userDetails.followers.length || 0} ]`
-          li(id="tab-following" class="tab-name")=`Following [ ${userDetails.following.length || 0} ]`
+          li(id="tab-stories" class="tab-name selected-tab")=`Stories [ ${userDetails.stories.length} ]`
+          li(id="tab-followers" class="tab-name")=`Followers [ ${userDetails.followers.length} ]`
+          li(id="tab-following" class="tab-name")=`Following [ ${userDetails.following.length} ]`
         div(id="stories" class="tab")
           each story in userDetails.stories
             a(href=`/story/${story.id}` class="story-link")
