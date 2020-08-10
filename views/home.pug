@@ -8,9 +8,8 @@ html
       include ../public/css/home.css 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js") 
     script(src="/js/tabs.js") 
-    script(src="/js/home.js") 
 
-  body
+  body(onload="setTime('.story-time', '')")
     include navbar.pug
     div(class="dashBoard")
       if !stories.length
@@ -20,7 +19,7 @@ html
           p Add your story
       else
         each story in stories
-          div(class="story-box" onclick=`showStory(${story.id})`)
+          div(class="story-box" onclick=`(() => location.replace('/story/${story.id}'))()`)
             div(class="story-container")
               h1(class="title")=story.title
               div(class="story-content") !{story.content.length ? `${story.content[0].data.text.slice(0, 120)}...` : ''}

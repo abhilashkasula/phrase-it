@@ -1,5 +1,4 @@
 script
-  include ../public/js/navbar.js
   include ../public/js/sendPostRequest.js
 style
   include ../public/css/popup.css
@@ -35,7 +34,7 @@ div(class="navbar")
               h2 Are you sure, you want to logout? 
               div(class="logout-options")
                 a(href="#") Cancel
-                button(id="logout" onclick="logout()") Logout
+                button(id="logout" onclick="(() => sendPostReq('/user/logout', {}, ({status}) => status && location.replace('/')))()") Logout
         else 
             li
               a(href="/")
