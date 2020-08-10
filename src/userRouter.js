@@ -1,6 +1,6 @@
 const express = require('express');
 const user = express.Router();
-const handlers = require('./handlers');
+const handlers = require('./userHandlers');
 
 user.use(handlers.allowAuthorized);
 user.get('/', handlers.serveHomePage);
