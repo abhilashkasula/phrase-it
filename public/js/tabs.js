@@ -16,3 +16,11 @@ const attachTabListeners = () => {
     tab.addEventListener('click', () => showTab(tab));
   });
 };
+
+const setTime = (selector, precedingText) => {
+  const times = Array.from(document.querySelectorAll(selector));
+  times.forEach(timeElem => {
+    const time = timeElem.getAttribute('time');
+    timeElem.innerText = `${precedingText} ${moment(time).startOf().fromNow()}`;
+  });
+};

@@ -58,9 +58,7 @@ const clap = (storyId) => {
 
 const main = () => {
   const copy = document.querySelector('#story-url');
-  const time = document.querySelector('#story-time');
-  const value = time.getAttribute('published_at');
-  time.innerText = `Published ${moment(value).startOf('min').fromNow()}`;
+  setTime('#story-time', 'Published');
   copy.addEventListener('click', () => copyUrl(copy));
   setImage();
 };

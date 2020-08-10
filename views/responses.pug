@@ -4,6 +4,7 @@ html
     link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/response.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js") 
+    script(src="/js/tabs.js")
     script(src="/js/response.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
@@ -14,7 +15,7 @@ html
         div(class="subheader-container")
           div(class="subheader")
             p(class="author")=story.author
-            p(class="published-time" published_at=story.published_at)
+            p(class="published-time" time=story.published_at)
           div(class="response-summary")
             img(src='/images/response.png' class="response-icon")
             p(class="response-count")=`${story.responsesCount} ${story.responsesCount == 1 ? 'Response' : 'Responses'}`
@@ -32,5 +33,5 @@ html
                 img(src=response.avatar_url class="response-avatar")
                 div(class="response-author")
                   a(class="response-author-name" href=`/profile/${response.id}`)=response.username
-                  p(class="response-time" responded_at=response.responded_at)
+                  p(class="response-time" time=response.responded_at)
             p(class="response")=response.response

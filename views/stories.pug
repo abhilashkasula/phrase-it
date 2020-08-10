@@ -27,7 +27,7 @@ html
                     h1(class="story-title")=draft.title || 'Untitled story'
                   if draft.content.length
                     p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
-                  p(class="story-last-edited draft-last-edited" published_at=draft.last_modified)
+                  p(class="story-last-edited draft-last-edited" time=draft.last_modified)
               div
                 a(class="delete-button" href="#delete-popup"  onclick=`assignDraftId(${draft.id})`) Delete
           div(id="delete-popup" class="overlay")
@@ -45,4 +45,4 @@ html
                    h1(class="story-title")=publishedStory.title || 'Untitled story'
                  if publishedStory.content.length
                    p(class="story-summary")=`${publishedStory.content[0].data.text.slice(0, 50)}...`
-                 p(class="story-last-edited publish-last-edited" published_at=publishedStory.published_at)
+                 p(class="story-last-edited publish-last-edited" time=publishedStory.published_at)

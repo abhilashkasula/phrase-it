@@ -4,6 +4,7 @@ html
     link(rel="stylesheet", href="/css/story.css")
     link(rel="stylesheet", href="/css/navbar.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js") 
+    script(src="/js/tabs.js")
     script(src="/js/story.js")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400&display=swap")
   body
@@ -17,7 +18,7 @@ html
               img(src=story.avatar_url)
             div(class="story-author")
               a(id="story-author-name" class="author-name" href=`/user/profile/${story.authorId}`)=story.author
-              div(id="story-time" published_at=`${story.published_at}`)
+              div(id="story-time" time=`${story.published_at}`)
             if isUserAuth && !story.isAuthor
               button(id="unfollow" onclick=`unFollow(${story.authorId})` class=`${isFollowing ? '' : 'hide-btn'}`) Unfollow
               button(id="follow" onclick=`follow(${story.authorId})` class=`${isFollowing ? 'hide-btn': ''}`) Follow
