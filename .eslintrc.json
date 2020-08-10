@@ -100,7 +100,12 @@
         "no-console": "off",
         "no-process-env": "off"
       }
-      
+    },
+    {
+      "files": ["migrations/*.js"],
+      "rules": {
+        "no-magic-numbers": "off"
+      }
     }
   ]
 }
