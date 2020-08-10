@@ -55,23 +55,9 @@ const clearContainers = () => {
   });
 };
 
-const showTab = (tab) => {
-  const tabNames = Array.from(document.querySelectorAll('.tab-name'));
-  const tabs = Array.from(document.querySelectorAll('.tab'));
-  tabNames.forEach((tab, index) => {
-    tab.classList.remove('selected-tab');
-    tabs[index].classList.add('hidden');
-  });
-  const id = tab.id.split('-')[1];
-  tab.classList.add('selected-tab');
-  document.querySelector(`#${id}-search-result`).classList.remove('hidden');
-};
-
 const displayContainer = () => {
   document.querySelector('#search-placeholder').classList.add('hidden');
   document.querySelector('#search-result').classList.remove('hidden');
-  const tabs = document.querySelectorAll('.tab-name');
-  tabs.forEach((tab) => tab.addEventListener('click', () => showTab(tab)));
 };
 
 const addCounts = (counts) => {
@@ -113,3 +99,5 @@ const search = () => {
     .then((res) => res.json())
     .then(renderSearchResults);
 };
+
+window.onload = attachTabListeners;

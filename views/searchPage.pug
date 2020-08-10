@@ -6,6 +6,7 @@ html
     link(rel="stylesheet", href="/css/searchPage.css")
     link(rel="stylesheet", href="/css/profile.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js")
+    script(src="/js/tabs.js")
     script(src="/js/search.js")
   body
     include navbar
@@ -23,15 +24,15 @@ html
             span(id="tag-based-count")
           li(id="tab-content" class="tab-name") Content Based&nbsp;
             span(id="content-based-count")
-        div(id="author-search-result" class="tab")
+        div(id="author" class="tab")
           div(class="sub-placeholder" id="author-placeholder")
             p No matching Result
           div(id="author-based-cards" class="cards")
-        div(id="tag-search-result" class="tab hidden")
+        div(id="tag" class="tab hidden")
           div(class="sub-placeholder" id="tag-placeholder")
             p No matching Result
           div(id="tag-based-cards" class="cards hidden")
-        div(id="content-search-result" class="tab hidden")
+        div(id="content" class="tab hidden")
           div(class="sub-placeholder" id="content-placeholder")
             p No matching Result
           div(id="content-based-cards" class="cards")
