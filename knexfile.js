@@ -4,4 +4,10 @@ module.exports = {
     useNullAsDefault: true,
     connection: {filename: './database/phraseIt.db'},
   },
+
+  test: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {filename: './test/database/test.db'},
+  },
 };
