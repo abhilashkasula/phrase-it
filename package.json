@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "(export DB_NAME='test/database/test.db'; mkdir -p test/database; mocha)",
+    "test": "(export KNEX_TEST_DB_NAME='test/database/testKnex.db'; export DB_NAME='test/database/test.db'; mkdir -p test/database;npm run setUpKnex && mocha)",
     "setUpKnex": "touch $KNEX_TEST_DB_NAME; NODE_ENV=test npm run knex migrate:latest;",
     "lint": "eslint ./",
-    "coverage": "npm run setUpKnex && nyc npm test",
+    "coverage": "nyc npm test",
     "allTests": "npm run coverage && npm run lint",
     "knex": "knex"
   },
