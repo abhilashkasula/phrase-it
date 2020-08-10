@@ -7,16 +7,8 @@ const setTime = (stories, text) => {
 
 const deleteDraft = () => {
   const draftId = document.querySelector('#delete').getAttribute('draftId');
-  const options = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({draftId}),
-  };
-  fetch('/user/deleteDraft', options)
-    .then((res) => res.json())
-    .then(
-      ({status, error}) => status && document.location.replace('/user/stories')
-    );
+  const callback = ({status}) => status && location.replace('/user/stories');
+  sendPostReq('/user/deleteDraft', {draftId}, callback);
 };
 
 const assignDraftId = (draftId) => {

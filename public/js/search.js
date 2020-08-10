@@ -92,10 +92,7 @@ const search = () => {
   if (searchedKey.trim() === '') {
     return;
   }
-  fetch(`/user/search?keyword=${searchedKey}`, {
-    method: 'GET',
-    headers: {'Content-Type': 'application/json'},
-  })
+  fetch(`/user/search?keyword=${searchedKey}`)
     .then((res) => res.json())
     .then(renderSearchResults);
 };

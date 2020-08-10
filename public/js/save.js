@@ -54,18 +54,9 @@ const save = (__, storyId) => {
   editor.save().then((data) => {
     data.title = title;
     data.id = storyId;
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch('/user/updateStory', options)
-      .then((res) => res.json())
-      .then(({id, error}) => {
-        showStatus();
-        !storyId && replaceListener(id);
-      });
+    sendPostReq('/user/updateStory', data, ({id}) => {
+      showStatus();
+      !storyId && replaceListener(id);
+    });
   });
 };

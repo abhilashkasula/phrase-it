@@ -12,14 +12,18 @@ const copyUrl = (copy) => {
   }, 1000);
 };
 
-const changeOptionToUnFollow = () => {
-  document.querySelector('#follow').classList.add('hide-btn');
-  document.querySelector('#unfollow').classList.remove('hide-btn');
+const changeOptionToUnFollow = ({status}) => {
+  if (status) {
+    document.querySelector('#follow').classList.add('hide-btn');
+    document.querySelector('#unfollow').classList.remove('hide-btn');
+  }
 };
 
-const changeOptionToFollow = () => {
-  document.querySelector('#unfollow').classList.add('hide-btn');
-  document.querySelector('#follow').classList.remove('hide-btn');
+const changeOptionToFollow = ({status}) => {
+  if (status) {
+    document.querySelector('#unfollow').classList.add('hide-btn');
+    document.querySelector('#follow').classList.remove('hide-btn');
+  }
 };
 
 const setImage = () => {
@@ -31,23 +35,11 @@ const setImage = () => {
 };
 
 const unFollow = (authorId) => {
-  fetch('/user/unFollow', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({authorId}),
-  })
-    .then((res) => res.json())
-    .then(({status}) => status && changeOptionToFollow());
+  sendPostReq('/user/unFollow', {authorId}, changeOptionToFollow);
 };
 
 const follow = (authorId) => {
-  fetch('/user/follow', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({authorId}),
-  })
-    .then((res) => res.json())
-    .then(({status}) => status && changeOptionToUnFollow());
+  sendPostReq('/user/follow', {authorId}, changeOptionToUnFollow);
 };
 
 const updateClapsCount = (isClapped, clapCount) => {
@@ -59,16 +51,9 @@ const updateClapsCount = (isClapped, clapCount) => {
 };
 
 const clap = (storyId) => {
-  const options = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({id: storyId}),
-  };
-  fetch('/user/clap', options)
-    .then((res) => res.json())
-    .then(({isClapped, clapsCount, error}) => {
-      !error && updateClapsCount(isClapped, clapsCount);
-    });
+  const callback = ({isClapped, clapsCount, error}) =>
+    !error && updateClapsCount(isClapped, clapsCount);
+  sendPostReq('/user/clap', {id: storyId}, callback);
 };
 
 const main = () => {
