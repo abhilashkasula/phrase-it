@@ -35,6 +35,13 @@ const removeTag = () => {
   document.querySelector('#tags').removeChild(event.target.parentElement);
 };
 
+const showCoverImage = () => {
+  const image = document.querySelector('#coverImage');
+  image.classList.replace('coverImage-before', 'coverImage-after');
+  image.parentElement.style.display = 'block';
+  image.src = URL.createObjectURL(event.target.files[0]);
+};
+
 const publish = (storyId, formData, cb) => {
   const options = {
     method: 'POST',
