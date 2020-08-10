@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments();
     table.integer('responded_on').notNullable();
     table.integer('responded_by').notNullable();
-    table.timestamp('responded_at').notNullable();
+    table.timestamp('responded_at').defaultTo(knex.fn.now());
     table.text('response').notNullable();
   });
 };
