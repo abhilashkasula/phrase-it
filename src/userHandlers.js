@@ -1,3 +1,4 @@
+const {serveNotFound} = require('./handlers');
 const statusCodes = require('./statusCodes');
 
 const parseContent = (stories) => {
@@ -87,10 +88,6 @@ const hasFields = (fields) => {
   };
 };
 
-const serveNotFound = (req, res) => {
-  res.status(statusCodes.NOT_FOUND).render('notFound');
-};
-
 const serveEditDraftPage = (req, res) => {
   const {id, username, avatar_url} = req.session;
   req.app.locals.db
@@ -163,7 +160,6 @@ module.exports = {
   allowAuthorized,
   publish,
   hasFields,
-  serveNotFound,
   addResponse,
   serveEditDraftPage,
   serveDraft,
