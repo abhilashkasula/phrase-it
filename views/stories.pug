@@ -1,3 +1,11 @@
+mixin story-container(story, isDraft)
+  div
+    div(class="story-title-container")
+      h1(class="story-title")=story.title || 'Untitled story'
+    if story.content.length
+      p(class="story-summary")=`${story.content[0].data.text.slice(0, 50)}...`
+    p(class=`story-last-edited ${isDraft ? 'draft' : 'publish'}-last-edited` time=`${isDraft ? story.last_modified : story.published_at}`)
+
 html
   head
     title Your Stories
@@ -22,12 +30,7 @@ html
           each draft in drafts
             div(class="story")
               a(href=`/user/edit/${draft.id}`)
-                div
-                  div(class="story-title-container")
-                    h1(class="story-title")=draft.title || 'Untitled story'
-                  if draft.content.length
-                    p(class="story-summary")=`${draft.content[0].data.text.slice(0, 50)}...`
-                  p(class="story-last-edited draft-last-edited" time=draft.last_modified)
+                +story-container(draft, true)
               div
                 a(class="delete-button" href="#delete-popup"  onclick=`assignDraftId(${draft.id})`) Delete
           div(id="delete-popup" class="overlay")
@@ -40,9 +43,4 @@ html
           each publishedStory in published
             a(href=`/story/${publishedStory.id}`)
               div(class="story")
-               div
-                 div(class="story-title-container")
-                   h1(class="story-title")=publishedStory.title || 'Untitled story'
-                 if publishedStory.content.length
-                   p(class="story-summary")=`${publishedStory.content[0].data.text.slice(0, 50)}...`
-                 p(class="story-last-edited publish-last-edited" time=publishedStory.published_at)
+                +story-container(publishedStory, false)
