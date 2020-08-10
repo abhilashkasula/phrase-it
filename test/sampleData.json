@@ -30,5 +30,57 @@
       "username": "venkybavisetti",
       "avatar_url": "https://avatars2.githubusercontent.com/u/58026249?v=4"
     }
+  ],
+  "stories": [
+    {
+      "title": "9 Ways to Build Virality into your Product",
+      "created_by": 58025056,
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
+      "is_published": 1
+    },
+    {
+      "title": "8 Ways to Build Virality into your Product",
+      "created_by": 58025056,
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]"
+    },
+    {
+      "title": "9 Ways to Build Virality into your Product",
+      "created_by": 56071561,
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
+      "is_published": 1
+    },
+    {
+      "title": "9 Ways to Build Virality into your Product",
+      "created_by": 58028408,
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]"
+    }
+  ],
+  "published_stories": [{"story_id": 1}, {"story_id": 3}],
+  "claps": [
+    {"clapped_on": 1, "clapped_by": 58025419},
+    {"clapped_on": 1, "clapped_by": 56071561},
+    {"clapped_on": 1, "clapped_by": 58028408},
+    {"clapped_on": 3, "clapped_by": 58025056}
+  ],
+  "responses": [
+    {"responded_on": 1, "responded_by": 58025419, "response": "Nice story"},
+    {"responded_on": 1, "responded_by": 58025056, "response": "Thanks Naagu"},
+    {"responded_on": 1, "responded_by": 58028408, "response": "Our app"},
+    {"responded_on": 1, "responded_by": 58026249, "response": "Nice story"}
+  ],
+  "followers": [
+    {"user_id": 58025056, "follower_id": 58025419},
+    {"user_id": 58025056, "follower_id": 56071561},
+    {"user_id": 58025056, "follower_id": 58026249},
+    {"user_id": 58025419, "follower_id": 58025056},
+    {"user_id": 56071561, "follower_id": 58025419}
+  ],
+  "tags": [
+    {"story_id": 1, "tag": "technology"},
+    {"story_id": 1, "tag": "maths"},
+    {"story_id": 1, "tag": "science"},
+    {"story_id": 1, "tag": "thriller"},
+    {"story_id": 1, "tag": "sci-fi"},
+    {"story_id": 3, "tag": "comic"}
   ]
 }
