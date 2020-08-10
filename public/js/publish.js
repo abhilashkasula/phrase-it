@@ -1,11 +1,30 @@
+const createDeleteContainer = () => {
+  const deleteTag = document.createElement('div');
+  deleteTag.className = 'delete-tag';
+  deleteTag.onclick = removeTag;
+  deleteTag.innerHTML = '&times';
+  return deleteTag;
+};
+
+const createTag = (text) => {
+  const tag = document.createElement('div');
+  tag.className = 'tag';
+  tag.innerText = text;
+  return tag;
+};
+
+const createTagContainer = (text) => {
+  const tagContainer = document.createElement('div');
+  tagContainer.className = 'tag-container';
+  tagContainer.appendChild(createTag(text));
+  tagContainer.appendChild(createDeleteContainer());
+  return tagContainer;
+};
+
 const addTags = () => {
   const text = event.target.value;
   const tags = document.querySelector('#tags');
-  const tagContainer = document.createElement('div');
-  const tag = `<div class="tag">${text.trim()}</div>
-  <div class="delete-tag" onclick="removeTag()">&times</div>`;
-  tagContainer.className = 'tag-container';
-  tagContainer.innerHTML = tag;
+  const tagContainer = createTagContainer(text.trim());
   if (event.keyCode === 13 && text.trim() && tags.children.length < 5) {
     tags.appendChild(tagContainer);
     event.target.value = '';
