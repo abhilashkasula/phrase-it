@@ -1,3 +1,10 @@
+mixin user-card(key)
+  div(id=key class="tab hidden")
+    each user in userDetails[key]
+      div(class="user-card")
+        img(src=user.avatar_url class="user-avatar")
+        a(class="username" href=`/user/profile/${user.id}`)=user.username
+
 html
   head
     title Profile
@@ -26,13 +33,5 @@ html
                 if story.content.length
                   p(class="story-content")=`${story.content[0].data.text.slice(0, 50)}...`
                 p(class="story-time" time=story.published_at)
-        div(id="followers" class="tab hidden")
-          each user in userDetails.followers
-            div(class="user-card")
-              img(src=user.avatar_url class="user-avatar")
-              a(class="username" href=`/user/profile/${user.id}`)=user.username
-        div(id="following" class="tab hidden")
-          each user in userDetails.following
-            div(class="user-card")
-              img(src=user.avatar_url class="user-avatar")
-              a(class="username" href=`/user/profile/${user.id}`)=user.username
+        +user-card('followers')
+        +user-card('following')
