@@ -10,23 +10,7 @@ div(class="navbar")
               div(id="status" class="status-hide") status
             div
               a(class="disabled publish-button" id="popup-publish") Publish
-          li(class="avatar-nav")
-            img(src=`${avatar_url}`, alt="" class="navbar-avatar")
-            div(class="dropdown-links")
-              div(class="links") 
-                a(href=`/user/profile/${id}`)
-                  div(class="profile-link")
-                    img(src=`${avatar_url}`, class="navbar-avatar")
-                    p(class="user-link")=username
-                a(href="/user/stories" class="link") Your stories
-                a(class="link" href="#logout-popup") Logout
-
-          div(id="logout-popup" class="overlay")
-            div(class="popup")
-              h2 Are you sure, you want to logout? 
-              div(class="logout-options")
-                a(href="#") Cancel
-                button(id="logout" onclick="(() => sendPostReq('/user/logout', {}, ({status}) => status && location.replace('/')))()") Logout
+          include avatar_dropdown
 div(id="error" class="err-hide") error
 div(class="container")
   div(id="new-blog")
