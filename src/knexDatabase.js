@@ -17,6 +17,14 @@ class Database {
     }
     return draft;
   }
+
+  async getDrafts(userId) {
+    return await this.stories
+      .clone()
+      .select()
+      .where({created_by: userId, is_published: 0})
+      .orderBy('last_modified', 'desc');
+  }
 }
 
 module.exports = Database;

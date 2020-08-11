@@ -54,5 +54,39 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('getDrafts', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give a list of drafts for the given user', (done) => {
+      const expected = [
+        {
+          id: 2,
+          title: '8 Ways to Build Virality into your Product',
+          created_by: 58025056,
+          content:
+            '[{"type":"paragraph","data":{"text":"Computer science student."}}]',
+          is_published: 0,
+          last_modified: '2020-08-10 14:50:18',
+        },
+      ];
+
+      db.getDrafts(58025056)
+        .then((drafts) => {
+          assert.deepStrictEqual(drafts, expected);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give an empty list of drafts if user have no draft', (done) => {
+      db.getDrafts(56071561)
+        .then((drafts) => {
+          assert.deepStrictEqual(drafts, []);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });
