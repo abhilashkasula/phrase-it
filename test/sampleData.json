@@ -59,11 +59,19 @@
       "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
       "is_published": 0,
       "last_modified": "2020-08-10 14:50:18"
+    },
+    {
+      "title": "9 Ways to Build Virality into your Product",
+      "created_by": 58028408,
+      "content": "[{\"type\":\"paragraph\",\"data\":{\"text\":\"I am a computer science student.\"}}]",
+      "is_published": 1,
+      "last_modified": "2020-08-10 14:50:18"
     }
   ],
   "published_stories": [
     {"story_id": 1, "published_at": "2020-08-10 14:50:18"},
-    {"story_id": 3, "published_at": "2020-08-10 14:50:18"}
+    {"story_id": 3, "published_at": "2020-08-10 14:50:18"},
+    {"story_id": 5, "published_at": "2020-08-10 14:50:18"}
   ],
   "claps": [
     {"clapped_on": 1, "clapped_by": 58025419},
