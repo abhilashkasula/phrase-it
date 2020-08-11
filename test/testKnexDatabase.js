@@ -324,6 +324,8 @@ describe('knexDatabase', () => {
   });
 
   describe('unFollowAuthor', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
     it('should resolve status unfollowed if already following', (done) => {
       db.unFollowAuthor(58025419, 58025056)
         .then((res) => {
@@ -359,6 +361,28 @@ describe('knexDatabase', () => {
       db.unFollowAuthor(58025419, 1)
         .catch((err) => {
           assert.deepStrictEqual(err, {error: 'No author found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('isFollower', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give one if given user is following the other', (done) => {
+      db.isFollower(58025419, 58025056)
+        .then((res) => {
+          assert.isTrue(res);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give one if given user is following the other', (done) => {
+      db.isFollower(58025056, 56071561)
+        .then((res) => {
+          assert.isFalse(res);
           done();
         })
         .catch((err) => done(err));
