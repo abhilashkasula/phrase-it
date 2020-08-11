@@ -5,6 +5,7 @@ class Database {
     this.tags = db('tags').select();
     this.responses = db('responses').select();
     this.claps = db('claps').select();
+    this.followers = db('followers').select();
   }
 
   async addUser({id, name, avatar_url}) {
@@ -100,7 +101,6 @@ class Database {
       .clone()
       .where({clapped_on})
       .count('id', {as: 'clapsCount'});
-
     if (clap) {
       await this.claps.clone().where({clapped_on, clapped_by}).del();
       return {isClapped: false, clapsCount: --clapsCount};
@@ -118,6 +118,29 @@ class Database {
       throw {error: 'You cannot clap or unclap on your own story'};
     }
     return await this.toggleClap(storyId, userId);
+  }
+
+  async isFollower(follower_id, user_id) {
+    const [isFollower] = await this.followers
+      .clone()
+      .where({follower_id, user_id});
+    return Boolean(isFollower);
+  }
+
+  async followAuthor(follower_id, user_id) {
+    if (follower_id === user_id) {
+      throw {error: 'You cannot follow yourself'};
+    }
+    const [author] = await this.users.clone().where({id: user_id});
+    if (!author) {
+      throw {error: 'No author found'};
+    }
+    const isFollower = await this.isFollower(follower_id, user_id);
+    if (isFollower) {
+      throw {error: 'Already following'};
+    }
+    await this.followers.clone().insert({follower_id, user_id});
+    return {status: 'Following'};
   }
 }
 

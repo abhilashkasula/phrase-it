@@ -283,5 +283,45 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('followAuthor', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should resolve with status for following an author', (done) => {
+      db.followAuthor(58025419, 58026249)
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Following'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject if the user is already following the author', (done) => {
+      db.followAuthor(58025419, 58025056)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'Already following'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject for following yourself', (done) => {
+      db.followAuthor(58025419, 58025419)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'You cannot follow yourself'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject for following an author not present', (done) => {
+      db.followAuthor(58025419, 1)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No author found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });
