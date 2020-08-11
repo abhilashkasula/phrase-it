@@ -16,9 +16,6 @@ body {
   display: flex;
   justify-content: space-evenly;
   padding: 20px 0;
-}
-
-.user-info {
   border: 2px solid #eee;
   border-radius: 5px;
 }

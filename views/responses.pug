@@ -27,11 +27,10 @@ html
     div(class="responses-holder")
       each response in responses
         div(class="response-container")
-          div(id="response")
-            div(class="response-details")
-              div(class="response-author-container")
-                img(src=response.avatar_url class="response-avatar")
-                div(class="response-author")
-                  a(class="response-author-name" href=`/profile/${response.id}`)=response.username
-                  p(class="response-time" time=response.responded_at)
-            p(class="response")=response.response
+          div(class="response-details")
+            div(class="response-author-container")
+              img(src=response.avatar_url class="response-avatar")
+              div(class="response-author")
+                a(class="response-author-name" href=`/profile/${response.id}`)=response.username
+                p(class="response-time" time=response.responded_at)
+          p(class="response")=response.response
