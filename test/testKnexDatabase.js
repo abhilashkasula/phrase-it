@@ -123,5 +123,27 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('deleteDraft', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should delete the draft if draft is present', (done) => {
+      db.updateStory(2, 'some title', 58025056, '[]')
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Updated'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject if the draft is not present', (done) => {
+      db.updateStory(1, 'some title', 58025056, '[]')
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No draft found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });

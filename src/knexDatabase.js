@@ -33,11 +33,23 @@ class Database {
   }
 
   async deleteDraft(id, created_by) {
-    const rowsCount = await this.stories.clone().where({id, created_by}).del();
+    const conditions = {id, created_by, is_published: 0};
+    const rowsCount = await this.stories.clone().where(conditions).del();
     if (!rowsCount) {
       throw {error: 'No draft found'};
     }
     return {status: 'Deleted'};
+  }
+
+  async updateStory(id, title, created_by, content) {
+    const rowsCount = await this.stories
+      .clone()
+      .where({id, created_by, is_published: 0})
+      .update({title, content});
+    if (!rowsCount) {
+      throw {error: 'No draft found'};
+    }
+    return {status: 'Updated'};
   }
 }
 
