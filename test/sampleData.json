@@ -62,8 +62,8 @@
     }
   ],
   "published_stories": [
-    {"story_id": 1,"published_at": "2020-08-10 14:50:18"},
-    {"story_id": 3,"published_at": "2020-08-10 14:50:18"}
+    {"story_id": 1, "published_at": "2020-08-10 14:50:18"},
+    {"story_id": 3, "published_at": "2020-08-10 14:50:18"}
   ],
   "claps": [
     {"clapped_on": 1, "clapped_by": 58025419},
@@ -72,10 +72,30 @@
     {"clapped_on": 3, "clapped_by": 58025056}
   ],
   "responses": [
-    {"responded_on": 1, "responded_by": 58025419, "responded_at": "2020-08-10 14:50:18", "response": "Nice story"},
-    {"responded_on": 1, "responded_by": 58025056, "responded_at": "2020-08-10 14:50:18", "response": "Thanks Naagu"},
-    {"responded_on": 1, "responded_by": 58028408, "responded_at": "2020-08-10 14:50:18", "response": "Our app"},
-    {"responded_on": 1, "responded_by": 58026249, "responded_at": "2020-08-10 14:50:18", "response": "Nice story"}
+    {
+      "responded_on": 1,
+      "responded_by": 58025419,
+      "responded_at": "2020-08-10 14:50:18",
+      "response": "Nice story"
+    },
+    {
+      "responded_on": 1,
+      "responded_by": 58025056,
+      "responded_at": "2020-08-10 14:50:18",
+      "response": "Thanks Naagu"
+    },
+    {
+      "responded_on": 3,
+      "responded_by": 58028408,
+      "responded_at": "2020-08-10 14:50:18",
+      "response": "Our app"
+    },
+    {
+      "responded_on": 3,
+      "responded_by": 58026249,
+      "responded_at": "2020-08-10 14:50:18",
+      "response": "Nice story"
+    }
   ],
   "followers": [
     {"user_id": 58025056, "follower_id": 58025419},
