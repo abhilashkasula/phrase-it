@@ -410,5 +410,25 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('addTags', () => {
+    it('should resolve with status for tags found', (done) => {
+      db.addTags(1, ['tag1'])
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Added tags'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should resolve for no tags specified', (done) => {
+      db.addTags(1, [])
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Empty tags'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });

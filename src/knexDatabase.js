@@ -15,6 +15,23 @@ class Database {
     return {status: 'Added user'};
   }
 
+  async createStory(created_by, title, content) {
+    const story = {created_by, title, content};
+    const [id] = await this.stories.clone().insert(story);
+    return id;
+  }
+
+  async updateStory(id, title, created_by, content) {
+    const rowsCount = await this.stories
+      .clone()
+      .where({id, created_by, is_published: 0})
+      .update({title, content});
+    if (!rowsCount) {
+      throw {error: 'No draft found'};
+    }
+    return {status: 'Updated'};
+  }
+
   async getDraft(id, created_by) {
     const conditions = {id, created_by, is_published: 0};
     const [draft] = await this.stories.clone().select().where(conditions);
@@ -32,12 +49,6 @@ class Database {
       .orderBy('last_modified', 'desc');
   }
 
-  async createStory(created_by, title, content) {
-    const story = {created_by, title, content};
-    const [id] = await this.stories.clone().insert(story);
-    return id;
-  }
-
   async deleteDraft(id, created_by) {
     const conditions = {id, created_by, is_published: 0};
     const rowsCount = await this.stories.clone().where(conditions).del();
@@ -47,15 +58,9 @@ class Database {
     return {status: 'Deleted'};
   }
 
-  async updateStory(id, title, created_by, content) {
-    const rowsCount = await this.stories
-      .clone()
-      .where({id, created_by, is_published: 0})
-      .update({title, content});
-    if (!rowsCount) {
-      throw {error: 'No draft found'};
-    }
-    return {status: 'Updated'};
+  async getPublishedStory(id) {
+    const [story] = await this.stories.clone().where({id, is_published: 1});
+    return story;
   }
 
   async getUserPublishedStories(userId) {
@@ -73,11 +78,6 @@ class Database {
         'published_stories.published_at'
       )
       .where({created_by: userId, is_published: 1});
-  }
-
-  async getPublishedStory(id) {
-    const [story] = await this.stories.clone().where({id, is_published: 1});
-    return story;
   }
 
   async addResponse(responded_on, responded_by, response) {
@@ -173,6 +173,14 @@ class Database {
       .select('views')
       .where({story_id});
     return views;
+  }
+
+  async addTags(story_id, tags) {
+    if (!tags.length) {
+      return {status: 'Empty tags'};
+    }
+    await this.tags.clone().insert(tags.map((tag) => ({story_id, tag})));
+    return {status: 'Added tags'};
   }
 }
 
