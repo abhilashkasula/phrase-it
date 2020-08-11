@@ -80,12 +80,6 @@ body {
   color: #808080;
 }
 
-/* .vertical-line {
-  margin: 6.5% 0 2% 0;
-  width: 0px;
-  border: solid 1.5px #ccc;
-} */
-
 .main-placeholder {
   display: flex;
   flex-direction: column;
