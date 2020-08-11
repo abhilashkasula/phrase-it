@@ -323,5 +323,47 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('unFollowAuthor', () => {
+    it('should resolve status unfollowed if already following', (done) => {
+      db.unFollowAuthor(58025419, 58025056)
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Unfollowed'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject error if not already following', (done) => {
+      db.unFollowAuthor(58025056, 56071561)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {
+            error: 'You are not a follower of this user',
+          });
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject for unfollowing yourself', (done) => {
+      db.unFollowAuthor(58025419, 58025419)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {
+            error: 'You cannot unfollow yourself',
+          });
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject for unfollowing an author not present', (done) => {
+      db.unFollowAuthor(58025419, 1)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No author found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });

@@ -142,6 +142,22 @@ class Database {
     await this.followers.clone().insert({follower_id, user_id});
     return {status: 'Following'};
   }
+
+  async unFollowAuthor(follower_id, user_id) {
+    if (follower_id === user_id) {
+      throw {error: 'You cannot unfollow yourself'};
+    }
+    const [author] = await this.users.clone().where({id: user_id});
+    if (!author) {
+      throw {error: 'No author found'};
+    }
+    const isFollower = await this.isFollower(follower_id, user_id);
+    if (!isFollower) {
+      throw {error: 'You are not a follower of this user'};
+    }
+    await this.followers.clone().where({follower_id, user_id}).del();
+    return {status: 'Unfollowed'};
+  }
 }
 
 module.exports = Database;
