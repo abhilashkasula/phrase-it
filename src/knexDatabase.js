@@ -1,7 +1,9 @@
+const ONE = 1;
 class Database {
   constructor(db) {
     this.users = db('users').select();
     this.stories = db('stories').select();
+    this.publishedStories = db('published_stories').select();
     this.tags = db('tags').select();
     this.responses = db('responses').select();
     this.claps = db('claps').select();
@@ -97,16 +99,16 @@ class Database {
 
   async toggleClap(clapped_on, clapped_by) {
     const [clap] = await this.claps.clone().where({clapped_on, clapped_by});
-    let [{clapsCount}] = await this.claps
+    const [{clapsCount}] = await this.claps
       .clone()
       .where({clapped_on})
       .count('id', {as: 'clapsCount'});
     if (clap) {
       await this.claps.clone().where({clapped_on, clapped_by}).del();
-      return {isClapped: false, clapsCount: --clapsCount};
+      return {isClapped: false, clapsCount: clapsCount - ONE};
     }
     await this.claps.clone().insert({clapped_on, clapped_by});
-    return {isClapped: true, clapsCount: ++clapsCount};
+    return {isClapped: true, clapsCount: clapsCount + ONE};
   }
 
   async clap(storyId, userId) {
@@ -157,6 +159,20 @@ class Database {
     }
     await this.followers.clone().where({follower_id, user_id}).del();
     return {status: 'Unfollowed'};
+  }
+
+  async updateViews(userId, story_id, created_by) {
+    if (created_by !== userId) {
+      return await this.publishedStories
+        .clone()
+        .where({story_id})
+        .increment('views', ONE);
+    }
+    const [{views}] = await this.publishedStories
+      .clone()
+      .select('views')
+      .where({story_id});
+    return views;
   }
 }
 

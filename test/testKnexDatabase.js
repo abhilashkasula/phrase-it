@@ -389,5 +389,26 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('updateViews', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+    it('should resolve with updated views for other user story', (done) => {
+      db.updateViews(58025419, 1, 58025056)
+        .then((views) => {
+          assert.deepStrictEqual(views, 1);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should resolve without updating views for author', (done) => {
+      db.updateViews(58025056, 1, 58025056)
+        .then((views) => {
+          assert.deepStrictEqual(views, 0);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });
