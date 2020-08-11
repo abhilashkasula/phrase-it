@@ -71,14 +71,26 @@ class Database {
       .where({created_by: userId, is_published: 1});
   }
 
+  async isPublishedStoryExist(id) {
+    const [story] = await this.stories.clone().where({id, is_published: 1});
+    return Boolean(story);
+  }
+
   async addResponse(responded_on, responded_by, response) {
-    const conditions = {id: responded_on, is_published: 1};
-    const [story] = await this.stories.clone().where(conditions);
-    if (!story) {
-      throw {error: 'Unknown id'};
+    const isStoryExist = await this.isPublishedStoryExist(responded_on);
+    if (!isStoryExist) {
+      throw {error: 'No story found'};
     }
     await this.responses.clone().insert({responded_on, responded_by, response});
     return {status: 'Added response'};
+  }
+
+  async getResponses(responded_on) {
+    const isStoryExist = await this.isPublishedStoryExist(responded_on);
+    if (!isStoryExist) {
+      throw {error: 'No story found'};
+    }
+    return await this.responses.clone().where({responded_on});
   }
 }
 

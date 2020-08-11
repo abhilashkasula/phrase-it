@@ -191,7 +191,45 @@ describe('knexDatabase', () => {
     it('should not add response if the given story is not published', (done) => {
       db.addResponse(2, 58025056, 'nice')
         .catch((err) => {
-          assert.deepStrictEqual(err, {error: 'Unknown id'});
+          assert.deepStrictEqual(err, {error: 'No story found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('getResponses', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give list of responses for given story id', (done) => {
+      const expected = [
+        {
+          id: 1,
+          responded_on: 1,
+          responded_by: 58025419,
+          responded_at: '2020-08-10 14:50:18',
+          response: 'Nice story',
+        },
+        {
+          id: 2,
+          responded_on: 1,
+          responded_by: 58025056,
+          responded_at: '2020-08-10 14:50:18',
+          response: 'Thanks Naagu',
+        },
+      ];
+      db.getResponses(1)
+        .then((res) => {
+          assert.deepStrictEqual(res, expected);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should not add response if the given story is not published', (done) => {
+      db.getResponses(2)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No story found'});
           done();
         })
         .catch((err) => done(err));
