@@ -94,7 +94,7 @@ describe('knexDatabase', () => {
     it('should create a new story and return the story id', (done) => {
       db.createStory(12345678, 'some title', '[]')
         .then((id) => {
-          assert.strictEqual(id, 5);
+          assert.strictEqual(id, 6);
           done();
         })
         .catch((err) => done(err));
@@ -411,7 +411,7 @@ describe('knexDatabase', () => {
   });
 
   describe('addTags', () => {
-    it('should resolve with status for tags found', (done) => {
+    it('should add given tags to the given story', (done) => {
       db.addTags(1, ['tag1'])
         .then((res) => {
           assert.deepStrictEqual(res, {status: 'Added tags'});
@@ -424,6 +424,26 @@ describe('knexDatabase', () => {
       db.addTags(1, [])
         .then((res) => {
           assert.deepStrictEqual(res, {status: 'Empty tags'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('getTags', () => {
+    it('should given list of tags for given story', (done) => {
+      db.getTags(3)
+        .then((res) => {
+          assert.deepStrictEqual(res, ['comic']);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give empty list if there no tags for give story', (done) => {
+      db.getTags(5)
+        .then((res) => {
+          assert.deepStrictEqual(res, []);
           done();
         })
         .catch((err) => done(err));

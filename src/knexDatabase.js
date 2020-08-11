@@ -182,6 +182,11 @@ class Database {
     await this.tags.clone().insert(tags.map((tag) => ({story_id, tag})));
     return {status: 'Added tags'};
   }
+
+  async getTags(story_id) {
+    const tags = await this.tags.clone().where({story_id});
+    return tags.map(({tag}) => tag);
+  }
 }
 
 module.exports = Database;
