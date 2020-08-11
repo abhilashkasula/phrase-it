@@ -69,23 +69,36 @@ describe('Integration tests', () => {
       it('should redirect to / for /dashboardStories', (done) => {
         request(app)
           .get('/user/dashboardStories')
+          .expect(302)
           .expect('location', '/', done);
       });
 
       it('should redirect to / for /follow', (done) => {
-        request(app).get('/user/follow').expect('location', '/', done);
+        request(app)
+          .get('/user/follow')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /clap', (done) => {
-        request(app).get('/user/clap').expect('location', '/', done);
+        request(app)
+          .get('/user/clap')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /searchPage', (done) => {
-        request(app).get('/user/searchPage').expect('location', '/', done);
+        request(app)
+          .get('/user/searchPage')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should redirect to / for /search', (done) => {
-        request(app).get('/user/search').expect('location', '/', done);
+        request(app)
+          .get('/user/search')
+          .expect(302)
+          .expect('location', '/', done);
       });
 
       it('should give story page with updated views', (done) => {
@@ -105,11 +118,39 @@ describe('Integration tests', () => {
       it('should redirect to / for /profile', (done) => {
         request(app)
           .get('/user/profile/58025056')
+          .expect(302)
           .expect('location', '/', done);
+      });
+
+      it('should get index page for /', (done) => {
+        request(app)
+          .get('/')
+          .expect(200)
+          .expect('Content-Type', /html/)
+          .expect(/Login Using Github/, done);
       });
     });
 
     describe('authorized user', () => {
+      describe('/', () => {
+        beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {
+              isNew: false,
+              id: 56071561,
+              username: 'name',
+              avatar_url: 'url',
+            };
+            next();
+          });
+          await resetTables(app.locals.db);
+        });
+
+        it('should redirect /user for authorized user accessing /', (done) => {
+          request(app).get('/').expect(302).expect('location', '/user', done);
+        });
+      });
+
       describe('/user/newStory', () => {
         beforeEach(async () => {
           app.set('sessionMiddleware', (req, res, next) => {
@@ -138,12 +179,7 @@ describe('Integration tests', () => {
         });
 
         it('should create story & give back id if id not present', (done) => {
-          const block = {
-            type: 'paragraph',
-            data: {
-              text: 'A small paragraph',
-            },
-          };
+          const block = {type: 'paragraph', data: {text: 'A small paragraph'}};
           request(app)
             .post('/user/updateStory')
             .send({title: 'New blog', blocks: [block]})
@@ -153,12 +189,7 @@ describe('Integration tests', () => {
         });
 
         it('should update story title, content for given story id', (done) => {
-          const block = {
-            type: 'paragraph',
-            data: {
-              text: 'A small paragraph',
-            },
-          };
+          const block = {type: 'paragraph', data: {text: 'A small paragraph'}};
           const data = {id: 2, title: 'A new app', blocks: [block]};
           request(app)
             .post('/user/updateStory')
@@ -253,6 +284,10 @@ describe('Integration tests', () => {
 
       describe('/story', () => {
         beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
           await resetTables(app.locals.db);
         });
 
@@ -275,10 +310,6 @@ describe('Integration tests', () => {
         });
 
         it('should give available options if the user is auth', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
-            next();
-          });
           request(app)
             .get('/story/1')
             .expect(200)
@@ -328,13 +359,6 @@ describe('Integration tests', () => {
             .expect(404)
             .expect('Content-Type', /html/, done);
         });
-
-        it('should give not found for /edit if draftId is a text', (done) => {
-          request(app)
-            .get('/user/edit/hello')
-            .expect(404)
-            .expect('Content-Type', /html/, done);
-        });
       });
 
       describe('/user/draft', () => {
@@ -365,6 +389,10 @@ describe('Integration tests', () => {
 
       describe('/responses', () => {
         beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {isNew: false, id: 58025056};
+            next();
+          });
           await resetTables(app.locals.db);
         });
 
@@ -547,15 +575,14 @@ describe('Integration tests', () => {
 
       describe('/user/searchPage', () => {
         beforeEach(async () => {
-          await resetTables(app.locals.db);
-        });
-
-        it('should render search page', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
+        });
 
+        it('should render search page', (done) => {
           request(app)
             .get('/user/searchPage')
             .expect(200)
@@ -620,15 +647,14 @@ describe('Integration tests', () => {
 
       describe('/user/profile', () => {
         beforeEach(async () => {
-          await resetTables(app.locals.db);
-        });
-
-        it('should give profile for existing user id', (done) => {
           app.set('sessionMiddleware', (req, res, next) => {
             req.session = {isNew: false, id: 58025056};
             next();
           });
+          await resetTables(app.locals.db);
+        });
 
+        it('should give profile for existing user id', (done) => {
           request(app)
             .get('/user/profile/58026402')
             .expect(200)
@@ -637,10 +663,6 @@ describe('Integration tests', () => {
         });
 
         it('should give not found for unknown userId', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {isNew: false, id: 58025056};
-            next();
-          });
           request(app)
             .get('/user/profile/1')
             .expect(404)
@@ -651,6 +673,15 @@ describe('Integration tests', () => {
 
       describe('/user', () => {
         beforeEach(async () => {
+          app.set('sessionMiddleware', (req, res, next) => {
+            req.session = {
+              isNew: false,
+              id: 56071561,
+              username: 'name',
+              avatar_url: 'url',
+            };
+            next();
+          });
           await resetTables(app.locals.db);
         });
 
@@ -663,15 +694,6 @@ describe('Integration tests', () => {
         });
 
         it('should give home page if session exists', (done) => {
-          app.set('sessionMiddleware', (req, res, next) => {
-            req.session = {
-              isNew: false,
-              id: 56071561,
-              username: 'name',
-              avatar_url: 'url',
-            };
-            next();
-          });
           request(app)
             .get('/user')
             .expect(200)
@@ -683,70 +705,36 @@ describe('Integration tests', () => {
   });
 });
 
-describe('/', () => {
-  beforeEach(async () => {
-    await resetTables(app.locals.db);
-  });
-
-  it('should get index page if session not exists', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {isNew: true};
-      next();
-    });
-    request(app)
-      .get('/')
-      .expect(200)
-      .expect('Content-Type', /html/)
-      .expect(/Login Using Github/, done);
-  });
-
-  it('should redirect home page if session exists', (done) => {
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {
-        isNew: false,
-        id: 56071561,
-        username: 'name',
-        avatar_url: 'url',
-      };
-      next();
-    });
-    request(app).get('/').expect(302).expect('location', '/user', done);
-  });
-});
-
 describe('/callback', () => {
   beforeEach(async () => {
-    await resetTables(app.locals.db);
-  });
-
-  afterEach(() => {
-    sinon.restore();
-  });
-
-  it('should redirect to / if there is no error', (done) => {
-    const details = {
-      access_token: 1234,
-      id: 123,
-      name: 'name',
-      login: 'login',
-      avatar_url: 'avatar',
-    };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details)),
-    };
-    sinon.replace(https, 'request', (options, cb) => cb(res));
-
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {};
       next();
     });
+    await resetTables(app.locals.db);
+  });
+
+  const details = {
+    access_token: 1234,
+    id: 123,
+    name: 'name',
+    login: 'login',
+    avatar_url: 'avatar',
+  };
+
+  const res = {on: (event, callback) => callback(JSON.stringify(details))};
+
+  afterEach(() => sinon.restore());
+
+  it('should redirect to / if there is no error', (done) => {
+    sinon.replace(https, 'request', (options, cb) => cb(res));
     request(app)
       .get('/callback?code=somecode')
       .expect(302)
       .expect('location', '/', done);
   });
 
-  it('should redirect to / if query not exists', (done) => {
+  it('should redirect to / if user id already exists', (done) => {
     const details = {
       access_token: 1234,
       id: 58025056,
@@ -754,14 +742,8 @@ describe('/callback', () => {
       login: 'login',
       avatar_url: 'avatar',
     };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details)),
-    };
+    const res = {on: (event, callback) => callback(JSON.stringify(details))};
     sinon.replace(https, 'request', (options, cb) => cb(res));
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {};
-      next();
-    });
     request(app)
       .get('/callback?code=somecode')
       .expect(302)
@@ -769,16 +751,6 @@ describe('/callback', () => {
   });
 
   it('should give error if session not exists', (done) => {
-    const details = {
-      access_token: 1234,
-      id: 123,
-      name: 'name',
-      login: 'login',
-      avatar_url: 'avatar',
-    };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details)),
-    };
     sinon.replace(https, 'request', (options, cb) => cb(res));
     app.set('sessionMiddleware', (req, res, next) => {
       next();
@@ -787,18 +759,9 @@ describe('/callback', () => {
   });
 
   it('should give error if user data is not present', (done) => {
-    const details = {
-      error: 'Err',
-    };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details)),
-    };
+    const details = {error: 'Err'};
+    const res = {on: (event, callback) => callback(JSON.stringify(details))};
     sinon.replace(https, 'request', (options, cb) => cb(res));
-
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {};
-      next();
-    });
     request(app).get('/callback?code=somecode').expect(404, done);
   });
 
@@ -810,15 +773,8 @@ describe('/callback', () => {
       login: 'login',
       avatar_url: 'avatar',
     };
-    const res = {
-      on: (event, callback) => callback(JSON.stringify(details)),
-    };
+    const res = {on: (event, callback) => callback(JSON.stringify(details))};
     sinon.replace(https, 'request', (options, cb) => cb(res));
-
-    app.set('sessionMiddleware', (req, res, next) => {
-      req.session = {};
-      next();
-    });
     request(app)
       .get('/callback?code=somecode')
       .expect(302)
