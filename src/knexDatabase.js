@@ -3,6 +3,7 @@ class Database {
     this.users = db('users').select();
     this.stories = db('stories').select();
     this.tags = db('tags').select();
+    this.responses = db('responses').select();
   }
 
   async addUser({id, name, avatar_url}) {
@@ -68,6 +69,16 @@ class Database {
         'published_stories.published_at'
       )
       .where({created_by: userId, is_published: 1});
+  }
+
+  async addResponse(responded_on, responded_by, response) {
+    const conditions = {id: responded_on, is_published: 1};
+    const [story] = await this.stories.clone().where(conditions);
+    if (!story) {
+      throw {error: 'Unknown id'};
+    }
+    await this.responses.clone().insert({responded_on, responded_by, response});
+    return {status: 'Added response'};
   }
 }
 

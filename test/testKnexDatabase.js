@@ -123,10 +123,10 @@ describe('knexDatabase', () => {
     });
   });
 
-  describe('deleteDraft', () => {
+  describe('updateStory', () => {
     beforeEach(async () => await resetKnexDB(knexInstance));
 
-    it('should delete the draft if draft is present', (done) => {
+    it('should update the draft if draft is present', (done) => {
       db.updateStory(2, 'some title', 58025056, '[]')
         .then((res) => {
           assert.deepStrictEqual(res, {status: 'Updated'});
@@ -166,10 +166,32 @@ describe('knexDatabase', () => {
         .catch((err) => done(err));
     });
 
-    it('should giver empty list for no published stories', (done) => {
+    it('should give empty list for no published stories', (done) => {
       db.getUserPublishedStories(58025419)
         .then((res) => {
           assert.deepStrictEqual(res, []);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('addResponses', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should add response if the given story is published', (done) => {
+      db.addResponse(1, 58025056, 'nice')
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Added response'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should not add response if the given story is not published', (done) => {
+      db.addResponse(2, 58025056, 'nice')
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'Unknown id'});
           done();
         })
         .catch((err) => done(err));
