@@ -37,12 +37,6 @@ body {
   font-family: 'Sora', sans-serif;
 }
 
-#title {
-  font-weight: 1000;
-  font-size: 1.5em;
-  color: black;
-}
-
 .navbar {
   display: flex;
   justify-content: center;
@@ -72,14 +66,11 @@ body {
   background: white;
   border: 1px solid #d6d6d6;
   border-radius: 3px;
+  width: 250px;
 }
 
 .avatar-nav {
   cursor: pointer;
-}
-
-.dropdown-links {
-  width: 250px;
 }
 
 .links {

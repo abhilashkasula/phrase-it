@@ -45,8 +45,8 @@ const showStatus = () => {
 const showErr = (err) => {
   const error = document.querySelector('#error');
   error.innerText = err;
-  error.classList.remove('err-hide');
-  setTimeout(() => error.classList.add('err-hide'), 3000);
+  error.classList.remove('status-hide');
+  setTimeout(() => error.classList.add('status-hide'), 3000);
 };
 
 const save = (__, storyId) => {
