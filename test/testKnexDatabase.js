@@ -145,5 +145,36 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('getUserPublishedStories', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give published stories of given user', (done) => {
+      const expected = [
+        {
+          id: 1,
+          content:
+            '[{"type":"paragraph","data":{"text":"I am a computer science student."}}]',
+          title: '9 Ways to Build Virality into your Product',
+          published_at: '2020-08-10 14:50:18',
+        },
+      ];
+      db.getUserPublishedStories(58025056)
+        .then((res) => {
+          assert.deepStrictEqual(res, expected);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should giver empty list for no published stories', (done) => {
+      db.getUserPublishedStories(58025419)
+        .then((res) => {
+          assert.deepStrictEqual(res, []);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });

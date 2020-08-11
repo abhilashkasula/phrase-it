@@ -2,6 +2,7 @@ class Database {
   constructor(db) {
     this.users = db('users').select();
     this.stories = db('stories').select();
+    this.tags = db('tags').select();
   }
 
   async addUser({id, name, avatar_url}) {
@@ -50,6 +51,23 @@ class Database {
       throw {error: 'No draft found'};
     }
     return {status: 'Updated'};
+  }
+
+  async getUserPublishedStories(userId) {
+    return await this.stories
+      .clone()
+      .innerJoin(
+        'published_stories',
+        'stories.id',
+        'published_stories.story_id'
+      )
+      .select(
+        'stories.id',
+        'stories.content',
+        'stories.title',
+        'published_stories.published_at'
+      )
+      .where({created_by: userId, is_published: 1});
   }
 }
 
