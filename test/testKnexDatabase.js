@@ -88,5 +88,40 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('createStory', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should create a new story and return the story id', (done) => {
+      db.createStory(12345678, 'some title', '[]')
+        .then((id) => {
+          assert.strictEqual(id, 5);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('deleteDraft', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should delete the draft if draft is present', (done) => {
+      db.deleteDraft(2, 58025056)
+        .then((res) => {
+          assert.deepStrictEqual(res, {status: 'Deleted'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject if the draft is not present', (done) => {
+      db.deleteDraft(10, 58025056)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No draft found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });
