@@ -236,5 +236,52 @@ describe('knexDatabase', () => {
     });
   });
 
+  describe('clap', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should add clap if the user is not already clapped', (done) => {
+      db.clap(1, 58026402)
+        .then((res) => {
+          assert.deepStrictEqual(res, {isClapped: true, clapsCount: 4});
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+    });
+
+    it('should remove clap if the user already clapped', (done) => {
+      db.clap(1, 58025419)
+        .then((res) => {
+          assert.deepStrictEqual(res, {
+            isClapped: false,
+            clapsCount: 2,
+          });
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject if story written and user clap are same', (done) => {
+      db.clap(1, 58025056)
+        .catch((res) => {
+          assert.deepStrictEqual(res, {
+            error: 'You cannot clap or unclap on your own story',
+          });
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should reject if the given story id is unknown', (done) => {
+      db.clap(100, 58025419)
+        .catch((err) => {
+          assert.deepStrictEqual(err, {error: 'No story found'});
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
   after(async () => await knexInstance.destroy());
 });

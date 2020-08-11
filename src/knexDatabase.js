@@ -4,6 +4,7 @@ class Database {
     this.stories = db('stories').select();
     this.tags = db('tags').select();
     this.responses = db('responses').select();
+    this.claps = db('claps').select();
   }
 
   async addUser({id, name, avatar_url}) {
@@ -71,13 +72,13 @@ class Database {
       .where({created_by: userId, is_published: 1});
   }
 
-  async isPublishedStoryExist(id) {
+  async getPublishedStory(id) {
     const [story] = await this.stories.clone().where({id, is_published: 1});
-    return Boolean(story);
+    return story;
   }
 
   async addResponse(responded_on, responded_by, response) {
-    const isStoryExist = await this.isPublishedStoryExist(responded_on);
+    const isStoryExist = await this.getPublishedStory(responded_on);
     if (!isStoryExist) {
       throw {error: 'No story found'};
     }
@@ -86,11 +87,37 @@ class Database {
   }
 
   async getResponses(responded_on) {
-    const isStoryExist = await this.isPublishedStoryExist(responded_on);
+    const isStoryExist = await this.getPublishedStory(responded_on);
     if (!isStoryExist) {
       throw {error: 'No story found'};
     }
     return await this.responses.clone().where({responded_on});
+  }
+
+  async toggleClap(clapped_on, clapped_by) {
+    const [clap] = await this.claps.clone().where({clapped_on, clapped_by});
+    let [{clapsCount}] = await this.claps
+      .clone()
+      .where({clapped_on})
+      .count('id', {as: 'clapsCount'});
+
+    if (clap) {
+      await this.claps.clone().where({clapped_on, clapped_by}).del();
+      return {isClapped: false, clapsCount: --clapsCount};
+    }
+    await this.claps.clone().insert({clapped_on, clapped_by});
+    return {isClapped: true, clapsCount: ++clapsCount};
+  }
+
+  async clap(storyId, userId) {
+    const story = await this.getPublishedStory(storyId);
+    if (!story) {
+      throw {error: 'No story found'};
+    }
+    if (story.created_by === userId) {
+      throw {error: 'You cannot clap or unclap on your own story'};
+    }
+    return await this.toggleClap(storyId, userId);
   }
 }
 
