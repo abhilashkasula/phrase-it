@@ -5,7 +5,7 @@ const respond = (storyId) => {
 };
 
 const main = () => {
-  setTime('.published-time', 'Published');
+  setTime('.story-time', 'Published');
   setTime('.response-time', 'Responded');
 };
 

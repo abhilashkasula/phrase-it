@@ -2,6 +2,7 @@ html
   head
     title Story
     link(rel="stylesheet", href="/css/navbar.css")
+    link(rel="stylesheet", href="/css/common.css")
     link(rel="stylesheet", href="/css/response.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js") 
     script(src="/js/tabs.js")
@@ -14,8 +15,8 @@ html
         p(class="title")=story.title
         div(class="subheader-container")
           div(class="subheader")
-            p(class="author")=story.author
-            p(class="published-time" time=story.published_at)
+            p(class="story-author-name")=story.author
+            p(class="story-time" time=story.published_at)
           div(class="response-summary")
             img(src='/images/response.png' class="response-icon")
             p(class="response-count")=`${story.responsesCount} ${story.responsesCount == 1 ? 'Response' : 'Responses'}`

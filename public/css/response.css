@@ -49,8 +49,8 @@
   margin: 10px 0;
 }
 
-.author,
-.published-time {
+.story-author-name,
+.story-time {
   margin: 3px;
 }
 
@@ -153,7 +153,6 @@
   margin: 2px;
 }
 
-.author,
 .response-author-name {
   font-size: 14px;
   font-weight: 600;

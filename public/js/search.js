@@ -9,14 +9,14 @@ const createTitleElement = (title) => {
 const createAuthorElement = (author, authorId) => {
   const authorElement = document.createElement('a');
   authorElement.href = `/user/profile/${authorId}`;
-  authorElement.className = 'author';
+  authorElement.className = 'story-author-name';
   authorElement.innerText = author;
   return authorElement;
 };
 
 const createPublishedTimeElement = (publishedTime) => {
   const publishedTimeElement = document.createElement('p');
-  publishedTimeElement.className = 'published-time';
+  publishedTimeElement.className = 'story-time';
   const formattedTime = `${moment(publishedTime).startOf('min').fromNow()}`;
   publishedTimeElement.innerText = formattedTime;
   return publishedTimeElement;

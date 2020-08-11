@@ -1,0 +1,44 @@
+
+.story-author-name {
+  font-size: 14px;
+  text-decoration: none;
+  color: #232323;
+}
+
+.story-author-name:hover {
+  text-decoration: underline;
+}
+
+.story-time {
+  font-size: 11px;
+  margin: 0;
+  color: #757575;
+}
+
+.tab-name {
+  padding: 3px;
+  font-weight: 600;
+  color: #808080;
+  cursor: pointer;
+}
+
+.tab-name:hover {
+  color: #606060;
+}
+
+.selected-tab {
+  border-bottom: 2px solid;
+  color: black;
+}
+
+.tabs {
+  list-style-type: none;
+  margin: 15px 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.hidden {
+  display: none;
+}
