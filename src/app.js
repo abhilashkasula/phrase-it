@@ -12,7 +12,7 @@ const app = express();
 const db = new Database(new sqlite.Database(DB_NAME));
 app.locals = {db, CLIENT_ID, CLIENT_SECRET, SECRET_MSG};
 
-app.use(logger('common'));
+app.use(logger('dev'));
 app.set('view engine', 'pug');
 app.use(express.static('public', {index: false}));
 app.use(express.json());
