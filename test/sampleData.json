@@ -118,6 +118,7 @@
     {"story_id": 1, "tag": "science"},
     {"story_id": 1, "tag": "thriller"},
     {"story_id": 1, "tag": "sci-fi"},
-    {"story_id": 3, "tag": "comic"}
+    {"story_id": 3, "tag": "comic"},
+    {"story_id": 3, "tag": "drama"}
   ]
 }
