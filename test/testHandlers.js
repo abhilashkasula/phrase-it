@@ -2,7 +2,6 @@ const request = require('supertest');
 const https = require('https');
 const sinon = require('sinon');
 const {app} = require('../src/app');
-const {resetTables} = require('./dbScripts');
 
 describe('Handlers', () => {
   describe('unauthorized user', () => {
@@ -11,7 +10,6 @@ describe('Handlers', () => {
         req.session = {isNew: true};
         next();
       });
-      await resetTables(app.locals.db);
     });
 
     it('should give story page with login option', (done) => {
@@ -20,20 +18,6 @@ describe('Handlers', () => {
         .expect(200)
         .expect('Content-Type', /html/)
         .expect(/Login/, done);
-    });
-
-    it('should give story page with updated views', (done) => {
-      request(app)
-        .get('/story/1')
-        .expect(200)
-        .expect('Content-Type', /html/)
-        .expect(/story/i)
-        .expect(/technology/) //expecting for tags
-        .expect(/maths/)
-        .expect(/science/)
-        .expect(/thriller/)
-        .expect(/sci-fi/)
-        .expect(/1 Views/, done); //expecting views
     });
 
     it('should give responses page for /responses', (done) => {
@@ -65,7 +49,6 @@ describe('Handlers', () => {
           };
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should redirect /user for authorized user accessing /', (done) => {
@@ -87,8 +70,10 @@ describe('Handlers', () => {
         app.locals.db.isFollowing = stubIsFollowing;
         stubUpdateViews.withArgs(58025056, 1, 58025056).resolves(0);
         stubUpdateViews.withArgs(58025419, 1, 58025056).resolves(1);
+        stubUpdateViews.withArgs(undefined, 1, 58025056).resolves(1);
         stubIsFollowing.withArgs(58025056, 58025056).resolves(0);
         stubIsFollowing.withArgs(58025419, 58025056).resolves(1);
+        stubIsFollowing.withArgs(undefined, 58025056).resolves(0);
         stubGetPublishedStory.withArgs('10').rejects({error: 'No story found'});
         stubGetPublishedStory.withArgs('1').resolves({
           id: 1,
@@ -101,6 +86,21 @@ describe('Handlers', () => {
       });
 
       afterEach(() => sinon.restore());
+
+      it('should give story page with updated views for unauthorized', (done) => {
+        app.set('sessionMiddleware', (req, res, next) => {
+          req.session = {isNew: true};
+          next();
+        });
+        request(app)
+          .get('/story/1')
+          .expect(200)
+          .expect('Content-Type', /html/)
+          .expect(/story/i)
+          .expect(/technology/) //expecting for tags
+          .expect(/maths/)
+          .expect(/1 Views/, done); //expecting views
+      });
 
       it('should give story with tags and views for given id', (done) => {
         app.set('sessionMiddleware', (req, res, next) => {
