@@ -142,12 +142,29 @@ describe('Handlers', () => {
     });
 
     describe('/responses', () => {
+      before(() => {
+        const stubGetPublishedStory = sinon.stub();
+        const stubGetResponses = sinon.stub();
+        app.locals.db.getResponses = stubGetResponses;
+        app.locals.db.getPublishedStoryDetails = stubGetPublishedStory;
+        stubGetResponses.withArgs('10').rejects({error: 'No story found'});
+        stubGetResponses.withArgs('1').resolves([]);
+        stubGetPublishedStory.withArgs('1').resolves({
+          id: 1,
+          title: 'Hello',
+          content: '[]',
+          authorId: 58025056,
+          tags: ['technology', 'maths'],
+          views: 1,
+        });
+      });
+      after(() => sinon.restore());
+
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should give responses page for proper id', (done) => {
@@ -160,7 +177,7 @@ describe('Handlers', () => {
 
       it('should give not found for unknown id', (done) => {
         request(app)
-          .get('/responses/2')
+          .get('/responses/10')
           .expect(404)
           .expect('Content-Type', /json/)
           .expect({error: 'No story found'}, done);
@@ -170,12 +187,21 @@ describe('Handlers', () => {
 });
 
 describe('/callback', () => {
+  before(() => {
+    const stubAddUser = sinon.stub();
+    app.locals.db.addUser = stubAddUser;
+    stubAddUser
+      .withArgs({id: 58025056, name: 'name', avatar_url: 'avatar'})
+      .rejects();
+    stubAddUser.withArgs({id: 123, name: 'name', avatar_url: 'avatar'}).resolves();
+    stubAddUser.withArgs({id: 123, name: 'login', avatar_url: 'avatar'}).resolves();
+  });
+  after(() => sinon.restore());
   beforeEach(async () => {
     app.set('sessionMiddleware', (req, res, next) => {
       req.session = {};
       next();
     });
-    await resetTables(app.locals.db);
   });
 
   const details = {
