@@ -79,8 +79,28 @@ describe('Handlers', () => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
+        const stubGetPublishedStory = sinon.stub();
+        const stubUpdateViews = sinon.stub();
+        const stubIsFollowing = sinon.stub();
+        app.locals.db.getPublishedStoryDetails = stubGetPublishedStory;
+        app.locals.db.updateViews = stubUpdateViews;
+        app.locals.db.isFollowing = stubIsFollowing;
+        stubUpdateViews.withArgs(58025056, 1, 58025056).resolves(0);
+        stubUpdateViews.withArgs(58025419, 1, 58025056).resolves(1);
+        stubIsFollowing.withArgs(58025056, 58025056).resolves(0);
+        stubIsFollowing.withArgs(58025419, 58025056).resolves(1);
+        stubGetPublishedStory.withArgs('10').rejects({error: 'No story found'});
+        stubGetPublishedStory.withArgs('1').resolves({
+          id: 1,
+          title: 'Hello',
+          content: '[]',
+          authorId: 58025056,
+          tags: ['technology', 'maths'],
+          views: 1,
+        });
       });
+
+      afterEach(() => sinon.restore());
 
       it('should give story with tags and views for given id', (done) => {
         app.set('sessionMiddleware', (req, res, next) => {
@@ -94,9 +114,6 @@ describe('Handlers', () => {
           .expect(/story/i)
           .expect(/technology/) //expecting for tags
           .expect(/maths/)
-          .expect(/science/)
-          .expect(/thriller/)
-          .expect(/sci-fi/)
           .expect(/1 Views/, done); //expecting views
       });
 
@@ -116,9 +133,6 @@ describe('Handlers', () => {
           .expect(/story/i)
           .expect(/technology/) //expecting for tags
           .expect(/maths/)
-          .expect(/science/)
-          .expect(/thriller/)
-          .expect(/sci-fi/)
           .expect(/0 Views/, done); //expecting views
       });
 
