@@ -167,7 +167,11 @@ describe('UserHandlers', () => {
         const stubGetDrafts = sinon.stub();
         const stubGetPublished = sinon.stub();
         sinon.replace(app.locals.db, 'getDrafts', stubGetDrafts);
-        sinon.replace(app.locals.db, 'getUserPublishedStories', stubGetPublished);
+        sinon.replace(
+          app.locals.db,
+          'getUserPublishedStories',
+          stubGetPublished
+        );
         stubGetDrafts.resolves([{id: 1, title: 'Title', content: '[]'}]);
         stubGetPublished.resolves([{id: 2, title: 'Title', content: '[]'}]);
       });
@@ -187,11 +191,15 @@ describe('UserHandlers', () => {
         const stubPublish = sinon.stub();
         sinon.replace(app.locals.db, 'publish', stubPublish);
         stubPublish.withArgs(58025056, 1).rejects({error: 'No draft found'});
-        stubPublish.withArgs(58025056, 5).rejects({error: 'Cannot publish a story with empty title and content'});
+        stubPublish
+          .withArgs(58025056, 5)
+          .rejects({
+            error: 'Cannot publish a story with empty title and content',
+          });
         stubPublish.withArgs(58025056, 2).resolves({status: 'Published'});
       });
       after(() => sinon.restore());
-      
+
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
@@ -246,17 +254,24 @@ describe('UserHandlers', () => {
     });
 
     describe('/user/edit', () => {
+      before(() => {
+        const stubGetDraft = sinon.stub();
+        sinon.replace(app.locals.db, 'getDraft', stubGetDraft);
+        stubGetDraft.withArgs('1').resolves();
+        stubGetDraft.withArgs('2').rejects();
+      });
+      after(() => sinon.restore());
+
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should give draft editor page for /edit', (done) => {
         request(app)
-          .get('/user/edit/2')
+          .get('/user/edit/1')
           .expect(200)
           .expect('Content-Type', /html/)
           .expect(/publish/, done);
@@ -264,33 +279,43 @@ describe('UserHandlers', () => {
 
       it('should give not found for /edit if draft is absent', (done) => {
         request(app)
-          .get('/user/edit/1')
+          .get('/user/edit/2')
           .expect(404)
           .expect('Content-Type', /html/, done);
       });
     });
 
     describe('/user/draft', () => {
+      const expected = {
+        id: 1,
+        title: '8 Ways to Build Virality into your Product',
+        created_by: 58025056,
+      };
+      before(() => {
+        const stubGetDraft = sinon.stub();
+        sinon.replace(app.locals.db, 'getDraft', stubGetDraft);
+        stubGetDraft.withArgs('1').resolves(expected);
+        stubGetDraft.withArgs('2').rejects({error: 'No draft found'});
+      });
+      after(() => sinon.restore());
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should give the draft for given draft id present', (done) => {
         request(app)
-          .get('/user/draft/2')
+          .get('/user/draft/1')
           .expect(200)
           .expect('Content-Type', /json/)
-          .expect(/8 Ways to Build Virality into your Product/)
-          .expect(/58025056/, done);
+          .expect({draft: expected}, done);
       });
 
       it('should give not found if given draft id not present', (done) => {
         request(app)
-          .get('/user/draft/117')
+          .get('/user/draft/2')
           .expect('Content-Type', /json/)
           .expect({error: 'No draft found'}, done);
       });
