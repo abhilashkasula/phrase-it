@@ -187,6 +187,25 @@ class Database {
     const tags = await this.tags.clone().where({story_id});
     return tags.map(({tag}) => tag);
   }
+
+  async getFollowersEntries(conditions) {
+    return await this.followers
+      .clone()
+      .leftJoin('users', 'followers.user_id', 'users.id')
+      .where(conditions)
+      .select('username', 'avatar_url', 'users.id');
+  }
+
+  async getUserDetails(id) {
+    const [userDetails] = await this.users.clone().where({id});
+    if (!userDetails) {
+      throw {error: 'No user found'};
+    }
+    userDetails.followers = await this.getFollowersEntries({user_id: id});
+    userDetails.following = await this.getFollowersEntries({follower_id: id});
+    userDetails.stories = await this.getUserPublishedStories(id);
+    return userDetails;
+  }
 }
 
 module.exports = Database;

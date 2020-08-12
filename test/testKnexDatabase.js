@@ -411,6 +411,8 @@ describe('knexDatabase', () => {
   });
 
   describe('addTags', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
     it('should add given tags to the given story', (done) => {
       db.addTags(1, ['tag1'])
         .then((res) => {
@@ -431,6 +433,8 @@ describe('knexDatabase', () => {
   });
 
   describe('getTags', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
     it('should given list of tags for given story', (done) => {
       db.getTags(3)
         .then((res) => {
@@ -444,6 +448,53 @@ describe('knexDatabase', () => {
       db.getTags(5)
         .then((res) => {
           assert.deepStrictEqual(res, []);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('getUserDetails', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give userDetails if user is present', (done) => {
+      const expected = {
+        avatar_url: 'https://avatars0.githubusercontent.com/u/58025419?v=4',
+        followers: [
+          {
+            avatar_url: 'https://avatars0.githubusercontent.com/u/58025419?v=4',
+            id: 58025419,
+            username: 'myultimatevision',
+          },
+        ],
+        following: [
+          {
+            avatar_url: 'https://avatars0.githubusercontent.com/u/58025056?v=4',
+            id: 58025056,
+            username: 'abhilashkasula',
+          },
+          {
+            avatar_url: 'https://avatars2.githubusercontent.com/u/56071561?v=4',
+            id: 56071561,
+            username: 'anil-muraleedharan',
+          },
+        ],
+        id: 58025419,
+        stories: [],
+        username: 'myultimatevision',
+      };
+      db.getUserDetails(58025419)
+        .then((details) => {
+          assert.deepStrictEqual(details, expected);
+          done();
+        })
+        .catch((err) => done(err));
+    });
+
+    it('should give error if the user is not present', (done) => {
+      db.getUserDetails(11111111)
+        .catch(({error}) => {
+          assert.strictEqual(error, 'No user found');
           done();
         })
         .catch((err) => done(err));
