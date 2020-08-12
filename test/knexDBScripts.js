@@ -1,5 +1,13 @@
 const sampleData = require('./sampleData.json');
-const tables = require('./tableNames');
+const tables = [
+  'users',
+  'stories',
+  'published_stories',
+  'responses',
+  'claps',
+  'followers',
+  'tags',
+];
 
 const clearDB = async (knex, tables) =>
   await tables.forEach(async (table) => await knex.truncate(table));
