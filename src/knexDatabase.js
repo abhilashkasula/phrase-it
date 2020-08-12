@@ -206,6 +206,35 @@ class Database {
     userDetails.stories = await this.getUserPublishedStories(id);
     return userDetails;
   }
+
+  async matchingStories(keyword, fieldName) {
+    return await this.stories
+      .clone()
+      .innerJoin('published_stories as t2', 'stories.id', 't2.story_id')
+      .innerJoin('users as t3', 'stories.created_by', 't3.id')
+      .innerJoin('tags as t4', 'stories.id', 't4.story_id')
+      .where(fieldName, 'like', `%${keyword}%`)
+      .groupBy('stories.id')
+      .orderBy('published_at', 'desc')
+      .select(
+        'stories.id',
+        'title',
+        'content',
+        'published_at',
+        'username as author',
+        't3.id as author_id'
+      );
+  }
+
+  async search(keyword) {
+    if (!keyword) {
+      throw {error: 'Invalid keyword'};
+    }
+    const authorBased = await this.matchingStories(keyword, 'username');
+    const contentBased = await this.matchingStories(keyword, 'title');
+    const tagBased = await this.matchingStories(keyword, 'tag');
+    return {authorBased, contentBased, tagBased};
+  }
 }
 
 module.exports = Database;

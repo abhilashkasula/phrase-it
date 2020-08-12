@@ -438,7 +438,7 @@ describe('knexDatabase', () => {
     it('should given list of tags for given story', (done) => {
       db.getTags(3)
         .then((res) => {
-          assert.deepStrictEqual(res, ['comic']);
+          assert.deepStrictEqual(res, ['comic', 'drama']);
           done();
         })
         .catch((err) => done(err));
@@ -495,6 +495,64 @@ describe('knexDatabase', () => {
       db.getUserDetails(11111111)
         .catch(({error}) => {
           assert.strictEqual(error, 'No user found');
+          done();
+        })
+        .catch((err) => done(err));
+    });
+  });
+
+  describe('search', () => {
+    beforeEach(async () => await resetKnexDB(knexInstance));
+
+    it('should give matching stories based on the keyword', (done) => {
+      const expected = {
+        authorBased: [
+          {
+            author: 'anil-muraleedharan',
+            author_id: 56071561,
+            content:
+              '[{"type":"paragraph","data":{"text":"I am a computer science student."}}]',
+            id: 3,
+            published_at: '2020-08-10 14:50:18',
+            title: '9 Ways to Build Virality into your Product',
+          },
+        ],
+        contentBased: [
+          {
+            author: 'anil-muraleedharan',
+            author_id: 56071561,
+            content:
+              '[{"type":"paragraph","data":{"text":"I am a computer science student."}}]',
+            id: 3,
+            published_at: '2020-08-10 14:50:18',
+            title: '9 Ways to Build Virality into your Product',
+          },
+          {
+            author: 'abhilashkasula',
+            author_id: 58025056,
+            content:
+              '[{"type":"paragraph","data":{"text":"I am a computer science student."}}]',
+            id: 1,
+            published_at: '2020-08-10 14:50:18',
+            title: '9 Ways to Build Virality into your Product',
+          },
+        ],
+        tagBased: [
+          {
+            author: 'anil-muraleedharan',
+            author_id: 56071561,
+            content:
+              '[{"type":"paragraph","data":{"text":"I am a computer science student."}}]',
+            id: 3,
+            published_at: '2020-08-10 14:50:18',
+            title: '9 Ways to Build Virality into your Product',
+          },
+        ],
+      };
+
+      db.search('d')
+        .then((result) => {
+          assert.deepStrictEqual(result, expected);
           done();
         })
         .catch((err) => done(err));
