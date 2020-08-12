@@ -40,9 +40,9 @@ describe('Handlers', () => {
       const stubGetPublishedStory = sinon.stub();
       const stubUpdateViews = sinon.stub();
       const stubIsFollowing = sinon.stub();
-      app.locals.db.getPublishedStoryDetails = stubGetPublishedStory;
-      app.locals.db.updateViews = stubUpdateViews;
-      app.locals.db.isFollowing = stubIsFollowing;
+      sinon.replace(app.locals.db, 'getPublishedStoryDetails', stubGetPublishedStory);
+      sinon.replace(app.locals.db, 'updateViews', stubUpdateViews);
+      sinon.replace(app.locals.db, 'isFollowing', stubIsFollowing);
       stubUpdateViews.withArgs(58025056, 1, 58025056).resolves(0);
       stubUpdateViews.withArgs(58025419, 1, 58025056).resolves(1);
       stubUpdateViews.withArgs(undefined, 1, 58025056).resolves(1);
@@ -121,8 +121,8 @@ describe('Handlers', () => {
     before(() => {
       const stubGetPublishedStory = sinon.stub();
       const stubGetResponses = sinon.stub();
-      app.locals.db.getResponses = stubGetResponses;
-      app.locals.db.getPublishedStoryDetails = stubGetPublishedStory;
+      sinon.replace(app.locals.db, 'getResponses', stubGetResponses);
+      sinon.replace(app.locals.db, 'getPublishedStoryDetails', stubGetPublishedStory);
       stubGetResponses.withArgs('10').rejects({error: 'No story found'});
       stubGetResponses.withArgs('1').resolves([]);
       stubGetPublishedStory.withArgs('1').resolves({
@@ -175,7 +175,7 @@ describe('Handlers', () => {
   describe('/callback', () => {
     before(() => {
       const stubAddUser = sinon.stub();
-      app.locals.db.addUser = stubAddUser;
+      sinon.replace(app.locals.db, 'addUser', stubAddUser);
       stubAddUser
         .withArgs({id: 58025056, name: 'name', avatar_url: 'avatar'})
         .rejects();

@@ -1,4 +1,5 @@
 const request = require('supertest');
+const sinon = require('sinon');
 const {app} = require('../src/app');
 const {resetTables} = require('./dbScripts');
 
@@ -9,7 +10,6 @@ describe('UserHandlers', () => {
         req.session = {isNew: true};
         next();
       });
-      await resetTables(app.locals.db);
     });
 
     it('should redirect to index page if session not exists', (done) => {
@@ -98,7 +98,6 @@ describe('UserHandlers', () => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should get the newStory page for authenticated user', (done) => {
@@ -111,12 +110,21 @@ describe('UserHandlers', () => {
     });
 
     describe('/user/updateStory', () => {
+      before(() => {
+        const stubCreateStory = sinon.stub();
+        const stubUpdateStory = sinon.stub();
+        sinon.replace(app.locals.db, 'createStory', stubCreateStory);
+        sinon.replace(app.locals.db, 'updateStory', stubUpdateStory);
+        stubCreateStory.resolves(6);
+        stubUpdateStory.withArgs(2).resolves({status: 'Story updated'});
+        stubUpdateStory.withArgs(10).rejects({error: 'No draft found'});
+      });
+      after(() => sinon.restore());
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should create story & give back id if id not present', (done) => {
@@ -143,7 +151,7 @@ describe('UserHandlers', () => {
       it('should give 404 for updating story with unknown id', (done) => {
         request(app)
           .post('/user/updateStory')
-          .send({id: 100, title: 'Title', blocks: ''})
+          .send({id: 10, title: 'Title', blocks: ''})
           .expect(404)
           .expect('Content-Type', /json/)
           .expect({error: 'No draft found'}, done);
@@ -151,13 +159,19 @@ describe('UserHandlers', () => {
     });
 
     describe('/user/stories', () => {
-      beforeEach(async () => {
+      before(() => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           next();
         });
-        await resetTables(app.locals.db);
+        const stubGetDrafts = sinon.stub();
+        const stubGetPublished = sinon.stub();
+        sinon.replace(app.locals.db, 'getDrafts', stubGetDrafts);
+        sinon.replace(app.locals.db, 'getUserPublishedStories', stubGetPublished);
+        stubGetDrafts.resolves([{id: 1, title: 'Title', content: '[]'}]);
+        stubGetPublished.resolves([{id: 2, title: 'Title', content: '[]'}]);
       });
+      after(() => sinon.restore());
 
       it('should give story page with available drafts of user', (done) => {
         request(app)
@@ -169,13 +183,21 @@ describe('UserHandlers', () => {
     });
 
     describe('/user/publish', () => {
+      before(() => {
+        const stubPublish = sinon.stub();
+        sinon.replace(app.locals.db, 'publish', stubPublish);
+        stubPublish.withArgs(58025056, 1).rejects({error: 'No draft found'});
+        stubPublish.withArgs(58025056, 5).rejects({error: 'Cannot publish a story with empty title and content'});
+        stubPublish.withArgs(58025056, 2).resolves({status: 'Published'});
+      });
+      after(() => sinon.restore());
+      
       beforeEach(async () => {
         app.set('sessionMiddleware', (req, res, next) => {
           req.session = {isNew: false, id: 58025056};
           req.files = {coverImage: {mv: () => {}, md5: 'hash'}};
           next();
         });
-        await resetTables(app.locals.db);
       });
 
       it('should give No draft found for no draft', (done) => {
@@ -517,7 +539,7 @@ describe('UserHandlers', () => {
 
       it('should give profile for existing user id', (done) => {
         request(app)
-          .get('/user/profile/58026402')
+          .get('/user/profile/58025056')
           .expect(200)
           .expect('Content-Type', /html/)
           .expect(/Profile/, done);
