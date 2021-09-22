@@ -62,9 +62,13 @@ const displayContainer = () => {
 
 const addCounts = (counts) => {
   const {author, tag, content} = counts;
-  document.querySelector('#author-based-count').innerText = `[ ${author} ]`;
-  document.querySelector('#tag-based-count').innerText = `[ ${tag} ]`;
-  document.querySelector('#content-based-count').innerText = `[ ${content} ]`;
+  document.querySelector(
+    '#author-based-count'
+  ).innerText = `Author Based [ ${author} ]`;
+  document.querySelector('#tag-based-count').innerText = `Tag Based [ ${tag} ]`;
+  document.querySelector(
+    '#content-based-count'
+  ).innerText = `Content Based [ ${content} ]`;
 };
 
 const renderSearchResults = ({authorBased, tagBased, contentBased}) => {
