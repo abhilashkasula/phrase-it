@@ -64,11 +64,11 @@ const addCounts = (counts) => {
   const {author, tag, content} = counts;
   document.querySelector(
     '#author-based-count'
-  ).innerText = `Author Based [ ${author} ]`;
-  document.querySelector('#tag-based-count').innerText = `Tag Based [ ${tag} ]`;
+  ).innerText = `Author [ ${author} ]`;
+  document.querySelector('#tag-based-count').innerText = `Tag [ ${tag} ]`;
   document.querySelector(
     '#content-based-count'
-  ).innerText = `Content Based [ ${content} ]`;
+  ).innerText = `Content [ ${content} ]`;
 };
 
 const renderSearchResults = ({authorBased, tagBased, contentBased}) => {
